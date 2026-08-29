@@ -1,0 +1,626 @@
+{
+  "users": [
+    {
+      "id": "u1",
+      "name": "Dr. Admin",
+      "email": "admin@phms.gov",
+      "password": "$2b$10$RwkXpIiHj5EoEtuMsBjVA.CcmTvZZvqdsNETiS1XEhZfnV.1FdaEC",
+      "role": "admin",
+      "department": "Administration",
+      "createdAt": "2024-01-01T00:00:00.000Z"
+    },
+    {
+      "id": "u2",
+      "name": "Dr. Priya Sharma",
+      "email": "doctor@phms.gov",
+      "password": "$2b$10$VthYPUTZz2jPvXptsjBr.uFooh94U1W0Tq4XEbIMZnFrwW077KqW.",
+      "role": "doctor",
+      "department": "General Medicine",
+      "createdAt": "2024-01-15T00:00:00.000Z"
+    },
+    {
+      "id": "u3",
+      "name": "Nurse Kavitha",
+      "email": "nurse@phms.gov",
+      "password": "$2b$10$LAla9y8dir6KrgUeR6BFHuxzqgM4KS8VU6CPk/yvytmkLsL3Z9JAm",
+      "role": "nurse",
+      "department": "Emergency",
+      "createdAt": "2024-02-01T00:00:00.000Z"
+    }
+  ],
+  "patients": [
+    {
+      "id": "p1",
+      "name": "Ravi Kumar",
+      "age": 45,
+      "gender": "Male",
+      "phone": "9876543210",
+      "email": "ravi@example.com",
+      "bloodGroup": "O+",
+      "address": "Mysuru, Karnataka",
+      "status": "Active",
+      "createdAt": "2024-03-01T00:00:00.000Z",
+      "assignedDoctor": "u2",
+      "conditions": [
+        "Hypertension",
+        "Diabetes Type 2"
+      ]
+    },
+    {
+      "id": "p2",
+      "name": "Sunita Patel",
+      "age": 32,
+      "gender": "Female",
+      "phone": "9845678901",
+      "email": "sunita@example.com",
+      "bloodGroup": "A+",
+      "address": "Bengaluru, Karnataka",
+      "status": "Active",
+      "createdAt": "2024-03-05T00:00:00.000Z",
+      "assignedDoctor": "u2",
+      "conditions": [
+        "Asthma"
+      ]
+    },
+    {
+      "id": "p3",
+      "name": "Mohammed Ismail",
+      "age": 60,
+      "gender": "Male",
+      "phone": "9123456789",
+      "email": "ismail@example.com",
+      "bloodGroup": "B-",
+      "address": "Hubballi, Karnataka",
+      "status": "Critical",
+      "createdAt": "2024-03-10T00:00:00.000Z",
+      "assignedDoctor": "u2",
+      "conditions": [
+        "Heart Disease",
+        "COPD"
+      ]
+    },
+    {
+      "id": "p4",
+      "name": "Lakshmi Devi",
+      "age": 28,
+      "gender": "Female",
+      "phone": "9786543210",
+      "email": "lakshmi@example.com",
+      "bloodGroup": "AB+",
+      "address": "Mangaluru, Karnataka",
+      "status": "Recovered",
+      "createdAt": "2024-02-20T00:00:00.000Z",
+      "assignedDoctor": "u2",
+      "conditions": [
+        "COVID-19"
+      ]
+    },
+    {
+      "id": "p5",
+      "name": "Arjun Hegde",
+      "age": 52,
+      "gender": "Male",
+      "phone": "9654321098",
+      "email": "arjun@example.com",
+      "bloodGroup": "O-",
+      "address": "Mysuru, Karnataka",
+      "status": "Active",
+      "createdAt": "2024-04-01T00:00:00.000Z",
+      "assignedDoctor": "u2",
+      "conditions": [
+        "Tuberculosis"
+      ]
+    },
+    {
+      "id": "p1780993772820",
+      "name": "adihya",
+      "age": 12,
+      "gender": "Male",
+      "bloodGroup": "O+",
+      "phone": "7283859483",
+      "email": "adi@gmail.com",
+      "address": "vittla",
+      "status": "Active",
+      "conditions": [
+        "not in comma"
+      ],
+      "createdAt": "2026-06-09",
+      "assignedDoctor": "u2"
+    },
+    {
+      "id": "p1780998642210",
+      "name": "thasmay",
+      "age": 22,
+      "gender": "Other",
+      "bloodGroup": "A+",
+      "phone": "6363123567",
+      "email": "thash@gmail.com",
+      "address": "kl",
+      "status": "Active",
+      "conditions": [
+        "normal"
+      ],
+      "createdAt": "2026-06-09",
+      "assignedDoctor": "u2"
+    },
+    {
+      "id": "p1781011393093",
+      "name": "Thasmay",
+      "age": 22,
+      "gender": "Male",
+      "bloodGroup": "A+",
+      "phone": "6363147839",
+      "email": "thasmayparivar04@gmail.com",
+      "address": "puttur",
+      "status": "Critical",
+      "conditions": [
+        "serious"
+      ],
+      "createdAt": "2026-06-09",
+      "assignedDoctor": null
+    },
+    {
+      "id": "p1781055273078",
+      "name": "John Doe",
+      "age": 35,
+      "gender": "Male",
+      "bloodGroup": "A+",
+      "phone": "9876543210",
+      "email": "testpatient123@example.com",
+      "address": "Bengaluru, Karnataka",
+      "status": "Active",
+      "conditions": [
+        "normal"
+      ],
+      "createdAt": "2026-06-10",
+      "assignedDoctor": "u2"
+    }
+  ],
+  "appointments": [
+    {
+      "id": "a1",
+      "patientId": "p1",
+      "doctorId": "u2",
+      "date": "2025-06-10",
+      "time": "09:00",
+      "type": "Follow-up",
+      "status": "Scheduled",
+      "notes": "Blood pressure check",
+      "createdAt": "2026-06-09T08:28:27.452Z"
+    },
+    {
+      "id": "a2",
+      "patientId": "p2",
+      "doctorId": "u2",
+      "date": "2025-06-11",
+      "time": "10:30",
+      "type": "Consultation",
+      "status": "Scheduled",
+      "notes": "Asthma management review",
+      "createdAt": "2026-06-09T08:28:27.452Z"
+    },
+    {
+      "id": "a3",
+      "patientId": "p3",
+      "doctorId": "u2",
+      "date": "2025-06-09",
+      "time": "08:00",
+      "type": "Emergency",
+      "status": "Completed",
+      "notes": "Chest pain evaluation",
+      "createdAt": "2026-06-09T08:28:27.452Z"
+    },
+    {
+      "id": "a4",
+      "patientId": "p4",
+      "doctorId": "u2",
+      "date": "2025-06-12",
+      "time": "14:00",
+      "type": "Discharge",
+      "status": "Scheduled",
+      "notes": "Final COVID check",
+      "createdAt": "2026-06-09T08:28:27.452Z"
+    },
+    {
+      "id": "a5",
+      "patientId": "p5",
+      "doctorId": "u2",
+      "date": "2025-06-08",
+      "time": "11:00",
+      "type": "Follow-up",
+      "status": "Completed",
+      "notes": "TB medication review",
+      "createdAt": "2026-06-09T08:28:27.452Z"
+    },
+    {
+      "id": "a1780997805039",
+      "patientId": "p1780993772820",
+      "doctorId": "u2",
+      "date": "2026-06-09",
+      "time": "09:00",
+      "type": "Lab Test",
+      "notes": "come early ",
+      "status": "Completed"
+    },
+    {
+      "id": "a1780998934758",
+      "patientId": "p1780998642210",
+      "doctorId": "u2",
+      "date": "2026-06-12",
+      "time": "09:02",
+      "type": "Follow-up",
+      "notes": "come early",
+      "status": "Completed"
+    },
+    {
+      "id": "a1781007735643",
+      "patientId": "p1",
+      "doctorId": "u2",
+      "date": "2026-06-10",
+      "time": "09:30",
+      "type": "Consultation",
+      "status": "Scheduled",
+      "notes": "Frequent headaches and dizziness",
+      "createdAt": "2026-06-09T12:22:15.643Z"
+    },
+    {
+      "id": "a1781007820222",
+      "patientId": "p1",
+      "doctorId": "u2",
+      "date": "2026-06-10",
+      "time": "10:00",
+      "type": "Consultation",
+      "status": "Scheduled",
+      "notes": "Checking symptoms again",
+      "createdAt": "2026-06-09T12:23:40.222Z"
+    },
+    {
+      "id": "a1781008558291",
+      "patientId": "p1",
+      "doctorId": "u2",
+      "date": "2026-06-10",
+      "time": "09:30",
+      "type": "Follow-up",
+      "status": "Scheduled",
+      "notes": "Routine checkup",
+      "createdAt": "2026-06-09T12:35:58.291Z"
+    },
+    {
+      "id": "a1781009785267",
+      "patientId": "p1780998642210",
+      "doctorId": "u2",
+      "date": "2026-06-10",
+      "time": "09:30",
+      "type": "Follow-up",
+      "status": "Completed",
+      "notes": "fever",
+      "createdAt": "2026-06-09T12:56:25.267Z"
+    },
+    {
+      "id": "a1781056170475",
+      "patientId": "p1780993772820",
+      "doctorId": "u2",
+      "date": "2026-06-11",
+      "time": "09:30",
+      "type": "Follow-up",
+      "status": "Scheduled",
+      "notes": "TB",
+      "createdAt": "2026-06-10T01:49:30.475Z"
+    },
+    {
+      "id": "a1781155255649",
+      "patientId": "p1780998642210",
+      "doctorId": "u2",
+      "date": "2026-06-12",
+      "time": "09:30",
+      "type": "Consultation",
+      "status": "Completed",
+      "notes": "yy",
+      "createdAt": "2026-06-11T05:20:55.649Z"
+    }
+  ],
+  "records": [
+    {
+      "id": "r1",
+      "patientId": "p1",
+      "doctorId": "u2",
+      "type": "Diagnosis",
+      "title": "Hypertension Control & BP Check",
+      "description": "BP: 160/100 mmHg. Prescribed Amlodipine 5mg daily. Lifestyle modifications advised.",
+      "date": "2024-05-01",
+      "medications": [
+        "Amlodipine 5mg",
+        "Metoprolol 25mg"
+      ],
+      "vitals": {
+        "bp": "160/100",
+        "pulse": 88,
+        "temp": 98.6,
+        "weight": 78
+      }
+    },
+    {
+      "id": "r2",
+      "patientId": "p2",
+      "doctorId": "u2",
+      "type": "Lab Result",
+      "title": "Spirometry Test",
+      "description": "FEV1/FVC ratio: 0.65. Moderate obstruction. Inhaler therapy continued.",
+      "date": "2024-05-10",
+      "medications": [
+        "Salbutamol Inhaler",
+        "Fluticasone 100mcg"
+      ],
+      "vitals": {
+        "bp": "118/76",
+        "pulse": 74,
+        "temp": 98.4,
+        "weight": 58
+      }
+    },
+    {
+      "id": "r3",
+      "patientId": "p3",
+      "doctorId": "u2",
+      "type": "Emergency",
+      "title": "Cardiac Event",
+      "description": "Acute chest pain, ECG showed ST elevation. Immediate cardiac care initiated.",
+      "date": "2024-05-15",
+      "medications": [
+        "Aspirin 325mg",
+        "Nitroglycerin"
+      ],
+      "vitals": {
+        "bp": "90/60",
+        "pulse": 110,
+        "temp": 99.1,
+        "weight": 72
+      }
+    },
+    {
+      "id": "r1780997834816",
+      "patientId": "p1780993772820",
+      "doctorId": "u2",
+      "type": "Diagnosis",
+      "date": "2026-06-09",
+      "title": "dengue",
+      "description": "positive",
+      "medications": [
+        "aspirin"
+      ]
+    },
+    {
+      "id": "r1780997935491",
+      "patientId": "p1",
+      "doctorId": "u2",
+      "type": "Diagnosis",
+      "date": "2026-06-09",
+      "title": "dengue",
+      "description": "corona",
+      "medications": [
+        "aspirin"
+      ]
+    },
+    {
+      "id": "r1780998974389",
+      "patientId": "p1780998642210",
+      "doctorId": "u2",
+      "type": "Diagnosis",
+      "date": "2026-06-09",
+      "title": "dengue",
+      "description": "negative",
+      "medications": [
+        "aspirin"
+      ]
+    },
+    {
+      "id": "r1781056118743",
+      "patientId": "p1780993772820",
+      "doctorId": "u2",
+      "type": "Lab Result",
+      "date": "2026-06-10",
+      "title": "dengue",
+      "description": "negative\ncured",
+      "medications": [
+        "aspirin"
+      ]
+    },
+    {
+      "id": "r1781192141603",
+      "patientId": "p1780998642210",
+      "doctorId": "u2",
+      "type": "Diagnosis",
+      "date": "2026-06-11",
+      "title": "health",
+      "description": "need to stud in the pipe of the health",
+      "medications": [
+        "malform"
+      ]
+    }
+  ],
+  "diseases": [
+    {
+      "id": "d1",
+      "name": "COVID-19",
+      "category": "Viral",
+      "cases": 1240,
+      "active": 45,
+      "recovered": 1180,
+      "deaths": 15,
+      "trend": "decreasing",
+      "reportedDate": "2024-01-01",
+      "affectedRegions": [
+        "Bengaluru",
+        "Mysuru",
+        "Mangaluru"
+      ]
+    },
+    {
+      "id": "d2",
+      "name": "Dengue Fever",
+      "category": "Vector-Borne",
+      "cases": 580,
+      "active": 120,
+      "recovered": 455,
+      "deaths": 5,
+      "trend": "increasing",
+      "reportedDate": "2024-03-01",
+      "affectedRegions": [
+        "Mysuru",
+        "Hassan",
+        "Kodagu"
+      ]
+    },
+    {
+      "id": "d3",
+      "name": "Tuberculosis",
+      "category": "Bacterial",
+      "cases": 340,
+      "active": 210,
+      "recovered": 125,
+      "deaths": 5,
+      "trend": "stable",
+      "reportedDate": "2024-01-01",
+      "affectedRegions": [
+        "Hubballi",
+        "Belagavi",
+        "Kalaburagi"
+      ]
+    },
+    {
+      "id": "d4",
+      "name": "Malaria",
+      "category": "Parasitic",
+      "cases": 890,
+      "active": 340,
+      "recovered": 542,
+      "deaths": 8,
+      "trend": "increasing",
+      "reportedDate": "2024-04-01",
+      "affectedRegions": [
+        "Dakshina Kannada",
+        "Uttara Kannada",
+        "Shivamogga"
+      ]
+    },
+    {
+      "id": "d5",
+      "name": "Cholera",
+      "category": "Bacterial",
+      "cases": 78,
+      "active": 12,
+      "recovered": 64,
+      "deaths": 2,
+      "trend": "decreasing",
+      "reportedDate": "2024-05-01",
+      "affectedRegions": [
+        "Mysuru"
+      ]
+    }
+  ],
+  "inventory": [
+    {
+      "id": "i1",
+      "name": "Paracetamol 500mg",
+      "category": "Analgesic",
+      "quantity": 5000,
+      "unit": "tablets",
+      "minStock": 500,
+      "expiryDate": "2026-12-31",
+      "supplier": "Sun Pharma",
+      "status": "Adequate"
+    },
+    {
+      "id": "i2",
+      "name": "Amoxicillin 250mg",
+      "category": "Antibiotic",
+      "quantity": 120,
+      "unit": "capsules",
+      "minStock": 200,
+      "expiryDate": "2025-08-31",
+      "supplier": "Cipla",
+      "status": "Low"
+    },
+    {
+      "id": "i3",
+      "name": "Insulin Glargine",
+      "category": "Hormone",
+      "quantity": 80,
+      "unit": "vials",
+      "minStock": 50,
+      "expiryDate": "2025-07-15",
+      "supplier": "Novo Nordisk",
+      "status": "Adequate"
+    },
+    {
+      "id": "i4",
+      "name": "N95 Masks",
+      "category": "PPE",
+      "quantity": 45,
+      "unit": "pieces",
+      "minStock": 100,
+      "expiryDate": "2026-06-30",
+      "supplier": "Local Supplier",
+      "status": "Critical"
+    },
+    {
+      "id": "i5",
+      "name": "Surgical Gloves (M)",
+      "category": "PPE",
+      "quantity": 2400,
+      "unit": "pairs",
+      "minStock": 500,
+      "expiryDate": "2027-01-01",
+      "supplier": "Ansell",
+      "status": "Adequate"
+    },
+    {
+      "id": "i6",
+      "name": "Amlodipine 5mg",
+      "category": "Cardiovascular",
+      "quantity": 350,
+      "unit": "tablets",
+      "minStock": 400,
+      "expiryDate": "2026-03-31",
+      "supplier": "Torrent",
+      "status": "Low"
+    }
+  ],
+  "patientAccounts": [
+    {
+      "patientId": "p1",
+      "email": "ravi@example.com",
+      "password": "newravi123"
+    },
+    {
+      "patientId": "p2",
+      "email": "sunita@example.com",
+      "password": "sunita123"
+    },
+    {
+      "patientId": "p3",
+      "email": "ismail@example.com",
+      "password": "ismail123"
+    },
+    {
+      "patientId": "p1780993772820",
+      "email": "adi@gmail.com",
+      "password": "thash123"
+    },
+    {
+      "patientId": "p1780998642210",
+      "email": "thash@gmail.com",
+      "password": "thash123"
+    },
+    {
+      "patientId": "p1781011393093",
+      "email": "thasmayparivar04@gmail.com",
+      "password": "thash123"
+    },
+    {
+      "patientId": "p1781055273078",
+      "email": "testpatient123@example.com",
+      "password": "testpassword123"
+    }
+  ]
+}

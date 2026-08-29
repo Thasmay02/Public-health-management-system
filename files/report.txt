@@ -1,0 +1,647 @@
+\documentclass[12pt,a4paper]{report}
+\usepackage[utf8]{inputenc}
+\usepackage{graphicx} 
+\usepackage{tikz}
+\usetikzlibrary{shapes.geometric, arrows, positioning}
+\usepackage[a4paper,
+left=1.25in,
+right=1in,
+top=1in,
+bottom=1in]{geometry}
+\usepackage{times} % Sets font to Times New Roman
+\usepackage{titlesec}
+\usepackage{float}
+\usepackage{pdfpages} % Added to include external PDF cover pages
+\usepackage{setspace} % Added for double spacing
+\setstretch{1.2} % Add slight spacing between lines (1.2x)
+\usepackage{listings} % Added for code block formatting and numbering
+\usepackage{fancyhdr} % Added for headers and footers
+
+%=========================================
+% HEADER AND FOOTER (FANCYHDR)
+%=========================================
+\pagestyle{fancy}
+\fancyhf{} % Clear all headers and footers
+\fancyhead[L]{Health Base}
+\fancyfoot[L]{Department of Master of Computer Applications (MCA), VCET, Puttur}
+\fancyfoot[R]{Page \thepage}
+\renewcommand{\headrulewidth}{0.4pt} % Underline below the header
+\renewcommand{\footrulewidth}{0.4pt} % Line above the footer
+
+% Make sure plain pages (like chapter starts) also have the footer but no header line, or apply fancy to plain pages
+\fancypagestyle{plain}{
+  \fancyhf{}
+  \fancyfoot[L]{Department of Master of Computer Applications (MCA), VCET, Puttur}
+  \fancyfoot[R]{Page \thepage}
+  \renewcommand{\headrulewidth}{0pt}
+  \renewcommand{\footrulewidth}{0.4pt} % Line above the footer on plain pages too
+}
+%=========================================
+% BETTER TEXT JUSTIFICATION
+%=========================================
+\usepackage{microtype}
+\usepackage{ragged2e}
+\emergencystretch=3em
+\usepackage[none]{hyphenat} % Disables word hyphenation
+
+% Prevent pages from stretching vertically
+\raggedbottom
+
+%=========================================
+% REDUCE CHAPTER SPACING
+%=========================================
+\titleformat{\chapter}[display]
+{\normalfont\fontsize{16}{19}\selectfont\bfseries}
+{\raggedright\chaptertitlename\ \thechapter}
+{10pt}
+{\filcenter\fontsize{16}{19}\selectfont}
+
+\titlespacing*{\chapter}
+{0pt}
+{-30pt}
+{20pt}
+
+%=========================================
+% REDUCE SECTION SPACING
+%=========================================
+\titleformat{\section}[block]{\normalfont\Large\bfseries\raggedright}{\thesection}{1em}{}
+\titlespacing*{\section}
+{0pt}
+{10pt}
+{6pt}
+
+\titleformat{\subsection}[block]{\normalfont\large\bfseries\raggedright}{\thesubsection}{1em}{}
+\titlespacing*{\subsection}
+{0pt}
+{8pt}
+{5pt}
+
+%=========================================
+% REDUCE SPACE AROUND FIGURES
+%=========================================
+\setlength{\textfloatsep}{4pt}
+\setlength{\floatsep}{4pt}
+\setlength{\intextsep}{4pt}
+
+%=========================================
+% REDUCE SPACE AROUND TABLES
+%=========================================
+\setlength{\abovecaptionskip}{4pt}
+\setlength{\belowcaptionskip}{4pt}
+
+%=========================================
+% PARAGRAPH SPACING
+%=========================================
+\setlength{\parskip}{4pt}
+\setlength{\parindent}{15pt}
+
+\begin{document}
+
+% ==========================================
+% --- COVER PAGE & CERTIFICATE (FROM PDF) ---
+% ==========================================
+\includepdf[pages=1]{"1_COVER_PAGE 5.pdf"}
+\includepdf[pages=1]{"2nd page 3.pdf"}
+
+% ==========================================
+% --- ABSTRACT ---
+% ==========================================
+
+\addcontentsline{toc}{chapter}{ABSTRACT}
+
+\begin{center}
+    \Huge \textbf{ABSTRACT}
+\end{center}
+\vspace{0.5cm}
+
+\fontfamily{ptm}\selectfont % Explicitly setting Times New Roman for the Abstract
+\noindent Health Base is a comprehensive, centralized Public Health Management System (PHMS) developed to modernize the administrative and clinical operations of public health facilities. Traditionally, health departments rely on manual record-keeping and fragmented software, which leads to delayed disease reporting, inaccurate patient histories, and inefficient resource allocation. To address these critical gaps, Health Base provides an automated, secure, and highly responsive digital infrastructure. The system is built as a robust full-stack web application, utilizing Node.js and Express.js for a fast RESTful API backend, MongoDB for flexible data persistence, and HTML5, CSS3, and Vanilla JavaScript for a responsive frontend interface. The platform integrates several major functionalities, including secure patient and user management, real-time disease and recovery tracking, automated clinical appointment scheduling, and a dedicated inventory module to monitor essential medical supplies. Furthermore, an overarching Administrator portal provides healthcare administrators with analytical insights and centralized control over facility operations. Ultimately, the successful implementation of Health Base establishes an efficient, paperless environment that significantly reduces human error and operational overhead, allowing healthcare providers to access critical data instantly and focus entirely on improving patient care and outbreak response capabilities.
+
+\vspace{0.3cm}
+\noindent Keywords: Public Health Management System, PHMS, Web Application, Node.js, Express.js, MongoDB, Digital Infrastructure, Healthcare Administration.
+
+% ==========================================
+% --- TABLE OF CONTENTS ---
+% ==========================================
+\chapter*{Table of Contents}
+\vspace{0.5cm} % Added a gap below the heading
+
+\noindent Table of Contents \dotfill i \\[0.4cm]
+\noindent List of Figures \dotfill iii \\[0.4cm]
+\noindent List of Tables \dotfill iv \\[0.4cm]
+\noindent \textbf{1 Introduction} \dotfill 1 \\[0.2cm]
+\noindent \hspace*{1.5em} 1.1 Project Introduction \dotfill 1 \\[0.2cm]
+\noindent \hspace*{1.5em} 1.2 Problem Statement \dotfill 1 \\[0.2cm]
+\noindent \hspace*{1.5em} 1.3 Objectives \dotfill 1 \\[0.2cm]
+\noindent \hspace*{1.5em} 1.4 Scope \dotfill 2 \\[0.4cm]
+\noindent \textbf{2 Proposed System} \dotfill 3 \\[0.4cm]
+\noindent \textbf{3 Requirements Specification} \dotfill 5 \\[0.2cm]
+\noindent \hspace*{1.5em} 3.1 Hardware Requirements \dotfill 5 \\[0.2cm]
+\noindent \hspace*{1.5em} 3.2 Software Requirements \dotfill 5 \\[0.4cm]
+\noindent \textbf{4 System Design} \dotfill 6 \\[0.2cm]
+\noindent \hspace*{1.5em} 4.1 System Architecture \dotfill 6 \\[0.2cm]
+\noindent \hspace*{1.5em} 4.2 Data Flow Diagram (DFD) \dotfill 6 \\[0.2cm]
+\noindent \hspace*{1.5em} 4.3 Database Design \dotfill 7 \\[0.4cm]
+\noindent \textbf{5 Implementation} \dotfill 9 \\[0.2cm]
+\noindent \hspace*{1.5em} 5.1 Frontend Implementation \dotfill 9 \\[0.2cm]
+\noindent \hspace*{1.5em} 5.2 Database Seeding Script \dotfill 10 \\[0.2cm]
+\noindent \hspace*{1.5em} 5.3 Backend API Implementation \dotfill 11 \\[0.2cm]
+\noindent \hspace*{1.5em} 5.4 Database Connectivity \dotfill 12 \\[0.4cm]
+\noindent \textbf{6 Results and Screenshots} \dotfill 14 \\[0.2cm]
+\noindent \hspace*{1.5em} 6.1 Home Page \dotfill 14 \\[0.2cm]
+\noindent \hspace*{1.5em} 6.2 Login Page \dotfill 14 \\[0.2cm]
+\noindent \hspace*{1.5em} 6.3 Registration Page \dotfill 15 \\[0.2cm]
+\noindent \hspace*{1.5em} 6.4 Dashboard \dotfill 15 \\[0.2cm]
+\noindent \hspace*{1.5em} 6.5 Database Output \dotfill 16 \\[0.2cm]
+\noindent \hspace*{1.5em} 6.6 Reports and Features \dotfill 16 \\[0.4cm]
+\noindent \textbf{7 Conclusion} \dotfill 18 \\[0.4cm]
+\noindent \textbf{8 Future Enhancements} \dotfill 19 \\[0.2cm]
+\noindent \hspace*{1.5em} 8.1 Future Enhancements \dotfill 19
+
+\newpage
+
+% ==========================================
+% --- LIST OF FIGURES ---
+% ==========================================
+\chapter*{List of Figures}
+\vspace{0.5cm}
+
+\noindent Figure 2.1: System Data Flow Diagram \dotfill 4 \\[0.4cm]
+\noindent Figure 4.1: System Flow Diagram \dotfill 7 \\[0.4cm]
+\noindent Figure 6.1: Home Page Interface \dotfill 14 \\[0.4cm]
+\noindent Figure 6.2: User Login Gateway \dotfill 14 \\[0.4cm]
+\noindent Figure 6.3: New User Registration \dotfill 15 \\[0.4cm]
+\noindent Figure 6.4: Administrative and Clinical Dashboard \dotfill 15 \\[0.4cm]
+\noindent Figure 6.5: MongoDB Database Records \dotfill 16 \\[0.4cm]
+\noindent Figure 6.6: Dynamic System Reports \dotfill 16 \\[0.4cm]
+
+\newpage
+
+% ==========================================
+% --- LIST OF TABLES ---
+% ==========================================
+\chapter*{List of Tables}
+\vspace{0.5cm}
+
+\noindent Table 3.1: Hardware Requirements \dotfill 5 \\[0.4cm]
+\noindent Table 3.2: Software Requirements \dotfill 5 \\[0.4cm]
+
+\newpage
+
+% ==========================================
+% --- CHAPTER 1: INTRODUCTION ---
+% ==========================================
+\chapter{INTRODUCTION}
+
+\section{Project Introduction}
+The Health Base -- Public Health Management System (PHMS) is a comprehensive, centralized web application developed to overcome the critical limitations of manual, paper-based healthcare administration by providing a highly secure, role-based digital infrastructure that seamlessly integrates real-time patient registration, automated clinical appointment scheduling, proactive disease surveillance, and dynamic medical inventory tracking, thereby empowering medical professionals to eliminate administrative bottlenecks, drastically reduce human error, and redirect their primary focus toward delivering efficient, high-quality patient care. By transitioning from fragmented legacy software to a unified digital ecosystem, the system guarantees that patient medical histories are always up-to-date and instantly accessible from any authorized device. This real-time accessibility plays a crucial role in enabling faster, more accurate clinical diagnoses and improving the overall quality of care. Furthermore, the platform's robust architecture utilizes modern web technologies like Node.js and MongoDB to ensure high scalability and uninterrupted performance even during periods of heavy administrative load. It also introduces an intuitive, role-based dashboard system that provides customized views for administrators, doctors, and patients, ensuring strict data privacy and simplified navigation. Ultimately, the Health Base initiative represents a vital technological leap forward in public health management, fostering a paperless environment that significantly enhances operational transparency and proactive outbreak response capabilities.
+
+\section{Problem Statement}
+Many local health departments and clinics continue to operate using manual, paper-based record-keeping or disjointed legacy software that cannot communicate effectively. This fragmented approach introduces severe systemic vulnerabilities, including a high risk of catastrophic data loss, inaccurate or incomplete patient medical histories, and dangerous delays in identifying and reporting infectious disease outbreaks. Furthermore, manual appointment scheduling leads to congested waiting rooms and extended wait times, while the lack of an automated inventory tracking mechanism frequently results in unnotified shortages of life-saving medical supplies. There is a pressing need for a unified, secure digital ecosystem to eliminate these persistent inefficiencies, allowing healthcare professionals to focus entirely on patient care rather than cumbersome administrative paperwork.
+
+\section{Objectives}
+The primary objective of this project is to design and develop a scalable, centralized platform that automates and secures core healthcare administration. The specific objectives are:
+\begin{itemize}
+    \item To create a highly secure, centralized database for storing detailed patient profiles, medical histories, and staff credentials.
+    \item To implement an automated appointment booking system that drastically reduces patient wait times and improves clinical scheduling efficiency.
+    \item To track disease occurrences and patient recovery rates in real-time, aiding administrators in proactive epidemiological responses.
+    \item To provide an integrated inventory tracking module to actively monitor medical supplies and prevent critical stock shortages.
+\end{itemize}
+
+\section{Scope of the Project}
+The scope of the Health Base (PHMS) project encompasses the end-to-end digitization of core administrative and clinical tracking functions for a standard health clinic. The web-based system is designed with a secure, role-based architecture tailored specifically for Administrators, Doctors, and Patients. Regarding in-scope functionalities, the system provides comprehensive administrative oversight, including the management of facility users, real-time disease trend monitoring, and inventory tracking for medical supplies. For clinical workflows, it ensures secure access for doctors to update patient diagnoses, prescribe treatments, and manage their daily appointment schedules. Additionally, the project features a dedicated patient portal that allows patients to register, seamlessly book appointments, and view their personal medical history. On the other hand, certain elements remain out of scope for this initial phase. The project is strictly bounded to software implementation and internal facility management. It does not encompass direct integration with external hardware devices, such as IoT vitals monitors, nor does it cover automated financial billing systems or third-party insurance claim processing. However, the platform is built upon a highly modular and scalable technological foundation, ensuring that future integrations—such as telemedicine video consultations or secure API connectivity with national health registries—can be seamlessly incorporated.
+
+% ==========================================
+% --- CHAPTER 2: PROPOSED SYSTEM ---
+% ==========================================
+\chapter{PROPOSED SYSTEM}
+The proposed \textbf{Health Base (PHMS)} is an advanced, centralized digital platform designed to overcome the limitations of manual healthcare administration. Unlike traditional systems that rely on physical files and fragmented applications, the proposed system integrates all core facility operations into a single, cohesive web-based application. This transition to a fully digital environment ensures that data is stored securely, accessed instantly, and managed efficiently. As shown in \textbf{Figure 2.1}, the proposed system features a secure, role-based architecture that supports interconnected modules for patient management, clinical appointment scheduling, real-time disease surveillance, and inventory tracking. By providing a centralized admin dashboard and eliminating manual workflows, the proposed system guarantees improved data accuracy, faster response times during public health events, and optimized resource management.
+
+\begin{figure}[h!]
+\centering
+\resizebox{\textwidth}{!}{
+\begin{tikzpicture}[
+    node distance=1.5cm,
+    startend/.style={rectangle, rounded corners=12pt, minimum width=2.5cm, minimum height=0.8cm, text centered, draw=green!60!black, fill=green!70!black, text=white, font=\sffamily\scriptsize\bfseries},
+    process/.style={rectangle, minimum width=2.5cm, minimum height=1.2cm, text centered, draw=orange!80!black, fill=orange!40, text=black, font=\sffamily\scriptsize, align=center},
+    decision/.style={diamond, aspect=1.5, minimum width=2cm, minimum height=1cm, text centered, draw=orange!80!black, fill=orange!40, text=black, font=\sffamily\scriptsize},
+    arrow/.style={thick, ->, >=stealth, draw=brown!80!black},
+    line/.style={thick, draw=brown!80!black}
+]
+
+    % Nodes
+    \node (start) [startend] {Start};
+    \node (login) [process, below of=start, yshift=-0.5cm] {User Login};
+    \node (valid) [decision, below of=login, yshift=-1cm] {Valid?};
+
+    \node (b3) [process, below of=valid, yshift=-3cm] {Disease \\ Tracking};
+    \node (b2) [process, left of=b3, xshift=-1.5cm] {Manage \\ Inventory};
+    \node (b1) [process, left of=b2, xshift=-1.5cm] {Manage \\ Users};
+    \node (b4) [process, right of=b3, xshift=1.5cm] {View \\ Appointments};
+    \node (b5) [process, right of=b4, xshift=1.5cm] {System \\ Reports};
+
+    \node (logout) [process, below of=b3, yshift=-2.5cm] {Log out};
+    \node (end) [startend, fill=red!70!black, draw=red!50!black, below of=logout, yshift=-0.5cm] {End};
+
+    % Arrows
+    \draw [arrow] (start) -- (login);
+    \draw [arrow] (login) -- (valid);
+    
+    % Loop for No
+    \draw [arrow] (valid.east) -- node[anchor=south, font=\sffamily\tiny] {No} ++(1.5,0) |- (login.east);
+
+    % Yes branch down to horizontal line
+    \draw [line] (valid.south) -- node[anchor=east, font=\sffamily\tiny] {Yes} (0, -7.5);
+    
+    % Horizontal line spanning the boxes
+    \draw [line] (b1.north |- 0, -7.5) -- (b5.north |- 0, -7.5);
+    
+    % The 6th branch extending to the right and looping into logout
+    \draw [line] (b5.north |- 0, -7.5) -- ++(2.5,0) coordinate (rightedge);
+    \draw [arrow] (rightedge) |- (logout.east);
+
+    % Vertical drops to boxes
+    \draw [arrow] (b1.north |- 0, -7.5) -- (b1.north);
+    \draw [arrow] (b2.north |- 0, -7.5) -- (b2.north);
+    \draw [arrow] (b3.north |- 0, -7.5) -- (b3.north);
+    \draw [arrow] (b4.north |- 0, -7.5) -- (b4.north);
+    \draw [arrow] (b5.north |- 0, -7.5) -- (b5.north);
+
+    % Final arrow to End
+    \draw [arrow] (logout.south) -- (end.north);
+
+\end{tikzpicture}
+}
+\caption{System Data Flow Diagram}
+\label{fig:system_flow_2}
+\end{figure}
+
+
+
+
+% ==========================================
+% --- CHAPTER 3: REQUIREMENTS SPECIFICATION ---
+% ==========================================
+\chapter{REQUIREMENTS SPECIFICATION}
+
+\section{Hardware Requirements}
+The hardware requirements necessary for the development and execution of the Health Base System are presented in Table \ref{tab:hardware}. These components ensure that the system can handle concurrent user requests efficiently, providing adequate processing power and storage capacities for the web application and its database.
+
+\begin{table}[h!]
+    \centering
+    \caption{Hardware Requirements}
+    \label{tab:hardware}
+    \vspace{0.2cm}
+    \renewcommand{\arraystretch}{1.5}
+    \begin{tabular}{|p{4cm}|p{10cm}|}
+        \hline
+        Component & Specification \\
+        \hline
+        Processor & Intel Core i3 or higher \\
+        \hline
+        RAM & 4 GB minimum (8 GB recommended) \\
+        \hline
+        Storage & 20 GB Free Disk Space or more \\
+        \hline
+        Display & 1366 $\times$ 768 Resolution or higher \\
+        \hline
+        Keyboard & (Optional) \\
+        \hline
+        Mouse & (Optional) \\
+        \hline
+        Internet Connection & Required \\
+        \hline
+    \end{tabular}
+\end{table}
+
+\section{Software Requirements}
+The software requirements necessary for the development and execution of the Health Base System are presented in Table \ref{tab:software}. The platform relies on this modern software stack to provide a seamless and secure user experience, utilizing Node.js and MongoDB for rapid development and highly scalable backend services.
+
+\begin{table}[h!]
+    \centering
+    \caption{Software Requirements}
+    \label{tab:software}
+    \vspace{0.2cm}
+    \renewcommand{\arraystretch}{1.5}
+    \begin{tabular}{|p{4.5cm}|p{9.5cm}|}
+        \hline
+        Component & Specification \\
+        \hline
+        Operating System & Windows 10/11 \\
+        \hline
+        Frontend Environment & HTML5, CSS3, and Vanilla JavaScript \\
+        \hline
+        Backend Environment & Node.js and Express.js \\
+        \hline
+        Database & MongoDB \\
+        \hline
+        Development Tools & Visual Studio Code, Git, and Postman \\
+        \hline
+        Web Browser & Google Chrome, Mozilla Firefox, or Microsoft Edge \\
+        \hline
+    \end{tabular}
+\end{table}
+
+% ==========================================
+% --- CHAPTER 4: SYSTEM DESIGN ---
+% ==========================================
+\chapter{SYSTEM DESIGN}
+
+\section{System Architecture}
+The system architecture of the Health Base platform is based on a modern, three-tier client-server model designed for scalability and secure data processing. The presentation tier consists of a web-based frontend built with HTML, CSS, and JavaScript, providing an intuitive dashboard for Administrators, Doctors, and Patients to interact with the system. The application logic tier is powered by a Node.js server running the Express.js framework, which handles API requests, user authentication, and business logic for modules such as appointment scheduling and inventory tracking. Finally, the data tier utilizes MongoDB, a NoSQL database, to securely store and manage structured medical records, user credentials, and clinical data. This modular architecture ensures separation of concerns, allowing for independent updates to the user interface or database schema without disrupting the overall functionality of the platform.
+
+
+
+\section{Data Flow Diagram (DFD)}
+A Data Flow Diagram (DFD) visually represents how information moves within the Health Base system. It illustrates the primary pathways of data exchange between external entities (such as patients, doctors, and administrators) and the central system processes. By mapping these interactions, the DFD provides a clear understanding of how critical inputs, like user registrations and clinical diagnoses, are transformed into actionable outputs, such as appointment confirmations and analytical reports. Furthermore, this high-level data flow model serves as the foundational blueprint for the system's underlying RESTful API and database schema architecture. By strictly defining the boundaries of data exchange for each user role, the DFD ensures that the application enforces rigorous data validation and strict role-based access control. This structured flow of information is essential for maintaining robust data integrity, preventing unauthorized data access, and ensuring that all clinical and administrative workflows operate synchronously without creating bottlenecks or data silos.
+
+As depicted in Figure \ref{PHMS.png}, the system flow logically sequences the user journey from the initial authentication gateway into the parallel execution of core modules like user management, disease tracking, and inventory control. This structured visualization ensures that all user sessions strictly follow a validated path before accessing sensitive data, ultimately concluding with a secure logout process.
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{PHMS.png}
+    \caption{System Flow Diagram}
+    \label{fig:PHMS.png}
+\end{figure}
+
+
+
+
+
+
+
+
+% ==========================================
+% --- CHAPTER 5: IMPLEMENTATION ---
+% ==========================================
+\chapter{IMPLEMENTATION}
+
+
+\section{Frontend Implementation}
+The user interface is built using standard web technologies (HTML5, CSS3, and JavaScript) to ensure a highly responsive and accessible experience without the overhead of heavy client-side frameworks. The application features several dedicated screens tailored to specific user workflows. For instance, \textbf{\texttt{phms.html}} serves as the main landing page, offering user authentication, general public health information, and dynamic navigation based on the user's role. For healthcare staff, \textbf{\texttt{admin-portal.html}} provides administrators and doctors with a centralized dashboard to oversee clinical operations, manage user roles, track inventory, and view systemic reports. Additionally, \textbf{\texttt{patient-portal.html}} allows registered patients to securely access their personal medical records, book clinical appointments, and view their prescriptions online.
+
+As demonstrated in \textbf{Listing \ref{lst:login_page}}, the following code snippet shows the structure of the secure Login Page interface, highlighting the role-based portal tabs for Staff and Patients within the \textbf{\texttt{phms.html}} file:
+
+\begin{lstlisting}[language=HTML, caption={Login Page Interface}, label={lst:login_page}, numbers=left]
+<!-- LOGIN PAGE -->
+<div id="loginPage">
+    <div class="login-card">
+        <!-- Header with logo -->
+        <div class="login-card-header">
+            <div class="login-logo">
+                <div class="icon">��</div>
+                <div>
+                    <h1>PHMS</h1>
+                    <small>Public Health Management System</small>
+                </div>
+            </div>
+            <!-- Portal tabs -->
+            <div class="portal-tabs">
+                <div class="portal-tab active" id="staffTabBtn" 
+                     onclick="switchPortal('staff')">
+                    �� Staff Portal
+                </div>
+<div class="portal-tab patient-tab" id="patientTabBtn" 
+                     onclick="switchPortal('patient')">
+                    �� Patient Portal
+                </div>
+            </div>
+        </div>
+        <!-- Login Form Body -->
+        <div class="login-card-body">
+            <div class="login-panel active" id="staffPanel">
+                <div class="form-group">
+                    <label>Email Address</label>
+<input type="email" id="loginEmail" placeholder="Enter your email"/>
+                </div>
+                <div class="form-group">
+                    <label>Password</label>
+<input type="password" id="loginPassword" placeholder="Enter your password" />
+                </div>
+<button class="btn btn-primary"onclick="login()">Sign In to PHMS</button>
+            </div>
+        </div>
+    </div>
+</div>
+\end{lstlisting}
+\usepackage{setspace}
+\section{Database Seeding Script}
+
+As detailed in \textbf{Listing \ref{lst:seed_script}}, the following Node.js script is used to populate the MongoDB database with initial records such as users, patients, appointments, diseases, medical records, and inventory items. This simplifies testing and ensures that the application starts with sample data.
+
+\begin{lstlisting}[language=JavaScript, caption={MongoDB Database Seeding Script}, label={lst:seed_script}, numbers=left]
+require('dotenv').config();
+const mongoose = require('mongoose');
+const fs = require('fs');
+const path = require('path');
+
+const User = require('./models/User');
+const Patient = require('./models/Patient');
+const Appointment = require('./models/Appointment');
+const Record = require('./models/Record');
+const Disease = require('./models/Disease');
+const Inventory = require('./models/Inventory');
+
+const DB_FILE = path.join(__dirname, 'db.json');
+
+async function seed() {
+  try {
+    await mongoose.connect(
+      process.env.MONGODB_URI ||
+      'mongodb://127.0.0.1:27017/phms'
+    );
+
+    console.log('Connected to MongoDB');
+
+    if (!fs.existsSync(DB_FILE)) {
+      console.log('db.json not found');
+      process.exit(0);
+    }
+
+    const data = JSON.parse(
+      fs.readFileSync(DB_FILE, 'utf8')
+    );
+
+    if (data.users) {
+      await User.deleteMany({});
+      await User.insertMany(data.users);
+    }
+
+    if (data.patients) {
+      await Patient.deleteMany({});
+      await Patient.insertMany(data.patients);
+    }
+
+    if (data.appointments) {
+      await Appointment.deleteMany({});
+      await Appointment.insertMany(data.appointments);
+    }
+
+    if (data.records) {
+      await Record.deleteMany({});
+      await Record.insertMany(data.records);
+    }
+
+    if (data.diseases) {
+      await Disease.deleteMany({});
+      await Disease.insertMany(data.diseases);
+    }
+
+    if (data.inventory) {
+      await Inventory.deleteMany({});
+      await Inventory.insertMany(data.inventory);
+    }
+
+    console.log('Database seeding completed.');
+    process.exit(0);
+
+  } catch (err) {
+    console.error(err);
+    process.exit(1);
+  }
+}
+
+seed();
+\end{lstlisting}
+
+\section{Backend API Implementation}
+The backend logic is driven by \textbf{Node.js} running the \textbf{Express.js} framework within the \texttt{phms-backend-server.js} file. The server acts as a central hub, exposing secure RESTful endpoints protected by JSON Web Tokens (JWT) and bcrypt password hashing for stringent user authentication. The authentication API handles secure user login and role assignment through endpoints such as \texttt{/api/auth/login}. In addition, the data management API provides various routes for handling core entities, permitting Create, Read, Update, and Delete (CRUD) operations on Patients, Appointments, Medical Records, Inventory, and Diseases. The server also integrates standard middlewares, including \texttt{helmet} for enhanced HTTP header security, \texttt{cors} for cross-origin resource sharing, and \texttt{morgan} for detailed API logging. \textbf{Listing \ref{lst:backend_api}} provides a structural overview of the Express.js server and the secure authentication endpoint.
+
+\begin{lstlisting}[language=JavaScript, caption={Express.js Server and Authentication Endpoint}, label={lst:backend_api}, numbers=left]
+const express = require('express');
+const cors = require('cors');
+const helmet = require('helmet');
+const morgan = require('morgan');
+const jwt = require('jsonwebtoken');
+const bcrypt = require('bcryptjs');
+
+const app = express();
+
+// Security and Logging Middleware
+app.use(helmet());
+app.use(cors({ origin: '*', credentials: true}));
+app.use(morgan('dev'));
+app.use(express.json());
+
+// Secure User Authentication Endpoint
+app.post('/api/auth/login', async (req, res)=>{
+  try {
+    const { email, password } = req.body;
+    const user = await User.findOne({email});
+    
+    if (user && await bcrypt.compare(password, user.password)){
+      const token = jwt.sign(
+        { id: user._id, role: user.role }, 
+        process.env.JWT_SECRET, 
+        { expiresIn: '8h' }
+      );
+      res.json({ token, role: user.role, name: user.name});
+    } else {
+      res.status(401).json({ error: 'Invalid credentials'});
+    }
+  } catch (error) {
+res.status(500).json({error:'Server error during authentication'});
+  }
+});
+\end{lstlisting}
+
+\section{Database Connectivity}
+The application leverages \textbf{MongoDB}, a robust NoSQL database, to persistently store and retrieve operational data. The backend server establishes a secure connection to the database utilizing the \textbf{Mongoose} Object Data Modeling (ODM) library via the \texttt{mongoose.connect()} method, which points directly to the configured MongoDB connection URI. The data schema is meticulously structured using various Mongoose models, including \texttt{User}, \texttt{Patient}, \texttt{Appointment}, \texttt{Record}, \texttt{Disease}, and \texttt{Inventory}. These models define the shape of the data and ensure strict data validation as well as structural consistency before any information is persistently written to the database. \textbf{Listing \ref{lst:db_connectivity}} illustrates the concise setup required to establish this persistent database connection using Mongoose.
+
+\begin{lstlisting}[language=JavaScript, caption={MongoDB Connection Setup}, label={lst:db_connectivity}, numbers=left]
+// Establish secure connection to MongoDB
+mongoose.connect(process.env.MONGODB_URI||'mongodb://127.0.0.1:27017/phms')
+.then(() => console.log('Connected to MongoDB successfully'))
+.catch(err => console.error('MongoDB connection error:',err));
+\end{lstlisting}
+
+% ==========================================
+% --- CHAPTER 6: RESULTS AND SCREENSHOTS ---
+% ==========================================
+\chapter{RESULTS AND SCREENSHOTS}
+
+This chapter provides comprehensive visual evidence of the fully implemented Health Base platform, demonstrating the successful integration of its frontend and backend components. Detailed screenshots and their accompanying explanations are included for all major modules, ranging from secure user authentication to advanced administrative dashboards. Each screenshot not only highlights the intuitive, modern user interface design but also validates the core functionalities of the system, such as role-based access control, real-time disease surveillance, automated appointment booking, and dynamic inventory management. Collectively, these visual results confirm that the system successfully meets the initial project objectives and delivers a seamless, highly responsive experience for patients and healthcare professionals alike.
+
+\section{Home Page}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{home_page.png}
+    \caption{Home Page Interface}
+    \label{fig:home_page}
+\end{figure}
+As illustrated in Figure \ref{fig:home_page}, the Home Page serves as the primary entry point featuring a modern, dark-themed interface with clear navigation options. It prominently displays the project title and provides dedicated call-to-action buttons for Doctors and Patients to securely access their respective portals.
+
+\section{Login Page}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{login_page.png}
+    \caption{User Login Gateway}
+    \label{fig:login_page}
+\end{figure}
+Figure \ref{fig:login_page} demonstrates the secure authentication gateway where registered users enter their credentials based on their assigned role. Built with strict security protocols, it utilizes encrypted mechanisms to ensure that sensitive operational and medical data remains protected from unauthorized access.
+
+\section{Registration Page}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{registration_page.png}
+    \caption{New User Registration}
+    \label{fig:registration_page}
+\end{figure}
+As depicted in Figure \ref{fig:registration_page}, the Registration Page allows new patients and authorized staff to securely create an account within the Health Base system. The comprehensive form captures essential demographic details while employing rigorous validation to maintain an accurate health registry.
+
+\section{Dashboard}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{dashboard.png}
+    \caption{Administrative and Clinical Dashboard}
+    \label{fig:dashboard}
+\end{figure}
+Figure \ref{fig:dashboard} presents the comprehensive, role-tailored dashboard which displays critical real-time metrics such as upcoming appointments and active patient counts. The clean, card-based layout enables rapid clinical decision-making and highly efficient management of daily operational tasks.
+
+\section{Database Output}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{database_output.png}
+    \caption{MongoDB Database Records}
+    \label{fig:database_output}
+\end{figure}
+As shown in Figure \ref{fig:database_output}, the system effectively persists structured JSON records directly within the MongoDB database collection. This confirms that all patient profiles, medical histories, and clinical appointments are securely stored and accurately fetched by the backend API in real-time.
+
+\section{Reports and Features}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{reports_features.png}
+    \caption{Dynamic System Reports}
+    \label{fig:reports_features}
+\end{figure}
+Figure \ref{fig:reports_features} illustrates the dynamic visual reports generated by aggregating real-time medical and administrative data. These concise analytics empower healthcare administrators to track disease trends, proactively manage medical inventory, and identify potential public health outbreaks efficiently.
+
+% ==========================================
+% --- CHAPTER 7: CONCLUSION ---
+% ==========================================
+\chapter{CONCLUSION}
+The development of the Health Base – Public Health Management System (PHMS) successfully addresses the critical inefficiencies inherent in traditional, paper-based healthcare administration. By transitioning to a robust, digital platform, the project demonstrates the vast potential of modern web technologies to streamline clinical operations. The integration of secure role-based portals, automated appointment scheduling, and real-time medical inventory tracking provides a unified environment where healthcare professionals can operate with unprecedented efficiency. Furthermore, the system’s ability to securely manage patient records and instantly generate analytical reports ensures that critical data is always available for rapid decision-making during public health events. Ultimately, Health Base serves as a foundational step toward a fully modernized, paperless healthcare infrastructure that drastically reduces human error, optimizes resource allocation, and allows medical staff to dedicate their primary focus to delivering high-quality patient care.
+
+% ==========================================
+% --- CHAPTER 8: FUTURE ENHANCEMENTS ---
+% ==========================================
+\chapter{FUTURE ENHANCEMENTS}
+While the current iteration of the Health Base system provides a robust foundation for clinic management, several avenues exist for future expansion. A primary enhancement would be the integration of an AI-driven predictive analytics module, which could utilize historical medical data to forecast potential disease outbreaks and intelligently automate supply restocking. Additionally, developing a dedicated cross-platform mobile application would significantly increase accessibility, allowing patients to manage their profiles and appointments directly from their smartphones. To further improve patient care, a telemedicine module could be introduced to facilitate secure remote video consultations and continuous health monitoring via IoT wearable devices. Finally, integrating an automated SMS and email notification system would ensure that patients receive timely reminders for upcoming appointments, while secure API connectivity with national health registries could seamlessly synchronize public health data on a broader scale.
+
+
+
+
+
+% ==========================================
+% --- REFERENCES ---
+% ==========================================
+\chapter*{REFERENCES}
+\addcontentsline{toc}{chapter}{REFERENCES}
+\begin{enumerate}
+    \item Node.js Foundation. (2025). \textit{Node.js v20.x Documentation}. Retrieved from https://nodejs.org/en/docs/
+    \item Express API Reference. (2025). \textit{Express - Node.js web application framework}. Retrieved from https://expressjs.com/
+    \item MongoDB, Inc. (2025). \textit{MongoDB Documentation}. Retrieved from https://www.mongodb.com/docs/
+    \item MDN Web Docs. (2025). \textit{HTML5, CSS3, and JavaScript documentation}. Retrieved from https://developer.mozilla.org/
+    \item JSON Web Token (JWT). (2025). \textit{Introduction to JSON Web Tokens}. Retrieved from https://jwt.io/introduction/
+\end{enumerate}
+
+\end{document}

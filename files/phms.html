@@ -1,0 +1,4174 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HEALTH BASE – Public Health Management System</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=Syne:wght@600;700;800&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --bg: #0a0f1a;
+            --bg2: #0f1724;
+            --bg3: #161f30;
+            --surface: #1a2540;
+            --surface2: #1e2d4a;
+            --border: #243354;
+            --accent: #00d4a0;
+            --accent2: #0099ff;
+            --accent3: #ff6b6b;
+            --accent4: #ffd166;
+            --text: #e8edf5;
+            --text2: #8a9bc0;
+            --text3: #4a5c7a;
+            --red: #ff4757;
+            --green: #00d4a0;
+            --yellow: #ffd166;
+            --blue: #0099ff;
+            --purple: #a855f7;
+            --sidebar-w: 240px;
+            --header-h: 64px;
+            --radius: 12px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html,
+        body {
+            height: 100%;
+            font-family: 'DM Sans', sans-serif;
+            background: url('medical_tech_bg.png') center/cover fixed, var(--bg);
+            color: var(--text);
+        }
+
+        /* ── LAYOUT ── */
+        #app {
+            display: flex;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* LANDING PAGE */
+        @keyframes gradientAnim {
+            0% {
+                background-position: 0% 50%;
+            }
+
+            50% {
+                background-position: 100% 50%;
+            }
+
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+
+        @keyframes floatAnim {
+            0% {
+                transform: translateY(0px);
+            }
+
+            50% {
+                transform: translateY(-10px);
+            }
+
+            100% {
+                transform: translateY(0px);
+            }
+        }
+
+        #landingPage {
+            width: 100vw;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            background: linear-gradient(-45deg, #0a0f1a, #131d33, #0d213c, #0a1122);
+            background-size: 400% 400%;
+            animation: gradientAnim 15s ease infinite;
+            color: var(--text);
+            overflow-y: auto;
+            overflow-x: hidden;
+        }
+
+        .landing-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 24px 6vw;
+            background: rgba(10, 15, 26, 0.5);
+            backdrop-filter: blur(10px);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .landing-header .logo {
+            font-family: 'Syne', sans-serif;
+            font-size: 24px;
+            font-weight: 700;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+        }
+
+        .landing-nav {
+            display: flex;
+            gap: 32px;
+            align-items: center;
+        }
+
+        .landing-nav a {
+            color: var(--text2);
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+
+        .landing-nav a:hover {
+            color: #fff;
+        }
+
+        .landing-hero {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 100px 20px;
+            max-width: 900px;
+            margin: 0 auto;
+            animation: floatAnim 6s ease-in-out infinite;
+        }
+
+        .landing-hero h1 {
+            font-family: 'Syne', sans-serif;
+            font-size: 64px;
+            font-weight: 800;
+            line-height: 1.1;
+            margin-bottom: 24px;
+            background: linear-gradient(135deg, #fff, #94a3b8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .landing-hero p {
+            font-size: 20px;
+            color: var(--text2);
+            margin-bottom: 40px;
+            line-height: 1.6;
+            max-width: 700px;
+        }
+
+        .landing-features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 32px;
+            padding: 60px 6vw 100px 6vw;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .landing-feature-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            padding: 40px 32px;
+            backdrop-filter: blur(10px);
+            transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .landing-feature-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+            background: rgba(255, 255, 255, 0.05);
+            border-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .landing-feature-card .icon {
+            font-size: 32px;
+            width: 64px;
+            height: 64px;
+            border-radius: 16px;
+            background: rgba(0, 212, 160, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 8px;
+        }
+
+        .landing-feature-card h3 {
+            font-family: 'Syne', sans-serif;
+            font-size: 22px;
+            color: #fff;
+        }
+
+        .landing-feature-card p {
+            font-size: 15px;
+            color: var(--text2);
+            line-height: 1.6;
+        }
+
+        .landing-footer {
+            padding: 40px 6vw;
+            background: rgba(0, 0, 0, 0.3);
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: var(--text3);
+            font-size: 13px;
+        }
+
+        /* LOGIN */
+        #loginPage {
+            width: 100vw;
+            height: 100vh;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(rgba(10, 15, 26, 0.85), rgba(10, 15, 26, 0.85)), url('medical_tech_bg.png') center/cover fixed;
+            background-image: radial-gradient(ellipse at 20% 50%, rgba(0, 212, 160, 0.1) 0%, transparent 60%),
+                radial-gradient(ellipse at 80% 20%, rgba(0, 153, 255, 0.1) 0%, transparent 60%),
+                linear-gradient(rgba(10, 15, 26, 0.75), rgba(10, 15, 26, 0.75)), url('medical_tech_bg.png');
+            overflow-y: auto;
+            padding: 24px 16px;
+        }
+
+        .login-card {
+            width: 460px;
+            max-width: 100%;
+            background: var(--bg2);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            box-shadow: 0 32px 80px rgba(0, 0, 0, 0.5);
+            overflow: hidden;
+        }
+
+        .login-card-header {
+            padding: 32px 40px 0;
+        }
+
+        .login-card-body {
+            padding: 24px 40px 36px;
+        }
+
+        .login-logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 28px;
+        }
+
+        .login-logo .icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, var(--accent), var(--accent2));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+        }
+
+        .login-logo h1 {
+            font-family: 'Syne', sans-serif;
+            font-size: 22px;
+            font-weight: 700;
+        }
+
+        .login-logo small {
+            display: block;
+            font-size: 11px;
+            color: var(--text2);
+            font-weight: 400;
+        }
+
+        .portal-tabs {
+            display: flex;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .portal-tab {
+            flex: 1;
+            padding: 14px 12px;
+            text-align: center;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text2);
+            border-bottom: 2px solid transparent;
+            margin-bottom: -1px;
+            transition: all .2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+
+        .portal-tab:hover {
+            color: var(--text);
+        }
+
+        .portal-tab.active {
+            color: var(--accent);
+            border-bottom-color: var(--accent);
+        }
+
+        .portal-tab.patient-tab.active {
+            color: var(--blue);
+            border-bottom-color: var(--blue);
+        }
+
+        .auth-subtabs {
+            display: flex;
+            gap: 4px;
+            background: var(--bg3);
+            border-radius: 10px;
+            padding: 4px;
+            margin-bottom: 20px;
+        }
+
+        .auth-subtab {
+            flex: 1;
+            padding: 8px;
+            text-align: center;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text2);
+            border-radius: 7px;
+            transition: all .15s;
+        }
+
+        .auth-subtab.active {
+            background: var(--surface2);
+            color: var(--text);
+        }
+
+        .login-panel {
+            display: none;
+        }
+
+        .login-panel.active {
+            display: block;
+        }
+
+        .patient-form {
+            display: none;
+        }
+
+        .patient-form.active {
+            display: block;
+        }
+
+        .form-group {
+            margin-bottom: 18px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 12px;
+            font-weight: 500;
+            color: var(--text2);
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            margin-bottom: 8px;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px 16px;
+            background: var(--bg3);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text);
+            font-family: inherit;
+            font-size: 14px;
+            transition: border-color .2s, box-shadow .2s;
+            outline: none;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(0, 212, 160, 0.1);
+        }
+
+        .form-group select option {
+            background: var(--bg3);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all .2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--accent), #00b389);
+            color: #0a0f1a;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 8px 24px rgba(0, 212, 160, 0.3);
+        }
+
+        .btn-patient {
+            background: linear-gradient(135deg, var(--blue), #0077cc);
+            color: #fff;
+        }
+
+        .btn-patient:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 8px 24px rgba(0, 153, 255, 0.3);
+        }
+
+        .btn-secondary {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            color: var(--text);
+        }
+
+        .btn-secondary:hover {
+            background: var(--surface2);
+        }
+
+        .btn-danger {
+            background: rgba(255, 71, 87, 0.15);
+            border: 1px solid rgba(255, 71, 87, 0.3);
+            color: var(--red);
+        }
+
+        .btn-danger:hover {
+            background: rgba(255, 71, 87, 0.25);
+        }
+
+        .btn-sm {
+            padding: 6px 12px;
+            font-size: 12px;
+        }
+
+        .btn-full {
+            width: 100%;
+            justify-content: center;
+        }
+
+        .demo-creds {
+            margin-top: 16px;
+            padding: 14px 16px;
+            background: var(--bg3);
+            border-radius: 8px;
+            border: 1px solid var(--border);
+        }
+
+        .demo-creds p {
+            font-size: 12px;
+            color: var(--text2);
+            margin-bottom: 6px;
+        }
+
+        .demo-creds code {
+            font-size: 11px;
+            color: var(--accent);
+            background: rgba(0, 212, 160, 0.1);
+            padding: 2px 6px;
+            border-radius: 4px;
+        }
+
+        .patient-welcome {
+            background: linear-gradient(135deg, rgba(0, 153, 255, 0.08), rgba(0, 153, 255, 0.02));
+            border: 1px solid rgba(0, 153, 255, 0.15);
+            border-radius: 10px;
+            padding: 14px 16px;
+            margin-bottom: 20px;
+        }
+
+        .patient-welcome p {
+            font-size: 12px;
+            color: var(--text2);
+            line-height: 1.5;
+        }
+
+        .patient-welcome strong {
+            color: var(--blue);
+        }
+
+        .divider {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 16px 0;
+        }
+
+        .divider::before,
+        .divider::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: var(--border);
+        }
+
+        .divider span {
+            font-size: 11px;
+            color: var(--text3);
+        }
+
+        /* ── SIDEBAR ── */
+        #sidebar {
+            width: var(--sidebar-w);
+            height: 100vh;
+            background: var(--bg2);
+            border-right: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            flex-shrink: 0;
+            overflow: hidden;
+            transition: width .3s;
+        }
+
+        .sidebar-header {
+            height: var(--header-h);
+            padding: 0 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .sidebar-logo {
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            background: linear-gradient(135deg, var(--accent), var(--accent2));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            flex-shrink: 0;
+        }
+
+        .sidebar-title {
+            font-family: 'Syne', sans-serif;
+            font-weight: 700;
+            font-size: 15px;
+            white-space: nowrap;
+        }
+
+        .sidebar-sub {
+            font-size: 10px;
+            color: var(--text2);
+        }
+
+        .nav-section {
+            padding: 16px 12px 0;
+        }
+
+        .nav-label {
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--text3);
+            padding: 0 8px;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--text2);
+            transition: all .15s;
+            white-space: nowrap;
+            position: relative;
+            margin-bottom: 2px;
+        }
+
+        .nav-item:hover {
+            background: var(--surface);
+            color: var(--text);
+        }
+
+        .nav-item.active {
+            background: rgba(0, 212, 160, 0.12);
+            color: var(--accent);
+        }
+
+        .nav-item.active::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 3px;
+            height: 20px;
+            background: var(--accent);
+            border-radius: 0 2px 2px 0;
+        }
+
+        .nav-icon {
+            width: 18px;
+            text-align: center;
+            font-size: 16px;
+            flex-shrink: 0;
+        }
+
+        .nav-badge {
+            margin-left: auto;
+            background: var(--red);
+            color: white;
+            font-size: 10px;
+            padding: 1px 6px;
+            border-radius: 10px;
+            font-weight: 600;
+        }
+
+        .sidebar-footer {
+            margin-top: auto;
+            padding: 16px;
+            border-top: 1px solid var(--border);
+        }
+
+        .user-card {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .user-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--accent2), var(--purple));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 13px;
+            flex-shrink: 0;
+        }
+
+        .user-name {
+            font-size: 13px;
+            font-weight: 600;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .user-role {
+            font-size: 11px;
+            color: var(--text2);
+        }
+
+        .logout-btn {
+            margin-left: auto;
+            background: none;
+            border: none;
+            color: var(--text3);
+            cursor: pointer;
+            font-size: 16px;
+            padding: 4px;
+            border-radius: 6px;
+            transition: color .2s;
+        }
+
+        .logout-btn:hover {
+            color: var(--red);
+        }
+
+        /* ── MAIN ── */
+        #main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            background: var(--bg);
+        }
+
+        #header {
+            height: var(--header-h);
+            padding: 0 28px;
+            background: var(--bg2);
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-shrink: 0;
+        }
+
+        .header-left h2 {
+            font-family: 'Syne', sans-serif;
+            font-size: 18px;
+            font-weight: 700;
+        }
+
+        .header-left p {
+            font-size: 12px;
+            color: var(--text2);
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .alert-bell {
+            position: relative;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .alert-dot {
+            position: absolute;
+            top: 6px;
+            right: 6px;
+            width: 8px;
+            height: 8px;
+            background: var(--red);
+            border-radius: 50%;
+            border: 2px solid var(--bg2);
+        }
+
+        #content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 28px;
+        }
+
+        /* ── CARDS & STATS ── */
+        .stat-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+            margin-bottom: 28px;
+        }
+
+        .stat-card {
+            background: var(--bg2);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 20px;
+            display: flex;
+            align-items: flex-start;
+            gap: 16px;
+            transition: transform .2s, box-shadow .2s;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.3);
+        }
+
+        .stat-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            flex-shrink: 0;
+        }
+
+        .stat-icon.green {
+            background: rgba(0, 212, 160, 0.15);
+        }
+
+        .stat-icon.blue {
+            background: rgba(0, 153, 255, 0.15);
+        }
+
+        .stat-icon.red {
+            background: rgba(255, 71, 87, 0.15);
+        }
+
+        .stat-icon.yellow {
+            background: rgba(255, 209, 102, 0.15);
+        }
+
+        .stat-icon.purple {
+            background: rgba(168, 85, 247, 0.15);
+        }
+
+        .stat-val {
+            font-family: 'Syne', sans-serif;
+            font-size: 28px;
+            font-weight: 700;
+            line-height: 1;
+        }
+
+        .stat-label {
+            font-size: 12px;
+            color: var(--text2);
+            margin-top: 4px;
+        }
+
+        .stat-change {
+            font-size: 11px;
+            margin-top: 6px;
+        }
+
+        .stat-change.up {
+            color: var(--green);
+        }
+
+        .stat-change.down {
+            color: var(--red);
+        }
+
+        /* ── TABLE ── */
+        .section-card {
+            background: var(--bg2);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            overflow: hidden;
+            margin-bottom: 20px;
+        }
+
+        .section-header {
+            padding: 20px 24px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+        }
+
+        .section-header h3 {
+            font-family: 'Syne', sans-serif;
+            font-size: 15px;
+            font-weight: 700;
+        }
+
+        .section-header .actions {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .search-box {
+            position: relative;
+        }
+
+        .search-box input {
+            padding: 8px 14px 8px 36px;
+            background: var(--bg3);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text);
+            font-size: 13px;
+            font-family: inherit;
+            outline: none;
+            width: 220px;
+        }
+
+        .search-box::before {
+            content: '🔍';
+            position: absolute;
+            left: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 12px;
+        }
+
+        .search-box input:focus {
+            border-color: var(--accent);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        thead th {
+            padding: 12px 16px;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--text2);
+            font-weight: 600;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+            background: var(--bg3);
+        }
+
+        tbody td {
+            padding: 14px 16px;
+            font-size: 13px;
+            border-bottom: 1px solid rgba(36, 51, 84, 0.5);
+            vertical-align: middle;
+        }
+
+        tbody tr:hover td {
+            background: rgba(26, 37, 64, 0.5);
+        }
+
+        tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 3px 10px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        .badge-green {
+            background: rgba(0, 212, 160, 0.15);
+            color: var(--green);
+        }
+
+        .badge-red {
+            background: rgba(255, 71, 87, 0.15);
+            color: var(--red);
+        }
+
+        .badge-yellow {
+            background: rgba(255, 209, 102, 0.15);
+            color: var(--yellow);
+        }
+
+        .badge-blue {
+            background: rgba(0, 153, 255, 0.15);
+            color: var(--blue);
+        }
+
+        .badge-purple {
+            background: rgba(168, 85, 247, 0.15);
+            color: var(--purple);
+        }
+
+        .badge-gray {
+            background: rgba(138, 155, 192, 0.15);
+            color: var(--text2);
+        }
+
+        .avatar-sm {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: 700;
+            margin-right: 8px;
+        }
+
+        /* ── MODAL ── */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.7);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            opacity: 0;
+            transition: opacity .2s;
+        }
+
+        .modal-overlay.show {
+            opacity: 1;
+        }
+
+        .modal {
+            background: var(--bg2);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            width: 520px;
+            max-width: 95vw;
+            max-height: 90vh;
+            overflow-y: auto;
+            padding: 32px;
+            transform: translateY(20px);
+            transition: transform .2s;
+        }
+
+        .modal-overlay.show .modal {
+            transform: translateY(0);
+        }
+
+        .modal-title {
+            font-family: 'Syne', sans-serif;
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            color: var(--text2);
+            cursor: pointer;
+            font-size: 20px;
+            padding: 4px;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        .modal-actions {
+            margin-top: 28px;
+            display: flex;
+            gap: 12px;
+            justify-content: flex-end;
+        }
+
+        /* ── CHARTS ── */
+        .chart-container {
+            padding: 20px 24px;
+        }
+
+        .bar-chart {
+            display: flex;
+            align-items: flex-end;
+            gap: 8px;
+            height: 140px;
+        }
+
+        .bar-group {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .bar {
+            width: 100%;
+            border-radius: 4px 4px 0 0;
+            transition: height .3s ease;
+            min-height: 2px;
+        }
+
+        .bar-label {
+            font-size: 10px;
+            color: var(--text2);
+        }
+
+        .bar-val {
+            font-size: 10px;
+            color: var(--text);
+            font-weight: 600;
+        }
+
+        /* ── ALERTS ── */
+        .alert {
+            padding: 12px 16px;
+            border-radius: 8px;
+            font-size: 13px;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .alert-warning {
+            background: rgba(255, 209, 102, 0.1);
+            border: 1px solid rgba(255, 209, 102, 0.2);
+            color: var(--yellow);
+        }
+
+        .alert-error {
+            background: rgba(255, 71, 87, 0.1);
+            border: 1px solid rgba(255, 71, 87, 0.2);
+            color: var(--red);
+        }
+
+        .alert-success {
+            background: rgba(0, 212, 160, 0.1);
+            border: 1px solid rgba(0, 212, 160, 0.2);
+            color: var(--green);
+        }
+
+        .alert-info {
+            background: rgba(0, 153, 255, 0.1);
+            border: 1px solid rgba(0, 153, 255, 0.2);
+            color: var(--blue);
+        }
+
+        /* ── ACTIVITY ── */
+        .activity-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            padding: 12px 0;
+            border-bottom: 1px solid rgba(36, 51, 84, 0.4);
+        }
+
+        .activity-item:last-child {
+            border-bottom: none;
+        }
+
+        .activity-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            margin-top: 5px;
+            flex-shrink: 0;
+        }
+
+        .activity-text {
+            font-size: 13px;
+        }
+
+        .activity-time {
+            font-size: 11px;
+            color: var(--text2);
+            margin-top: 2px;
+        }
+
+        /* ── PROGRESS ── */
+        .progress-bar {
+            height: 6px;
+            background: var(--bg3);
+            border-radius: 3px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            border-radius: 3px;
+            transition: width .5s ease;
+        }
+
+        /* ── TABS ── */
+        .tabs {
+            display: flex;
+            gap: 4px;
+            margin-bottom: 20px;
+            background: var(--bg3);
+            padding: 4px;
+            border-radius: 10px;
+            width: fit-content;
+        }
+
+        .tab {
+            padding: 8px 16px;
+            border-radius: 7px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--text2);
+            transition: all .15s;
+        }
+
+        .tab.active {
+            background: var(--surface2);
+            color: var(--text);
+        }
+
+        /* ── EMPTY STATE ── */
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: var(--text2);
+        }
+
+        .empty-state .icon {
+            font-size: 48px;
+            margin-bottom: 16px;
+        }
+
+        .empty-state h3 {
+            font-size: 16px;
+            margin-bottom: 8px;
+            color: var(--text);
+        }
+
+        .empty-state p {
+            font-size: 13px;
+        }
+
+        /* ── TOAST ── */
+        #toast-container {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .toast {
+            background: var(--surface2);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 14px 20px;
+            font-size: 13px;
+            min-width: 280px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            animation: slideIn .2s ease;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        /* ── PATIENT DETAIL ── */
+        .detail-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .detail-item label {
+            font-size: 11px;
+            color: var(--text2);
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        .detail-item span {
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .vitals-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+        }
+
+        .vital-card {
+            background: var(--bg3);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 14px;
+            text-align: center;
+        }
+
+        .vital-val {
+            font-family: 'Syne', sans-serif;
+            font-size: 22px;
+            font-weight: 700;
+        }
+
+        .vital-label {
+            font-size: 11px;
+            color: var(--text2);
+            margin-top: 4px;
+        }
+
+        /* ── SCROLLBAR ── */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--border);
+            border-radius: 3px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--text3);
+        }
+
+        /* ── DISEASE TREND ── */
+        .trend-up {
+            color: var(--red);
+        }
+
+        .trend-down {
+            color: var(--green);
+        }
+
+        .trend-stable {
+            color: var(--yellow);
+        }
+
+        .inventory-bar-wrap {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .inventory-bar-wrap .progress-bar {
+            flex: 1;
+        }
+
+        /* hide by default */
+        .page {
+            display: none;
+        }
+
+        .page.active {
+            display: block;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- LANDING PAGE -->
+    <div id="landingPage">
+        <div class="landing-header">
+            <div class="logo"><span style="font-size: 28px;">🏥</span> PHMS</div>
+            <div class="landing-nav">
+                <a href="#home" onclick="window.scrollTo({top:0, behavior:'smooth'}); return false;">Home</a>
+                <a href="#features"
+                    onclick="document.getElementById('features').scrollIntoView({behavior:'smooth'}); return false;">Features</a>
+                <a href="#about"
+                    onclick="document.getElementById('about').scrollIntoView({behavior:'smooth'}); return false;">About</a>
+                <div style="width: 1px; height: 20px; background: rgba(255,255,255,0.1); margin: 0 8px;"></div>
+                <button class="btn btn-secondary btn-sm" onclick="showLogin('staff')">Doctor Login</button>
+                <button class="btn btn-patient btn-sm" onclick="showLogin('patient')">Patient Login</button>
+            </div>
+        </div>
+
+        <div id="home" class="landing-hero">
+            <div
+                style="display:inline-block; padding: 6px 16px; border-radius: 20px; background: rgba(0,212,160,0.1); color: var(--accent); font-size: 13px; font-weight: 600; margin-bottom: 24px; border: 1px solid rgba(0,212,160,0.2);">
+                ✨ Version 2.0 Now Available</div>
+            <h1>HEALTH BASE – Public Health Management System</h1>
+            <p>A unified, secure, and intuitive platform designed to empower healthcare professionals and patients with
+                real-time insights and seamless workflows.</p>
+            <div style="display: flex; gap: 20px; justify-content: center; margin-top: 10px;">
+                <button class="btn btn-primary"
+                    style="padding: 16px 32px; font-size: 16px; border-radius: 30px; box-shadow: 0 8px 24px rgba(0,212,160,0.25);"
+                    onclick="showLogin('staff')">👨‍⚕️ Doctor Sign In</button>
+                <button class="btn btn-patient"
+                    style="padding: 16px 32px; font-size: 16px; border-radius: 30px; box-shadow: 0 8px 24px rgba(0,153,255,0.25);"
+                    onclick="showLogin('patient')">🩺 Patient Sign In</button>
+            </div>
+        </div>
+
+        <div id="features" style="padding: 60px 20px; text-align: center;">
+            <h2 style="font-family:'Syne',sans-serif; font-size: 36px; margin-bottom: 16px;">Everything You Need</h2>
+            <p style="color:var(--text2); font-size: 16px; max-width: 600px; margin: 0 auto;">Powerful tools designed
+                for healthcare providers, seamlessly integrated for patients.</p>
+        </div>
+
+        <div class="landing-features">
+            <div class="landing-feature-card">
+                <div class="icon" style="color:var(--accent);">📊</div>
+                <h3>Real-time Analytics</h3>
+                <p>Monitor patient trends, demographic health data, and critical metrics instantly with our robust
+                    dashboard and interactive charting tools.</p>
+            </div>
+            <div class="landing-feature-card">
+                <div class="icon" style="background:rgba(0,153,255,0.1); color:var(--blue);">💬</div>
+                <h3>Patient Portal</h3>
+                <p>Patients can easily book appointments, view their complete medical history, and communicate directly
+                    with their doctors via real-time secure messaging.</p>
+            </div>
+            <div class="landing-feature-card">
+                <div class="icon" style="background:rgba(168,85,247,0.1); color:var(--purple);">📋</div>
+                <h3>Smart Inventory</h3>
+                <p>Keep track of essential medicines and supplies. Get instant low-stock alerts and manage supplier
+                    restocking efficiently with one click.</p>
+            </div>
+            <div class="landing-feature-card">
+                <div class="icon" style="background:rgba(255,71,87,0.1); color:var(--red);">🦠</div>
+                <h3>Disease Surveillance</h3>
+                <p>Track regional outbreaks, manage critical cases, and monitor disease spread in real-time to ensure
+                    rapid response and public safety.</p>
+            </div>
+        </div>
+
+        <div id="about"
+            style="padding: 80px 6vw; background: rgba(0,0,0,0.2); text-align: center; border-top: 1px solid rgba(255,255,255,0.05);">
+            <h2 style="font-family:'Syne',sans-serif; font-size: 32px; margin-bottom: 24px;">About PHMS</h2>
+            <p
+                style="color:var(--text2); font-size: 16px; max-width: 800px; margin: 0 auto 40px auto; line-height: 1.8;">
+                The Public Health Management System (PHMS) is a comprehensive, centralized platform built to modernize
+                healthcare administration. Designed for hospitals, clinics, and government health departments, PHMS
+                bridges the gap between healthcare providers and patients. Our mission is to streamline clinical
+                workflows, ensure real-time disease surveillance, simplify inventory management, and empower patients
+                with direct access to their medical histories and healthcare professionals.
+            </p>
+        </div>
+
+        <div class="landing-footer">
+            <div>&copy; 2026 Karnataka Health Dept. All rights reserved.</div>
+            <div style="display:flex; gap:20px;">
+                <a href="#" style="color:var(--text3); text-decoration:none;">Privacy Policy</a>
+                <a href="#" style="color:var(--text3); text-decoration:none;">Terms of Service</a>
+                <a href="#" style="color:var(--text3); text-decoration:none;">Contact Support</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- LOGIN PAGE -->
+    <div id="loginPage">
+        <div class="login-card">
+            <!-- Header with logo -->
+            <div class="login-card-header">
+                <div class="login-logo">
+                    <div class="icon">🏥</div>
+                    <div>
+                        <h1>PHMS</h1>
+                        <small>Public Health Management System</small>
+                    </div>
+                </div>
+                <!-- Portal tabs -->
+                <div class="portal-tabs">
+                    <div class="portal-tab active" id="staffTabBtn" onclick="switchPortal('staff')">
+                        🔐 Staff Portal
+                    </div>
+                    <div class="portal-tab patient-tab" id="patientTabBtn" onclick="switchPortal('patient')">
+                        🩺 Patient Portal
+                    </div>
+                </div>
+            </div>
+
+            <div class="login-card-body">
+
+                <!-- ── STAFF PANEL ── -->
+                <div class="login-panel active" id="staffPanel">
+                    <div id="loginError" class="alert alert-error" style="display:none;margin-bottom:16px;"></div>
+                    <div class="form-group">
+                        <label>Email Address</label>
+                        <input type="email" id="loginEmail" placeholder="Enter your email" />
+                    </div>
+                    <div class="form-group">
+                        <label>Password</label>
+                        <div style="position:relative; display:flex; align-items:center;">
+                            <input type="password" id="loginPassword" placeholder="Enter your password"
+                                style="width:100%; padding-right:40px;" />
+                            <span onmousedown="showPwd('loginPassword', this)"
+                                onmouseup="hidePwd('loginPassword', this)" onmouseleave="hidePwd('loginPassword', this)"
+                                ontouchstart="showPwd('loginPassword', this)"
+                                ontouchend="hidePwd('loginPassword', this)"
+                                style="position:absolute; right:12px; cursor:pointer; opacity:0.6; user-select:none;">👁️</span>
+                        </div>
+                    </div>
+                    <button class="btn btn-primary btn-full" onclick="login()">Sign In to PHMS →</button>
+                    <div style="text-align:center; margin-top:16px;">
+                        <a href="#" onclick="showLanding(); return false;"
+                            style="color:var(--text2); font-size:13px; text-decoration:none; transition: color 0.2s;"
+                            onmouseover="this.style.color='#fff'" onmouseout="this.style.color='var(--text2)'">← Back to
+                            Home</a>
+                    </div>
+                    <div class="demo-creds">
+                        <p>Demo Credentials:</p>
+                        <p>Admin: <code>admin@phms.gov</code> / <code>admin123</code></p>
+                        <p>Doctor: <code>doctor@phms.gov</code> / <code>doctor123</code></p>
+                        <p>Nurse: <code>nurse@phms.gov</code> / <code>nurse123</code></p>
+                    </div>
+                </div>
+
+                <!-- ── PATIENT PANEL ── -->
+                <div class="login-panel" id="patientPanel">
+                    <div class="auth-subtabs">
+                        <div class="auth-subtab active" id="patLoginTab" onclick="switchPatientTab('login')">Sign In
+                        </div>
+                        <div class="auth-subtab" id="patRegisterTab" onclick="switchPatientTab('register')">Register
+                        </div>
+                    </div>
+
+                    <!-- Patient Login -->
+                    <div class="patient-form active" id="patLoginForm">
+                        <div class="patient-welcome">
+                            <p><strong>Patient Portal</strong> — View your appointments, medical records, and health
+                                updates.</p>
+                        </div>
+                        <div id="patLoginError" class="alert alert-error" style="display:none;margin-bottom:16px;">
+                        </div>
+                        <div class="form-group">
+                            <label>Email Address</label>
+                            <input type="email" id="patEmail" placeholder="Your registered email" />
+                        </div>
+                        <div class="form-group">
+                            <label>Password</label>
+                            <div style="position:relative; display:flex; align-items:center;">
+                                <input type="password" id="patPassword" placeholder="Your password"
+                                    style="width:100%; padding-right:40px;" />
+                                <span onmousedown="showPwd('patPassword', this)"
+                                    onmouseup="hidePwd('patPassword', this)" onmouseleave="hidePwd('patPassword', this)"
+                                    ontouchstart="showPwd('patPassword', this)"
+                                    ontouchend="hidePwd('patPassword', this)"
+                                    style="position:absolute; right:12px; cursor:pointer; opacity:0.6; user-select:none;">👁️</span>
+                            </div>
+                            <div style="text-align:right; margin-top:8px;">
+                                <a href="#" onclick="showPatientForgotPassword(); return false;"
+                                    style="color:var(--accent); font-size:12px; text-decoration:none;">Forgot
+                                    Password?</a>
+                            </div>
+                        </div>
+                        <button class="btn btn-patient btn-full" onclick="patientLogin()">Access My Health Records
+                            →</button>
+                        <div style="text-align:center; margin-top:16px; margin-bottom:16px;">
+                            <a href="#" onclick="showLanding(); return false;"
+                                style="color:var(--text2); font-size:13px; text-decoration:none; transition: color 0.2s;"
+                                onmouseover="this.style.color='#fff'" onmouseout="this.style.color='var(--text2)'">←
+                                Back to Home</a>
+                        </div>
+                        <div class="divider"><span>Don't have an account?</span></div>
+                        <button class="btn btn-secondary btn-full" onclick="switchPatientTab('register')"
+                            style="font-size:13px;">Register as a New Patient</button>
+                    </div>
+
+                    <!-- Patient Register -->
+                    <div class="patient-form" id="patRegisterForm">
+                        <div id="patRegError" class="alert alert-error" style="display:none;margin-bottom:16px;"></div>
+                        <div id="patRegSuccess" class="alert alert-success" style="display:none;margin-bottom:16px;">
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group"><label>Full Name</label><input id="reg_name"
+                                    placeholder="Your full name" /></div>
+                            <div class="form-group"><label>Age</label><input id="reg_age" type="number" min="1"
+                                    max="120" placeholder="Age" /></div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group"><label>Gender</label>
+                                <select id="reg_gender">
+                                    <option value="">Select</option>
+                                    <option>Male</option>
+                                    <option>Female</option>
+                                    <option>Other</option>
+                                </select>
+                            </div>
+                            <div class="form-group"><label>Blood Group</label>
+                                <select id="reg_blood">
+                                    <option value="">Select</option>
+                                    <option>A+</option>
+                                    <option>A-</option>
+                                    <option>B+</option>
+                                    <option>B-</option>
+                                    <option>O+</option>
+                                    <option>O-</option>
+                                    <option>AB+</option>
+                                    <option>AB-</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group"><label>Email Address</label><input type="email" id="reg_email"
+                                placeholder="Your email address" /></div>
+                        <div class="form-group"><label>Phone Number</label><input id="reg_phone"
+                                placeholder="Mobile number" /></div>
+                        <div class="form-group"><label>Address</label><input id="reg_addr" placeholder="City, State" />
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group"><label>Password</label>
+                                <div style="position:relative; display:flex; align-items:center;">
+                                    <input type="password" id="reg_pwd" placeholder="Create password"
+                                        style="width:100%; padding-right:40px;" />
+                                    <span onmousedown="showPwd('reg_pwd', this)" onmouseup="hidePwd('reg_pwd', this)"
+                                        onmouseleave="hidePwd('reg_pwd', this)" ontouchstart="showPwd('reg_pwd', this)"
+                                        ontouchend="hidePwd('reg_pwd', this)"
+                                        style="position:absolute; right:12px; cursor:pointer; opacity:0.6; user-select:none;">👁️</span>
+                                </div>
+                            </div>
+                            <div class="form-group"><label>Confirm Password</label>
+                                <div style="position:relative; display:flex; align-items:center;">
+                                    <input type="password" id="reg_pwd2" placeholder="Repeat password"
+                                        style="width:100%; padding-right:40px;" />
+                                    <span onmousedown="showPwd('reg_pwd2', this)" onmouseup="hidePwd('reg_pwd2', this)"
+                                        onmouseleave="hidePwd('reg_pwd2', this)"
+                                        ontouchstart="showPwd('reg_pwd2', this)" ontouchend="hidePwd('reg_pwd2', this)"
+                                        style="position:absolute; right:12px; cursor:pointer; opacity:0.6; user-select:none;">👁️</span>
+                                </div>
+                            </div>
+                        </div>
+                        <button class="btn btn-patient btn-full" onclick="patientRegister()">Create Patient Account
+                            →</button>
+                        <div class="divider"><span>Already registered?</span></div>
+                        <button class="btn btn-secondary btn-full" onclick="switchPatientTab('login')"
+                            style="font-size:13px;">Back to Sign In</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- PATIENT PORTAL -->
+    <div id="patientPortal" style="display:none; flex-direction:column; width:100vw; height:100vh; overflow:hidden;">
+        <!-- Patient header -->
+        <div
+            style="height:64px;background:var(--bg2);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 28px;flex-shrink:0;">
+            <div style="display:flex;align-items:center;gap:10px;">
+                <div
+                    style="width:36px;height:36px;border-radius:10px;background:linear-gradient(135deg,var(--blue),var(--accent));display:flex;align-items:center;justify-content:center;font-size:18px;">
+                    🏥</div>
+                <div>
+                    <div style="font-family:'Syne',sans-serif;font-weight:700;font-size:15px;">PHMS Patient Portal</div>
+                    <div style="font-size:10px;color:var(--text2);">Karnataka Health Dept.</div>
+                </div>
+            </div>
+            <div style="display:flex;align-items:center;gap:12px;">
+                <div style="display:flex;align-items:center;gap:10px;">
+                    <div id="patPortalAvatar"
+                        style="width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,var(--blue),var(--accent));display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px;">
+                        P</div>
+                    <div>
+                        <div id="patPortalName" style="font-size:13px;font-weight:600;">Patient</div>
+                        <div id="patPortalRole" style="font-size:11px;color:var(--text2);">Patient</div>
+                    </div>
+                </div>
+                <button onclick="patientLogout()"
+                    style="background:rgba(255,71,87,0.1);border:1px solid rgba(255,71,87,0.2);color:var(--red);padding:8px 14px;border-radius:8px;font-family:inherit;font-size:12px;font-weight:600;cursor:pointer;">Sign
+                    Out</button>
+            </div>
+        </div>
+        <!-- Patient content -->
+        <div id="patientPortalContent" style="flex:1;overflow-y:auto;padding:28px;"></div>
+    </div>
+
+    <!-- MAIN APP -->
+    <div id="appShell" style="display:none; width:100%; height:100vh; overflow:hidden;">
+        <div id="app" style="display:flex; height:100vh; overflow:hidden; width:100%; flex:1;">
+            <!-- SIDEBAR -->
+            <div id="sidebar">
+                <div class="sidebar-header">
+                    <div class="sidebar-logo">🏥</div>
+                    <div>
+                        <div class="sidebar-title">PHMS</div>
+                        <div class="sidebar-sub">Karnataka Health Dept.</div>
+                    </div>
+                </div>
+                <div class="nav-section">
+                    <div class="nav-label">Overview</div>
+                    <div class="nav-item active" onclick="navigate('dashboard')">
+                        <span class="nav-icon">📊</span><span>Dashboard</span>
+                    </div>
+                </div>
+                <div class="nav-section">
+                    <div class="nav-label">Clinical</div>
+                    <div class="nav-item" onclick="navigate('patients')">
+                        <span class="nav-icon">👥</span><span>Patients</span>
+                    </div>
+                    <div class="nav-item" onclick="navigate('appointments')">
+                        <span class="nav-icon">📅</span><span>Appointments</span>
+                    </div>
+                    <div class="nav-item" onclick="navigate('records')">
+                        <span class="nav-icon">📋</span><span>Patient History</span>
+                    </div>
+                </div>
+                <div class="nav-section">
+                    <div class="nav-label">Public Health</div>
+                    <div class="nav-item" onclick="navigate('diseases')">
+                        <span class="nav-icon">🦠</span><span>Disease Surveillance</span>
+                        <span class="nav-badge" id="diseaseBadge">2</span>
+                    </div>
+                    <div class="nav-item" onclick="navigate('inventory')">
+                        <span class="nav-icon">💊</span><span>Inventory</span>
+                        <span class="nav-badge" id="inventoryBadge">3</span>
+                    </div>
+                </div>
+                <div class="nav-section" id="adminNav">
+                    <div class="nav-label">Administration</div>
+                    <div class="nav-item" onclick="navigate('users')">
+                        <span class="nav-icon">👤</span><span>Staff Users</span>
+                    </div>
+                </div>
+                <div class="sidebar-footer">
+                    <div class="user-card">
+                        <div class="user-avatar" id="sidebarAvatar">A</div>
+                        <div>
+                            <div class="user-name" id="sidebarName">User</div>
+                            <div class="user-role" id="sidebarRole">Role</div>
+                        </div>
+                        <button class="logout-btn" onclick="logout()" title="Logout">⏻</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- MAIN -->
+            <div id="main">
+                <div id="header">
+                    <div class="header-left">
+                        <h2 id="pageTitle">Dashboard</h2>
+                        <p id="pageSubtitle">Overview of system activity</p>
+                    </div>
+                    <div class="header-right">
+                        <div class="alert-bell" id="alertBell" onclick="handleBellClick()">
+                            🔔<div class="alert-dot" id="alertDot" style="display:none;"></div>
+                        </div>
+                        <button class="btn btn-primary btn-sm" id="headerActionBtn" onclick="triggerHeaderAction()">+
+                            New Patient</button>
+                    </div>
+                </div>
+                <div id="content">
+
+                    <!-- DASHBOARD -->
+                    <div id="page-dashboard" class="page active">
+                        <div class="stat-grid">
+                            <div class="stat-card">
+                                <div class="stat-icon green">👥</div>
+                                <div>
+                                    <div class="stat-val" id="statTotalPatients">—</div>
+                                    <div class="stat-label">Total Patients</div>
+                                    <div class="stat-change up">↑ 12% this month</div>
+                                </div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-icon blue">📅</div>
+                                <div>
+                                    <div class="stat-val" id="statTotalAppointments">—</div>
+                                    <div class="stat-label">Total Appointments</div>
+                                    <div class="stat-change up">↑ 8% this week</div>
+                                </div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-icon red">🚨</div>
+                                <div>
+                                    <div class="stat-val" id="statCriticalPatients">—</div>
+                                    <div class="stat-label">Critical Patients</div>
+                                    <div class="stat-change down">Needs attention</div>
+                                </div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-icon yellow">🦠</div>
+                                <div>
+                                    <div class="stat-val" id="statActiveOutbreaks">—</div>
+                                    <div class="stat-label">Active Outbreaks</div>
+                                    <div class="stat-change down">↑ Dengue + Malaria</div>
+                                </div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-icon purple">💊</div>
+                                <div>
+                                    <div class="stat-val" id="statLowStock">—</div>
+                                    <div class="stat-label">Low Stock Items</div>
+                                    <div class="stat-change down">Immediate action needed</div>
+                                </div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-icon green">✅</div>
+                                <div>
+                                    <div class="stat-val" id="statRecoveryRate">—</div>
+                                    <div class="stat-label">Recovery Rate</div>
+                                    <div class="stat-change up">↑ 5% vs last month</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div style="display:grid; grid-template-columns: 1fr 340px; gap:16px;">
+                            <div class="section-card">
+                                <div class="section-header">
+                                    <h3>Monthly Patient & Appointment Trend</h3>
+                                </div>
+                                <div class="chart-container">
+                                    <div style="display:flex; gap:16px; margin-bottom:16px; font-size:12px;">
+                                        <span style="display:flex;align-items:center;gap:6px;"><span
+                                                style="width:12px;height:12px;border-radius:2px;background:var(--accent);display:inline-block;"></span>Patients</span>
+                                        <span style="display:flex;align-items:center;gap:6px;"><span
+                                                style="width:12px;height:12px;border-radius:2px;background:var(--blue);display:inline-block;"></span>Appointments</span>
+                                    </div>
+                                    <div class="bar-chart" id="dashChart"></div>
+                                </div>
+                            </div>
+                            <div class="section-card">
+                                <div class="section-header">
+                                    <h3>Recent Activity</h3>
+                                </div>
+                                <div style="padding:8px 20px;" id="recentActivity"></div>
+                            </div>
+                        </div>
+
+                        <div class="section-card">
+                            <div class="section-header">
+                                <h3>Disease Surveillance Summary</h3>
+                            </div>
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Disease</th>
+                                        <th>Category</th>
+                                        <th>Total Cases</th>
+                                        <th>Active</th>
+                                        <th>Recovered</th>
+                                        <th>Deaths</th>
+                                        <th>Trend</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="dashDiseaseTable"></tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- PATIENTS -->
+                    <div id="page-patients" class="page">
+                        <div class="section-card">
+                            <div class="section-header">
+                                <h3>Patient Registry</h3>
+                                <div class="actions">
+                                    <div class="search-box"><input type="text" placeholder="Search patients..."
+                                            oninput="filterPatients(this.value)" /></div>
+                                    <select onchange="filterPatientStatus(this.value)"
+                                        style="padding:8px 12px;background:var(--bg3);border:1px solid var(--border);border-radius:8px;color:var(--text);font-size:13px;font-family:inherit;outline:none;">
+                                        <option value="">All Status</option>
+                                        <option value="Active">Active</option>
+                                        <option value="Critical">Critical</option>
+                                        <option value="Recovered">Recovered</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Patient</th>
+                                        <th>Age/Gender</th>
+                                        <th>Blood Group</th>
+                                        <th>Conditions</th>
+                                        <th>Status</th>
+                                        <th>Registered</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="patientTable"></tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- APPOINTMENTS -->
+                    <div id="page-appointments" class="page">
+                        <div class="section-card">
+                            <div class="section-header">
+                                <h3>Appointment Schedule</h3>
+                                <div class="actions">
+                                    <select onchange="filterApptStatus(this.value)"
+                                        style="padding:8px 12px;background:var(--bg3);border:1px solid var(--border);border-radius:8px;color:var(--text);font-size:13px;font-family:inherit;outline:none;">
+                                        <option value="">All Status</option>
+                                        <option value="Scheduled">Scheduled</option>
+                                        <option value="Completed">Completed</option>
+                                        <option value="Cancelled">Cancelled</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Patient</th>
+                                        <th>Doctor</th>
+                                        <th>Date & Time</th>
+                                        <th>Type</th>
+                                        <th>Notes</th>
+                                        <th>Status</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="appointmentTable"></tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- RECORDS -->
+                    <div id="page-records" class="page">
+                        <div class="section-card">
+                            <div class="section-header">
+                                <h3>Patient History</h3>
+                            </div>
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Patient</th>
+                                        <th>Type</th>
+                                        <th>Title</th>
+                                        <th>Medications</th>
+                                        <th>Date</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="recordTable"></tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- DISEASES -->
+                    <div id="page-diseases" class="page">
+                        <div class="section-card">
+                            <div class="section-header">
+                                <h3>Disease Surveillance Registry</h3>
+                                <div class="actions">
+                                    <select onchange="filterDiseaseCategory(this.value)"
+                                        style="padding:8px 12px;background:var(--bg3);border:1px solid var(--border);border-radius:8px;color:var(--text);font-size:13px;font-family:inherit;outline:none;">
+                                        <option value="">All Categories</option>
+                                        <option value="Viral">Viral</option>
+                                        <option value="Bacterial">Bacterial</option>
+                                        <option value="Parasitic">Parasitic</option>
+                                        <option value="Vector-Borne">Vector-Borne</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Disease</th>
+                                        <th>Category</th>
+                                        <th>Total Cases</th>
+                                        <th>Active</th>
+                                        <th>Recovered</th>
+                                        <th>Deaths</th>
+                                        <th>Affected Regions</th>
+                                        <th>Trend</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="diseaseTable"></tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- INVENTORY -->
+                    <div id="page-inventory" class="page">
+                        <div style="display:grid; grid-template-columns: repeat(3, 1fr); gap:16px; margin-bottom:20px;">
+                            <div class="stat-card">
+                                <div class="stat-icon green">📦</div>
+                                <div>
+                                    <div class="stat-val">6</div>
+                                    <div class="stat-label">Total Items</div>
+                                </div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-icon yellow">⚠️</div>
+                                <div>
+                                    <div class="stat-val" id="lowStockCount">2</div>
+                                    <div class="stat-label">Low Stock</div>
+                                </div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-icon red">🚨</div>
+                                <div>
+                                    <div class="stat-val" id="criticalStockCount">1</div>
+                                    <div class="stat-label">Critical Stock</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="section-card">
+                            <div class="section-header">
+                                <h3>Medical Inventory</h3>
+                            </div>
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Item Name</th>
+                                        <th>Category</th>
+                                        <th>Stock Level</th>
+                                        <th>Unit</th>
+                                        <th>Expiry</th>
+                                        <th>Supplier</th>
+                                        <th>Status</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="inventoryTable"></tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- USERS -->
+                    <div id="page-users" class="page">
+                        <div class="section-card">
+                            <div class="section-header">
+                                <h3>Staff Management</h3>
+                            </div>
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Staff Member</th>
+                                        <th>Email</th>
+                                        <th>Role</th>
+                                        <th>Department</th>
+                                        <th>Joined</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="userTable"></tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL -->
+    <div id="modal" class="modal-overlay" onclick="if(event.target===this)closeModal()">
+        <div class="modal">
+            <div class="modal-title">
+                <span id="modalTitle">Modal</span>
+                <button class="modal-close" onclick="closeModal()">✕</button>
+            </div>
+            <div id="modalBody"></div>
+        </div>
+    </div>
+
+    <!-- TOAST -->
+    <div id="toast-container"></div>
+
+    <script>
+        // ── DATA STORE ───────────────────────────────────────────────────────────────
+        const API_URL = '/api';
+
+        let store = {
+            token: null,
+            currentUser: null,
+            currentPage: 'dashboard',
+            patients: [],
+            appointments: [],
+            records: [],
+            diseases: [],
+            inventory: [],
+            users: [],
+            messages: []
+        };
+
+        async function initApp() {
+            try {
+                const res = await fetch(`${API_URL}/store`);
+                const data = await res.json();
+                store.patients = data.patients || [];
+                store.appointments = data.appointments || [];
+                store.records = data.records || [];
+                store.diseases = data.diseases || [];
+                store.inventory = data.inventory || [];
+                store.users = data.users || [];
+                store.messages = data.messages || [];
+            } catch (err) {
+                console.error('Failed to load initial data:', err);
+                showToast('Backend connection failed', 'error');
+            }
+        }
+
+        window.addEventListener('load', initApp);
+
+        // ── PORTAL SWITCHING ─────────────────────────────────────────────────────────
+        function showLogin(portal) {
+            document.getElementById('landingPage').style.display = 'none';
+            document.getElementById('loginPage').style.display = 'flex';
+            if (portal) {
+                switchPortal(portal);
+            }
+        }
+
+        function showLanding() {
+            document.getElementById('appShell').style.display = 'none';
+            document.getElementById('loginPage').style.display = 'none';
+            document.getElementById('landingPage').style.display = 'flex';
+        }
+
+        function switchPortal(portal) {
+            document.querySelectorAll('.portal-tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.login-panel').forEach(p => p.classList.remove('active'));
+            if (portal === 'staff') {
+                document.getElementById('staffTabBtn').classList.add('active');
+                document.getElementById('staffPanel').classList.add('active');
+            } else {
+                document.getElementById('patientTabBtn').classList.add('active');
+                document.getElementById('patientPanel').classList.add('active');
+            }
+        }
+
+        function switchPatientTab(tab) {
+            document.querySelectorAll('.auth-subtab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.patient-form').forEach(f => f.classList.remove('active'));
+            if (tab === 'login') {
+                document.getElementById('patLoginTab').classList.add('active');
+                document.getElementById('patLoginForm').classList.add('active');
+                document.getElementById('patLoginError').style.display = 'none';
+            } else {
+                document.getElementById('patRegisterTab').classList.add('active');
+                document.getElementById('patRegisterForm').classList.add('active');
+                document.getElementById('patRegError').style.display = 'none';
+                document.getElementById('patRegSuccess').style.display = 'none';
+            }
+        }
+
+        // ── STAFF AUTH ───────────────────────────────────────────────────────────────
+        async function login() {
+            const email = document.getElementById('loginEmail').value.trim();
+            const password = document.getElementById('loginPassword').value;
+            const errEl = document.getElementById('loginError');
+            errEl.style.display = 'none';
+
+            try {
+                const res = await fetch(`${API_URL}/auth/login`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, password })
+                });
+                const data = await res.json();
+
+                if (!res.ok) {
+                    errEl.textContent = '❌ ' + (data.error || 'Invalid credentials.');
+                    errEl.style.display = 'flex'; return;
+                }
+
+                store.token = data.token;
+                store.currentUser = data.user;
+
+                document.getElementById('loginPage').style.display = 'none';
+                document.getElementById('appShell').style.display = 'flex';
+
+                document.getElementById('sidebarName').textContent = data.user.name;
+                document.getElementById('sidebarRole').textContent = data.user.role.charAt(0).toUpperCase() + data.user.role.slice(1);
+                document.getElementById('sidebarAvatar').textContent = data.user.name[0];
+
+                document.getElementById('adminNav').style.display = data.user.role === 'admin' ? 'block' : 'none';
+
+                navigate('dashboard');
+            } catch (err) {
+                errEl.textContent = '❌ Connection error.';
+                errEl.style.display = 'flex';
+            }
+        }
+
+        // ── PATIENT AUTH ──────────────────────────────────────────────────────────────
+        function showPatientForgotPassword() {
+            const html = `
+    <div id="forgotPwdError" class="alert alert-error" style="display:none;margin-bottom:16px;"></div>
+    <div class="form-group">
+      <label>Registered Email</label>
+      <input type="email" id="forgotEmail" placeholder="Enter your email address" />
+    </div>
+    <div class="form-group">
+      <label>New Password</label>
+      <input type="password" id="forgotNewPassword" placeholder="Enter new password" />
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-secondary" onclick="closeModal()">Cancel</button>
+      <button class="btn btn-patient" onclick="submitPatientPasswordReset()">Reset Password</button>
+    </div>
+  `;
+            openModal('Patient Password Reset', html);
+        }
+
+        async function submitPatientPasswordReset() {
+            const email = document.getElementById('forgotEmail').value.trim();
+            const password = document.getElementById('forgotNewPassword').value;
+            const errEl = document.getElementById('forgotPwdError');
+            errEl.style.display = 'none';
+
+            if (!email || !password) {
+                errEl.textContent = '❌ Please enter both email and new password.';
+                errEl.style.display = 'block';
+                return;
+            }
+
+            try {
+                const res = await fetch(`${API_URL}/auth/reset-password`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, password, role: 'patient' })
+                });
+                const data = await res.json();
+
+                if (!res.ok) {
+                    errEl.textContent = '❌ ' + (data.error || 'Failed to reset password.');
+                    errEl.style.display = 'block';
+                    return;
+                }
+
+                closeModal();
+                showToast('Password reset successfully. You can now login.', 'success');
+            } catch (err) {
+                errEl.textContent = '❌ Connection error.';
+                errEl.style.display = 'block';
+            }
+        }
+
+        async function patientLogin() {
+            const email = document.getElementById('patEmail').value.trim();
+            const password = document.getElementById('patPassword').value;
+            const errEl = document.getElementById('patLoginError');
+            errEl.style.display = 'none';
+
+            try {
+                const res = await fetch(`${API_URL}/auth/patient/login`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, password })
+                });
+                const data = await res.json();
+
+                if (!res.ok) {
+                    errEl.textContent = '❌ ' + (data.error || 'Invalid credentials.');
+                    errEl.style.display = 'flex'; return;
+                }
+
+                store.token = data.token;
+                store.currentUser = data.user;
+                showPatientDashboard(data.user);
+            } catch (err) {
+                errEl.textContent = '❌ Connection error.';
+                errEl.style.display = 'flex';
+            }
+        }
+
+        async function patientRegister() {
+            const name = document.getElementById('reg_name').value.trim();
+            const age = +document.getElementById('reg_age').value;
+            const gender = document.getElementById('reg_gender').value;
+            const blood = document.getElementById('reg_blood').value;
+            const email = document.getElementById('reg_email').value.trim();
+            const phone = document.getElementById('reg_phone').value.trim();
+            const addr = document.getElementById('reg_addr').value.trim();
+            const pwd = document.getElementById('reg_pwd').value;
+            const pwd2 = document.getElementById('reg_pwd2').value;
+            const errEl = document.getElementById('patRegError');
+            const okEl = document.getElementById('patRegSuccess');
+
+            errEl.style.display = 'none'; okEl.style.display = 'none';
+
+            if (!name || !age || !gender || !blood || !email || !phone || !pwd) {
+                errEl.textContent = '❌ Please fill in all required fields.';
+                errEl.style.display = 'flex'; return;
+            }
+            if (pwd !== pwd2) {
+                errEl.textContent = '❌ Passwords do not match.';
+                errEl.style.display = 'flex'; return;
+            }
+            if (pwd.length < 6) {
+                errEl.textContent = '❌ Password must be at least 6 characters.';
+                errEl.style.display = 'flex'; return;
+            }
+
+            try {
+                const res = await fetch(`${API_URL}/auth/patient/register`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ name, age, gender, bloodGroup: blood, email, phone, address: addr, password: pwd })
+                });
+                const data = await res.json();
+                if (!res.ok) {
+                    errEl.textContent = '❌ ' + (data.error || 'Registration failed.');
+                    errEl.style.display = 'flex'; return;
+                }
+
+                store.patients.push(data); // optimistic update
+
+                okEl.textContent = '✅ Registration successful! You can now sign in.';
+                okEl.style.display = 'flex';
+                // Clear form
+                ['reg_name', 'reg_age', 'reg_email', 'reg_phone', 'reg_addr', 'reg_pwd', 'reg_pwd2'].forEach(id => document.getElementById(id).value = '');
+                document.getElementById('reg_gender').value = '';
+                document.getElementById('reg_blood').value = '';
+                setTimeout(() => switchPatientTab('login'), 1800);
+            } catch (err) {
+                errEl.textContent = '❌ Connection error.';
+                errEl.style.display = 'flex';
+            }
+        }
+
+        function showPwd(id, el) {
+            const input = document.getElementById(id);
+            input.type = 'text';
+            el.textContent = '🙈';
+        }
+        function hidePwd(id, el) {
+            const input = document.getElementById(id);
+            input.type = 'password';
+            el.textContent = '👁️';
+        }
+
+        // ── PATIENT DASHBOARD ─────────────────────────────────────────────────────────
+        function showPatientDashboard(patient) {
+            document.getElementById('loginPage').style.display = 'none';
+            document.getElementById('patientPortal').style.display = 'flex';
+            renderPatientPortal(patient);
+        }
+
+        function renderPatientPortal(patient) {
+            const myAppts = store.appointments.filter(a => a.patientId === patient.id);
+            const myRecords = store.records.filter(r => r.patientId === patient.id);
+            const doctor = store.users.find(u => u.id === patient.assignedDoctor);
+
+            document.getElementById('patPortalName').textContent = patient.name;
+            document.getElementById('patPortalAvatar').textContent = patient.name[0];
+            document.getElementById('patPortalRole').textContent = 'Patient';
+
+            // Set the portal's main background to something unique
+            document.getElementById('patientPortalContent').style.background = 'radial-gradient(circle at top right, rgba(0,212,160,0.05), transparent 400px), radial-gradient(circle at bottom left, rgba(0,153,255,0.05), transparent 400px)';
+            document.getElementById('patientPortalContent').style.position = 'relative';
+
+            document.getElementById('patientPortalContent').innerHTML = `
+    <style>
+      .pat-card {
+        background: rgba(13, 23, 42, 0.6);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border: 1px solid rgba(255,255,255,0.05);
+        border-radius: 20px;
+        transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+        overflow: hidden;
+      }
+      .pat-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 12px 30px rgba(0,0,0,0.2);
+        border-color: rgba(255,255,255,0.1);
+      }
+      .pat-hero {
+        background: linear-gradient(135deg, rgba(0, 153, 255, 0.15) 0%, rgba(0, 212, 160, 0.15) 100%);
+        border: 1px solid rgba(0, 212, 160, 0.2);
+        box-shadow: 0 8px 32px rgba(0, 153, 255, 0.1);
+      }
+      .pat-stat {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 24px;
+        text-align: center;
+        position: relative;
+        overflow: hidden;
+      }
+      .pat-stat::before {
+        content: '';
+        position: absolute;
+        top: 0; left: 0; right: 0; bottom: 0;
+        background: radial-gradient(circle at center, rgba(255,255,255,0.03) 0%, transparent 70%);
+        opacity: 0;
+        transition: opacity 0.3s ease;
+      }
+      .pat-stat:hover::before { opacity: 1; }
+      .pat-stat-value {
+        font-size: 36px;
+        font-weight: 800;
+        font-family: 'Syne', sans-serif;
+        background: linear-gradient(90deg, #fff, #a5b4fc);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        margin-bottom: 8px;
+        filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));
+      }
+      .pat-header {
+        padding: 20px 24px;
+        border-bottom: 1px solid rgba(255,255,255,0.05);
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+      .pat-icon-box {
+        width: 32px; height: 32px;
+        border-radius: 8px;
+        display: flex; align-items: center; justify-content: center;
+        background: rgba(255,255,255,0.05);
+        font-size: 16px;
+      }
+      .pat-row {
+        padding: 16px 24px;
+        border-bottom: 1px solid rgba(255,255,255,0.03);
+        transition: background 0.2s ease;
+      }
+      .pat-row:hover {
+        background: rgba(255,255,255,0.02);
+      }
+      .pat-badge {
+        padding: 4px 10px;
+        border-radius: 20px;
+        font-size: 11px;
+        font-weight: 600;
+        letter-spacing: 0.5px;
+        text-transform: uppercase;
+      }
+      .pat-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 20px;
+      }
+    </style>
+    <div style="max-width: 1000px; margin: 0 auto; position: relative; z-index: 1; padding-bottom: 40px;">
+      
+      <!-- Welcome Hero -->
+      <div class="pat-card pat-hero" style="padding:32px; margin-bottom:28px; display:flex; align-items:center; gap:28px; flex-wrap:wrap;">
+        <div style="width:80px; height:80px; border-radius:50%; background:linear-gradient(135deg, #0099ff, #00d4a0); display:flex; align-items:center; justify-content:center; font-size:32px; font-weight:700; flex-shrink:0; box-shadow: 0 8px 24px rgba(0, 212, 160, 0.3); border: 2px solid rgba(255,255,255,0.2);">${patient.name[0]}</div>
+        <div style="flex: 1; min-width: 250px;">
+          <h1 style="font-family:'Syne',sans-serif; font-size:28px; font-weight:800; margin-bottom:4px; letter-spacing:-0.5px; color:#fff;">Welcome back, ${patient.name.split(' ')[0]}</h1>
+          <p style="font-size:14px; color:var(--text2); line-height: 1.5; max-width: 500px;">Manage your appointments, access your medical records, and stay updated with your health profile all in one secure place.</p>
+        </div>
+        <div style="text-align:right; border-left: 1px solid rgba(255,255,255,0.1); padding-left: 28px;">
+          <div style="font-size:11px; text-transform:uppercase; letter-spacing:1px; color:var(--text2); margin-bottom:4px;">Current Status</div>
+          <div style="font-size:16px; font-weight:600; color:${patient.status === 'Critical' ? 'var(--red)' : patient.status === 'Recovered' ? 'var(--blue)' : 'var(--green)'}; display:flex; align-items:center; gap:6px; justify-content:flex-end;">
+            <div style="width:8px; height:8px; border-radius:50%; background:currentColor; box-shadow: 0 0 10px currentColor;"></div>
+            ${patient.status}
+          </div>
+        </div>
+      </div>
+
+      <!-- Stats Grid -->
+      <div class="pat-grid" style="margin-bottom:28px;">
+        <div class="pat-card pat-stat">
+          <div class="pat-stat-value" style="background: linear-gradient(90deg, #38bdf8, #818cf8); -webkit-background-clip: text;">${myAppts.length}</div>
+          <div style="font-size:13px; color:var(--text2); font-weight:500; text-transform:uppercase; letter-spacing:1px;">Total Appointments</div>
+        </div>
+        <div class="pat-card pat-stat">
+          <div class="pat-stat-value" style="background: linear-gradient(90deg, #34d399, #10b981); -webkit-background-clip: text;">${myRecords.length}</div>
+          <div style="font-size:13px; color:var(--text2); font-weight:500; text-transform:uppercase; letter-spacing:1px;">Patient History</div>
+        </div>
+        <div class="pat-card pat-stat">
+          <div class="pat-stat-value" style="background: linear-gradient(90deg, #f472b6, #db2777); -webkit-background-clip: text;">${(patient.conditions || []).length}</div>
+          <div style="font-size:13px; color:var(--text2); font-weight:500; text-transform:uppercase; letter-spacing:1px;">Conditions on File</div>
+        </div>
+      </div>
+
+      <div style="display: grid; grid-template-columns: minmax(300px, 1fr) minmax(300px, 1fr); gap: 28px;">
+        <!-- Left Column -->
+        <div style="display:flex; flex-direction:column; gap:28px;">
+          <!-- Personal Info -->
+          <div class="pat-card">
+            <div class="pat-header" style="justify-content:space-between;">
+              <div style="display:flex; align-items:center; gap:12px;">
+                <div class="pat-icon-box" style="color: #38bdf8;">👤</div>
+                <strong style="font-family:'Syne',sans-serif; font-size:16px; font-weight:600; color:#fff;">Health Profile</strong>
+              </div>
+              <button class="btn btn-secondary btn-sm" onclick="showEditPatientProfile('${patient.id}')" style="background:rgba(255,255,255,0.1); border:1px solid rgba(255,255,255,0.2); color:#fff; border-radius:8px;">Edit</button>
+            </div>
+            <div style="padding:24px; display:grid; grid-template-columns: 1fr 1fr; gap:20px;">
+              ${[['Age', patient.age + ' yrs'], ['Gender', patient.gender || '—'], ['Blood', patient.bloodGroup || '—', 'var(--accent)'], ['Phone', patient.phone || '—'], ['Email', patient.email || '—']].map(([l, v, c]) => `
+                <div>
+                  <div style="font-size:11px; color:var(--text2); text-transform:uppercase; letter-spacing:1px; margin-bottom:6px;">${l}</div>
+                  <div style="font-size:14px; font-weight:500; color:${c || '#fff'}; word-break:break-all;">${v}</div>
+                </div>
+              `).join('')}
+              <div style="grid-column: 1 / -1;">
+                <div style="font-size:11px; color:var(--text2); text-transform:uppercase; letter-spacing:1px; margin-bottom:6px;">Assigned Doctor</div>
+                <div style="font-size:14px; font-weight:500; display:flex; align-items:center; gap:8px; color:#fff;">
+                  <span style="display:inline-block; width:24px; height:24px; border-radius:50%; background:rgba(255,255,255,0.1); text-align:center; line-height:24px; font-size:12px;">👨‍⚕️</span>
+                  ${patient.assignedDoctorName ? patient.assignedDoctorName : (doctor ? doctor.name : 'Not assigned')}
+                </div>
+              </div>
+            </div>
+            ${(patient.conditions || []).length ? `
+              <div style="padding:0 24px 24px; border-top:1px solid rgba(255,255,255,0.03); margin-top:4px; padding-top:20px;">
+                <div style="font-size:11px; color:var(--text2); text-transform:uppercase; letter-spacing:1px; margin-bottom:10px;">Known Conditions</div>
+                <div style="display:flex; flex-wrap:wrap; gap:8px;">
+                  ${patient.conditions.map(c => `<span class="pat-badge" style="background:rgba(234,179,8,0.1); color:#facc15; border:1px solid rgba(234,179,8,0.2);">${c}</span>`).join('')}
+                </div>
+              </div>` : ''}
+          </div>
+
+          <!-- Messages -->
+          <div class="pat-card">
+            <div class="pat-header" style="justify-content:space-between;">
+              <div style="display:flex; align-items:center; gap:12px;">
+                <div class="pat-icon-box" style="color: #fbbf24;">💬</div>
+                <strong style="font-family:'Syne',sans-serif; font-size:16px; font-weight:600; color:#fff;">Messages</strong>
+              </div>
+            </div>
+            <div style="height: 300px; display:flex; flex-direction:column;">
+              <div id="patientChatBox" style="flex:1; overflow-y:auto; padding:16px; display:flex; flex-direction:column; gap:12px;">
+              </div>
+              <div style="padding:12px; border-top:1px solid rgba(255,255,255,0.05); display:flex; gap:8px;">
+                <input type="text" id="patientChatInput" placeholder="Message your doctor..." style="flex:1; background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); border-radius:20px; padding:8px 16px; color:#fff; outline:none; font-size:13px;" onkeypress="if(event.key==='Enter') sendPatientMessage('${patient.id}', '${patient.assignedDoctor || ''}')">
+                <button class="btn btn-primary btn-sm" style="border-radius:20px; padding:0 16px;" onclick="sendPatientMessage('${patient.id}', '${patient.assignedDoctor || ''}')">Send</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right Column -->
+        <div style="display:flex; flex-direction:column; gap:28px;">
+          <!-- Appointments -->
+          <div class="pat-card">
+            <div class="pat-header" style="justify-content:space-between;">
+              <div style="display:flex; align-items:center; gap:12px;">
+                <div class="pat-icon-box" style="color: #34d399;">📅</div>
+                <strong style="font-family:'Syne',sans-serif; font-size:16px; font-weight:600; color:#fff;">Appointments</strong>
+              </div>
+              <button class="btn btn-primary btn-sm" onclick="showBookAppointment('${patient.id}')" style="box-shadow: 0 4px 12px rgba(0, 212, 160, 0.2); border-radius: 8px;">+ Book New</button>
+            </div>
+            <div style="max-height: 300px; overflow-y: auto;">
+              ${myAppts.length ? myAppts.map(a => `
+                <div class="pat-row" style="display:flex; align-items:center; justify-content:space-between; gap:16px;">
+                  <div>
+                    <div style="display:flex; align-items:center; gap:8px; margin-bottom:4px;">
+                      <strong style="font-size:14px; color:#fff;">${a.type}</strong>
+                      <span class="pat-badge" style="font-size:9px; ${a.status === 'Scheduled' ? 'background:rgba(56,189,248,0.1);color:#38bdf8;' : a.status === 'Completed' ? 'background:rgba(52,211,153,0.1);color:#34d399;' : 'background:rgba(255,255,255,0.05);color:var(--text2);'}">${a.status}</span>
+                    </div>
+                    <div style="font-size:12px; color:var(--text2); display:flex; align-items:center; gap:6px;">
+                      <span>🕒</span> ${a.date} at ${a.time}
+                    </div>
+                  </div>
+                </div>
+              `).join('') : '<div style="padding:40px 24px; text-align:center; color:var(--text2); font-size:14px; opacity:0.7;">No upcoming appointments</div>'}
+            </div>
+          </div>
+
+          <!-- Patient History -->
+          <div class="pat-card">
+            <div class="pat-header" style="justify-content:space-between;">
+              <div style="display:flex; align-items:center; gap:12px;">
+                <div class="pat-icon-box" style="color: #a78bfa;">📋</div>
+                <strong style="font-family:'Syne',sans-serif; font-size:16px; font-weight:600; color:#fff;">Patient History</strong>
+              </div>
+            </div>
+            <div style="max-height: 300px; overflow-y: auto;">
+              ${myRecords.length ? myRecords.map(r => `
+                <div class="pat-row">
+                  <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:8px;">
+                    <div>
+                      <strong style="font-size:14px; display:block; margin-bottom:4px; color:#fff;">${r.title}</strong>
+                      <span class="pat-badge" style="background:rgba(167,139,250,0.1); color:#a78bfa; font-size:9px;">${r.type}</span>
+                    </div>
+                    <div>
+                      <span style="font-size:11px; color:var(--text2); background:rgba(255,255,255,0.05); padding:4px 8px; border-radius:12px; margin-right:8px;">${r.date}</span>
+                      <button class="btn btn-secondary btn-sm" onclick="downloadSingleRecord('${r.id}')" style="background:rgba(255,255,255,0.1); border:1px solid rgba(255,255,255,0.2); color:#fff; border-radius:8px; padding:2px 8px; font-size:11px;">Download</button>
+                    </div>
+                  </div>
+                  <div style="font-size:13px; color:var(--text2); line-height:1.5; margin-bottom:12px;">${r.description}</div>
+                  ${(r.medications || []).length ? `
+                    <div style="display:flex; flex-wrap:wrap; gap:6px;">
+                      ${r.medications.map(m => `<span class="pat-badge" style="background:rgba(52,211,153,0.1); color:#34d399; border:1px solid rgba(52,211,153,0.2);"><span style="margin-right:4px;">💊</span>${m}</span>`).join('')}
+                    </div>
+                  ` : ''}
+                </div>
+              `).join('') : '<div style="padding:40px 24px; text-align:center; color:var(--text2); font-size:14px; opacity:0.7;">No history available</div>'}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  `;
+            setTimeout(() => renderPatientChat(patient.id), 0);
+        }
+
+        function renderPatientChat(patientId) {
+            const chatBox = document.getElementById('patientChatBox');
+            if (!chatBox) return;
+            const myMessages = store.messages.filter(m => m.senderId === patientId || m.receiverId === patientId).sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp));
+            if (myMessages.length === 0) {
+                chatBox.innerHTML = '<div style="text-align:center; color:var(--text2); font-size:13px; margin-top:20px;">No messages yet. Send a message to your doctor.</div>';
+                return;
+            }
+            chatBox.innerHTML = myMessages.map(m => {
+                const isMe = m.senderId === patientId;
+                return `
+      <div style="display:flex; justify-content:${isMe ? 'flex-end' : 'flex-start'};">
+        <div style="max-width:80%; padding:10px 14px; border-radius:12px; font-size:13px; line-height:1.4; ${isMe ? 'background:linear-gradient(135deg, var(--blue), var(--accent)); color:#fff; border-bottom-right-radius:2px;' : 'background:rgba(255,255,255,0.1); color:#fff; border-bottom-left-radius:2px;'}">
+          ${m.content}
+          <div style="font-size:10px; opacity:0.7; margin-top:4px; text-align:${isMe ? 'right' : 'left'};">${new Date(m.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</div>
+        </div>
+      </div>
+    `;
+            }).join('');
+            chatBox.scrollTop = chatBox.scrollHeight;
+        }
+
+        async function sendPatientMessage(patientId, doctorId) {
+            const input = document.getElementById('patientChatInput');
+            const content = input.value.trim();
+            if (!content) return;
+            if (!doctorId) {
+                showToast('No doctor assigned yet.', 'warning');
+                return;
+            }
+            input.value = '';
+            try {
+                const res = await fetch(`${API_URL}/messages`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${store.token}` },
+                    body: JSON.stringify({ senderId: patientId, receiverId: doctorId, content })
+                });
+                if (!res.ok) throw new Error('Failed to send');
+                const msg = await res.json();
+                store.messages.push(msg);
+                renderPatientChat(patientId);
+            } catch (err) {
+                showToast('Could not send message', 'error');
+            }
+        }
+
+        function showEditPatientProfile(id) {
+            const p = store.patients.find(x => x.id === id);
+            openModal('Edit My Profile', `
+    <div class="form-row">
+      <div class="form-group"><label>Age</label><input id="ep_pat_age" type="number" value="${p.age}"></div>
+      <div class="form-group"><label>Gender</label>
+        <select id="ep_pat_gender"><option ${p.gender === 'Male' ? 'selected' : ''}>Male</option><option ${p.gender === 'Female' ? 'selected' : ''}>Female</option><option ${p.gender === 'Other' ? 'selected' : ''}>Other</option></select>
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group"><label>Blood Group</label>
+        <select id="ep_pat_blood">${['A+', 'A-', 'B+', 'B-', 'O+', 'O-', 'AB+', 'AB-'].map(b => `<option ${p.bloodGroup === b ? 'selected' : ''}>${b}</option>`).join('')}</select>
+      </div>
+      <div class="form-group"><label>Phone</label><input id="ep_pat_phone" value="${p.phone}"></div>
+    </div>
+    <div class="form-row">
+      <div class="form-group"><label>Email</label><input id="ep_pat_email" type="email" value="${p.email}"></div>
+      <div class="form-group"><label>Address</label><input id="ep_pat_addr" value="${p.address}"></div>
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-secondary" onclick="closeModal()">Cancel</button>
+      <button class="btn btn-primary" onclick="savePatientProfile('${id}')">Save Changes</button>
+    </div>
+  `);
+        }
+
+        async function savePatientProfile(id) {
+            const updateData = {
+                age: +document.getElementById('ep_pat_age').value,
+                gender: document.getElementById('ep_pat_gender').value,
+                bloodGroup: document.getElementById('ep_pat_blood').value,
+                phone: document.getElementById('ep_pat_phone').value,
+                email: document.getElementById('ep_pat_email').value,
+                address: document.getElementById('ep_pat_addr').value
+            };
+
+            try {
+                const res = await fetch(`${API_URL}/patients/${id}`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${store.token}` },
+                    body: JSON.stringify(updateData)
+                });
+                if (!res.ok) throw new Error('Update failed');
+                const updatedPatient = await res.json();
+
+                const idx = store.patients.findIndex(x => x.id === id);
+                if (idx !== -1) store.patients[idx] = updatedPatient;
+
+                closeModal();
+                showToast('Profile updated successfully', 'success');
+                renderPatientPortal(updatedPatient);
+            } catch (err) {
+                showToast('Failed to update profile', 'error');
+            }
+        }
+
+        function showBookAppointment(patientId) {
+            const today = new Date().toISOString().split('T')[0];
+            openModal('Book Appointment', `
+    <div class="form-group">
+      <label>Date</label>
+      <input type="date" id="book_date" min="${today}" value="${today}">
+    </div>
+    <div class="form-group">
+      <label>Time</label>
+      <input type="time" id="book_time" value="09:00">
+    </div>
+    <div class="form-group">
+      <label>Type</label>
+      <select id="book_type">
+        <option value="Consultation">Consultation</option>
+        <option value="Follow-up">Follow-up</option>
+        <option value="Check-up">Check-up</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label>Notes</label>
+      <textarea id="book_notes" placeholder="Reason for appointment..."></textarea>
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-secondary" onclick="closeModal()">Cancel</button>
+      <button class="btn btn-primary" onclick="submitPatientAppointment('${patientId}')">Confirm Booking</button>
+    </div>
+  `);
+        }
+
+        async function submitPatientAppointment(patientId) {
+            const date = document.getElementById('book_date').value;
+            const time = document.getElementById('book_time').value;
+            const type = document.getElementById('book_type').value;
+            const notes = document.getElementById('book_notes').value.trim();
+
+            if (!date || !time) {
+                showToast('Please select date and time', 'error');
+                return;
+            }
+
+            const patient = store.patients.find(p => p.id === patientId);
+
+            try {
+                const res = await fetch(`${API_URL}/appointments`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${store.token}`
+                    },
+                    body: JSON.stringify({
+                        patientId: patientId,
+                        doctorId: patient.assignedDoctor || 'u1',
+                        date, time, type, notes, status: 'Scheduled'
+                    })
+                });
+
+                if (!res.ok) throw new Error('Booking failed');
+                const newAppt = await res.json();
+
+                store.appointments.push(newAppt);
+                closeModal();
+                showToast('Appointment booked successfully', 'success');
+                renderPatientPortal(patient);
+            } catch (err) {
+                showToast('Failed to book appointment', 'error');
+            }
+        }
+
+        function patientLogout() {
+            document.getElementById('patientPortal').style.display = 'none';
+            document.getElementById('loginPage').style.display = 'flex';
+            document.getElementById('patEmail').value = '';
+            document.getElementById('patPassword').value = '';
+            document.getElementById('patLoginError').style.display = 'none';
+            switchPortal('patient');
+            switchPatientTab('login');
+        }
+
+        // ── AUTH ──────────────────────────────────────────────────────────────────────
+        async function login() {
+            const email = document.getElementById('loginEmail').value.trim();
+            const password = document.getElementById('loginPassword').value;
+
+            try {
+                const res = await fetch(`${API_URL}/auth/login`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, password })
+                });
+                const data = await res.json();
+
+                if (!res.ok) {
+                    document.getElementById('loginError').textContent = '❌ ' + (data.error || 'Invalid credentials.');
+                    document.getElementById('loginError').style.display = 'flex';
+                    return;
+                }
+
+                store.token = data.token;
+                store.currentUser = data.user;
+
+                document.getElementById('loginPage').style.display = 'none';
+                document.getElementById('appShell').style.display = 'flex';
+                document.getElementById('sidebarName').textContent = data.user.name;
+                document.getElementById('sidebarRole').textContent = data.user.role.charAt(0).toUpperCase() + data.user.role.slice(1);
+                document.getElementById('sidebarAvatar').textContent = data.user.name[0];
+                if (data.user.role !== 'admin') document.getElementById('adminNav').style.display = 'none';
+                navigate('dashboard');
+                showToast('Welcome back, ' + data.user.name + '!', 'success');
+            } catch (err) {
+                document.getElementById('loginError').textContent = '❌ Connection error.';
+                document.getElementById('loginError').style.display = 'flex';
+            }
+        }
+
+        function logout() {
+            store.currentUser = null;
+            document.getElementById('adminNav').style.display = '';
+            document.getElementById('loginPage').style.display = 'flex';
+            document.getElementById('appShell').style.display = 'none';
+            document.getElementById('loginEmail').value = '';
+            document.getElementById('loginPassword').value = '';
+            document.getElementById('loginError').style.display = 'none';
+        }
+
+        document.addEventListener('keydown', e => {
+            if (e.key === 'Enter' && document.getElementById('loginPage').style.display !== 'none') login();
+        });
+
+        // ── NAVIGATION ────────────────────────────────────────────────────────────────
+        const pageConfig = {
+            dashboard: { title: 'Dashboard', subtitle: 'Overview of system activity', action: '+ New Patient', actionFn: 'showAddPatient' },
+            patients: { title: 'Patients', subtitle: 'Manage patient registry', action: '+ New Patient', actionFn: 'showAddPatient' },
+            appointments: { title: 'Appointments', subtitle: 'Schedule and track appointments', action: '+ New Appointment', actionFn: 'showAddAppointment' },
+            records: { title: 'Medical Records', subtitle: 'View and manage health records', action: '+ New Record', actionFn: 'showAddRecord' },
+            diseases: { title: 'Disease Surveillance', subtitle: 'Monitor disease outbreaks', action: '+ Report Disease', actionFn: 'showAddDisease' },
+            inventory: { title: 'Inventory', subtitle: 'Track medical supplies', action: '+ Add Item', actionFn: 'showAddInventory' },
+            users: { title: 'Staff Management', subtitle: 'Manage system users', action: '+ Add Staff', actionFn: 'showAddUser' },
+        };
+
+        function navigate(page) {
+            store.currentPage = page;
+            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+            document.querySelectorAll('.nav-item').forEach(n => {
+                if (n.getAttribute('onclick')?.includes(page)) n.classList.add('active');
+            });
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            document.getElementById('page-' + page).classList.add('active');
+            const cfg = pageConfig[page];
+            document.getElementById('pageTitle').textContent = cfg.title;
+            document.getElementById('pageSubtitle').textContent = cfg.subtitle;
+            document.getElementById('headerActionBtn').textContent = cfg.action;
+            renderPage(page);
+        }
+
+        function triggerHeaderAction() {
+            const cfg = pageConfig[store.currentPage];
+            window[cfg.actionFn]?.();
+        }
+
+        function renderPage(page) {
+            if (page === 'dashboard') renderDashboard();
+            else if (page === 'patients') renderPatients();
+            else if (page === 'appointments') renderAppointments();
+            else if (page === 'records') renderRecords();
+            else if (page === 'diseases') renderDiseases();
+            else if (page === 'inventory') renderInventory();
+            else if (page === 'users') renderUsers();
+        }
+
+        // ── DASHBOARD ─────────────────────────────────────────────────────────────────
+        function renderDashboard() {
+            // Update stat cards dynamically from store
+            const criticalCount = store.patients.filter(p => p.status === 'Critical').length;
+            const recoveredCount = store.patients.filter(p => p.status === 'Recovered').length;
+            const recoveryRate = store.patients.length ? Math.round((recoveredCount / store.patients.length) * 100) : 0;
+            const activeOutbreaks = store.diseases.filter(d => d.trend === 'increasing').length;
+            const lowStockItems = store.inventory.filter(i => i.status === 'Low' || i.status === 'Critical').length;
+            const today = new Date().toISOString().split('T')[0];
+            const todayAppts = store.appointments.filter(a => a.date === today).length;
+
+            document.getElementById('statTotalPatients').textContent = store.patients.length;
+            document.getElementById('statTotalAppointments').textContent = store.appointments.length;
+            document.getElementById('statCriticalPatients').textContent = criticalCount;
+            document.getElementById('statActiveOutbreaks').textContent = activeOutbreaks;
+            document.getElementById('statLowStock').textContent = lowStockItems;
+            document.getElementById('statRecoveryRate').textContent = recoveryRate + '%';
+
+            // Update sidebar badges
+            document.getElementById('diseaseBadge').textContent = activeOutbreaks;
+            document.getElementById('inventoryBadge').textContent = lowStockItems;
+
+            const months = [
+                { month: 'Jan', patients: 42, appointments: 87 },
+                { month: 'Feb', patients: 58, appointments: 112 },
+                { month: 'Mar', patients: 71, appointments: 134 },
+                { month: 'Apr', patients: 65, appointments: 128 },
+                { month: 'May', patients: 89, appointments: 165 },
+                { month: 'Jun', patients: 54, appointments: 98 },
+            ];
+            const maxVal = Math.max(...months.flatMap(m => [m.patients, m.appointments]));
+            document.getElementById('dashChart').innerHTML = months.map(m => `
+    <div class="bar-group">
+      <div style="display:flex;gap:2px;align-items:flex-end;flex:1;width:100%;">
+        <div class="bar" style="background:var(--accent);flex:1;height:${(m.patients / maxVal) * 120}px;" title="Patients: ${m.patients}"></div>
+        <div class="bar" style="background:var(--blue);flex:1;height:${(m.appointments / maxVal) * 120}px;" title="Appts: ${m.appointments}"></div>
+      </div>
+      <div class="bar-label">${m.month}</div>
+    </div>
+  `).join('');
+
+            const activities = [
+                { type: 'patient', icon: '👤', msg: 'New patient Arjun Hegde registered', time: '2h ago', color: 'var(--blue)' },
+                { type: 'appointment', icon: '📅', msg: 'Appointment scheduled for Ravi Kumar', time: '3h ago', color: 'var(--accent)' },
+                { type: 'alert', icon: '⚠️', msg: 'Dengue cases increasing in Mysuru', time: '5h ago', color: 'var(--yellow)' },
+                { type: 'inventory', icon: '💊', msg: 'N95 Masks stock critically low', time: '6h ago', color: 'var(--red)' },
+                { type: 'record', icon: '📋', msg: 'Lab results updated for M. Ismail', time: '8h ago', color: 'var(--purple)' },
+            ];
+            document.getElementById('recentActivity').innerHTML = activities.map(a => `
+    <div class="activity-item">
+      <div class="activity-dot" style="background:${a.color};"></div>
+      <div><div class="activity-text">${a.msg}</div><div class="activity-time">${a.time}</div></div>
+    </div>
+  `).join('');
+
+            document.getElementById('dashDiseaseTable').innerHTML = store.diseases.map(d => `
+    <tr>
+      <td><strong>${d.name}</strong></td>
+      <td><span class="badge badge-blue">${d.category}</span></td>
+      <td>${d.cases.toLocaleString()}</td>
+      <td style="color:var(--yellow);">${d.active}</td>
+      <td style="color:var(--green);">${d.recovered}</td>
+      <td style="color:var(--red);">${d.deaths}</td>
+      <td>${trendBadge(d.trend)}</td>
+    </tr>
+  `).join('');
+        }
+
+        // ── PATIENTS ──────────────────────────────────────────────────────────────────
+        let patientFilter = '';
+        let patientStatusFilter = '';
+        function filterPatients(v) { patientFilter = v; renderPatients(); }
+        function filterPatientStatus(v) { patientStatusFilter = v; renderPatients(); }
+
+        function renderPatients(list) {
+            let patients = list || store.patients.filter(p => {
+                const matchSearch = !patientFilter || p.name.toLowerCase().includes(patientFilter.toLowerCase()) || p.phone.includes(patientFilter);
+                const matchStatus = !patientStatusFilter || p.status === patientStatusFilter;
+                return matchSearch && matchStatus;
+            });
+            document.getElementById('patientTable').innerHTML = patients.length ? patients.map(p => {
+                let chatBtnContent = '💬 Chat';
+                if (store.currentUser && store.currentUser.id) {
+                    const unreadCount = store.messages.filter(m => m.senderId === p.id && m.receiverId === store.currentUser.id && !m.read).length;
+                    if (unreadCount > 0) {
+                        chatBtnContent = `💬 Chat <span style="background:var(--red); color:#fff; padding:2px 6px; border-radius:10px; font-size:10px; margin-left:4px; font-weight:bold;">${unreadCount}</span>`;
+                    }
+                }
+                return `
+    <tr>
+      <td>
+        <div style="display:flex;align-items:center;">
+          <span class="avatar-sm" style="background:${avatarColor(p.name)};">${p.name[0]}</span>
+          <div>
+            <div style="font-weight:600;">${p.name}</div>
+            <div style="font-size:11px;color:var(--text2);">${p.phone}</div>
+          </div>
+        </div>
+      </td>
+      <td>${p.age} / ${p.gender}</td>
+      <td><span class="badge badge-blue">${p.bloodGroup}</span></td>
+      <td>${(p.conditions || []).map(c => `<span class="badge badge-gray" style="margin-right:3px;">${c}</span>`).join('')}</td>
+      <td>${statusBadge(p.status)}</td>
+      <td>${p.createdAt}</td>
+      <td>
+        <div style="display:flex;gap:6px;">
+          <button class="btn btn-primary btn-sm" onclick="showPrescribeMedicine('${p.id}')">💊 Prescribe</button>
+          <button class="btn btn-secondary btn-sm" onclick="openStaffChat('${p.id}')">${chatBtnContent}</button>
+          <button class="btn btn-secondary btn-sm" onclick="viewPatient('${p.id}')">View</button>
+          <button class="btn btn-secondary btn-sm" onclick="editPatient('${p.id}')">Edit</button>
+          <button class="btn btn-danger btn-sm" onclick="deletePatient('${p.id}')">Del</button>
+        </div>
+      </td>
+    </tr>
+  `;
+            }).join('') : `<tr><td colspan="7"><div class="empty-state"><div class="icon">👥</div><h3>No patients found</h3><p>Add your first patient to get started</p></div></td></tr>`;
+        }
+
+        function statusBadge(s) {
+            const map = { Active: 'badge-green', Critical: 'badge-red', Recovered: 'badge-blue', Scheduled: 'badge-yellow', Completed: 'badge-green', Cancelled: 'badge-red', Discharge: 'badge-purple' };
+            return `<span class="badge ${map[s] || 'badge-gray'}">${s}</span>`;
+        }
+
+        function trendBadge(t) {
+            if (t === 'increasing') return '<span class="trend-up">↑ Increasing</span>';
+            if (t === 'decreasing') return '<span class="trend-down">↓ Decreasing</span>';
+            return '<span class="trend-stable">→ Stable</span>';
+        }
+
+        function avatarColor(name) {
+            const colors = ['rgba(0,212,160,0.3)', 'rgba(0,153,255,0.3)', 'rgba(168,85,247,0.3)', 'rgba(255,107,107,0.3)', 'rgba(255,209,102,0.3)'];
+            return colors[name.charCodeAt(0) % colors.length];
+        }
+
+        function viewPatient(id) {
+            const p = store.patients.find(x => x.id === id);
+            const records = store.records.filter(r => r.patientId === id);
+            const appts = store.appointments.filter(a => a.patientId === id);
+            openModal('Patient Profile — ' + p.name, `
+    <div style="display:flex;align-items:center;gap:16px;margin-bottom:24px;">
+      <div class="user-avatar" style="width:56px;height:56px;font-size:22px;background:${avatarColor(p.name)};">${p.name[0]}</div>
+      <div>
+        <div style="font-size:18px;font-weight:700;">${p.name}</div>
+        <div style="font-size:13px;color:var(--text2);">${p.phone} · ${p.email}</div>
+        <div style="margin-top:6px;">${statusBadge(p.status)}</div>
+      </div>
+    </div>
+    <div class="detail-grid">
+      <div class="detail-item"><label>Age</label><span>${p.age} years</span></div>
+      <div class="detail-item"><label>Gender</label><span>${p.gender}</span></div>
+      <div class="detail-item"><label>Blood Group</label><span>${p.bloodGroup}</span></div>
+      <div class="detail-item"><label>Assigned Doctor</label><span>${p.assignedDoctorName ? p.assignedDoctorName : 'Unassigned'}</span></div>
+    </div>
+    <div style="margin-bottom:20px;">
+      <label style="font-size:11px;color:var(--text2);text-transform:uppercase;letter-spacing:.06em;">Conditions</label>
+      <div style="margin-top:8px;">${(p.conditions || []).map(c => `<span class="badge badge-yellow" style="margin-right:6px;margin-bottom:6px;">${c}</span>`).join('')}</div>
+    </div>
+    <div style="margin-bottom:20px;">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+        <label style="font-size:11px;color:var(--text2);text-transform:uppercase;letter-spacing:.06em;">Patient History (${records.length})</label>
+      </div>
+      ${records.map(r => `
+        <div style="background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:12px;margin-top:8px;">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;">
+            <strong>${r.title}</strong><span class="badge badge-blue">${r.type}</span>
+          </div>
+          <div style="font-size:12px;color:var(--text2);">${r.description}</div>
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-top:6px;">
+            <div style="font-size:11px;color:var(--text3);">${r.date}</div>
+            <div>
+              <button class="btn btn-secondary btn-sm" onclick="showEditRecord('${r.id}')" style="padding:2px 8px; font-size:11px; margin-right:4px;">✏️ Edit</button>
+              <button class="btn btn-secondary btn-sm" onclick="downloadSingleRecord('${r.id}')" style="padding:2px 8px; font-size:11px;">Download</button>
+            </div>
+          </div>
+        </div>
+      `).join('') || '<div style="color:var(--text2);font-size:13px;margin-top:8px;">No records yet</div>'}
+    </div>
+    <div>
+      <label style="font-size:11px;color:var(--text2);text-transform:uppercase;letter-spacing:.06em;">Appointments (${appts.length})</label>
+      ${appts.map(a => `
+        <div style="background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:12px;margin-top:8px;display:flex;justify-content:space-between;align-items:center;">
+          <div><strong>${a.type}</strong> — ${a.date} at ${a.time}<div style="font-size:12px;color:var(--text2);">${a.notes}</div></div>
+          ${statusBadge(a.status)}
+        </div>
+      `).join('') || '<div style="color:var(--text2);font-size:13px;margin-top:8px;">No appointments</div>'}
+    </div>
+  `);
+        }
+
+        function openStaffChat(patientId) {
+            const p = store.patients.find(x => x.id === patientId);
+            openModal('Chat with ' + p.name, `
+    <div style="height: 400px; display:flex; flex-direction:column; background:var(--bg3); border-radius:12px; overflow:hidden;">
+      <div id="staffChatBox" style="flex:1; overflow-y:auto; padding:16px; display:flex; flex-direction:column; gap:12px;"></div>
+      <div style="padding:12px; border-top:1px solid var(--border); display:flex; gap:8px;">
+        <input type="text" id="staffChatInput" placeholder="Type a message..." style="flex:1; background:var(--bg2); border:1px solid var(--border); border-radius:20px; padding:8px 16px; color:#fff; outline:none; font-size:13px;" onkeypress="if(event.key==='Enter') sendStaffMessage('${patientId}')">
+        <button class="btn btn-primary btn-sm" style="border-radius:20px; padding:0 16px;" onclick="sendStaffMessage('${patientId}')">Send</button>
+      </div>
+    </div>
+  `);
+            setTimeout(() => renderStaffChatContent(patientId), 0);
+        }
+
+        function renderStaffChatContent(patientId) {
+            const chatBox = document.getElementById('staffChatBox');
+            if (!chatBox) return;
+            
+            let markedRead = false;
+            store.messages.forEach(m => {
+                if (m.senderId === patientId && m.receiverId === store.currentUser.id && !m.read) {
+                    m.read = true;
+                    markedRead = true;
+                    fetch(`${API_URL}/messages/${m.id}/read`, {
+                        method: 'PUT',
+                        headers: { 'Authorization': `Bearer ${store.token}` }
+                    }).catch(e => {});
+                }
+            });
+            if (markedRead && store.currentPage === 'patients' && typeof renderPatients === 'function') {
+                renderPatients();
+            }
+
+            const myMessages = store.messages.filter(m => m.senderId === patientId || m.receiverId === patientId).sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp));
+            if (myMessages.length === 0) {
+                chatBox.innerHTML = '<div style="text-align:center; color:var(--text2); font-size:13px; margin-top:20px;">No messages yet. Send a message to start chatting.</div>';
+                return;
+            }
+            const currentUserId = store.currentUser.id;
+            chatBox.innerHTML = myMessages.map(m => {
+                const isMe = m.senderId === currentUserId;
+                return `
+      <div style="display:flex; justify-content:${isMe ? 'flex-end' : 'flex-start'};">
+        <div style="max-width:80%; padding:10px 14px; border-radius:12px; font-size:13px; line-height:1.4; ${isMe ? 'background:linear-gradient(135deg, var(--accent), #00b389); color:#0a0f1a; border-bottom-right-radius:2px;' : 'background:var(--surface); color:#fff; border-bottom-left-radius:2px; border:1px solid var(--border);'}">
+          ${m.content}
+          <div style="font-size:10px; opacity:0.7; margin-top:4px; text-align:${isMe ? 'right' : 'left'};">${new Date(m.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</div>
+        </div>
+      </div>
+    `;
+            }).join('');
+            chatBox.scrollTop = chatBox.scrollHeight;
+        }
+
+        async function sendStaffMessage(patientId) {
+            const input = document.getElementById('staffChatInput');
+            const content = input.value.trim();
+            if (!content) return;
+            input.value = '';
+            try {
+                const res = await fetch(`${API_URL}/messages`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${store.token}` },
+                    body: JSON.stringify({ senderId: store.currentUser.id, receiverId: patientId, content })
+                });
+                if (!res.ok) throw new Error('Failed to send');
+                const msg = await res.json();
+                store.messages.push(msg);
+                renderStaffChatContent(patientId);
+            } catch (err) {
+                showToast('Could not send message', 'error');
+            }
+        }
+
+        function editPatient(id) {
+            const p = store.patients.find(x => x.id === id);
+            const isDoctor = store.currentUser.role === 'doctor';
+            const ro = isDoctor ? 'disabled' : '';
+            openModal('Edit Patient', `
+    <div class="form-row">
+      <div class="form-group"><label>Full Name</label><input id="ep_name" value="${p.name}" ${ro}></div>
+      <div class="form-group"><label>Age</label><input id="ep_age" type="number" value="${p.age}" ${ro}></div>
+    </div>
+    <div class="form-row">
+      <div class="form-group"><label>Gender</label>
+        <select id="ep_gender" ${ro}><option ${p.gender === 'Male' ? 'selected' : ''}>Male</option><option ${p.gender === 'Female' ? 'selected' : ''}>Female</option><option ${p.gender === 'Other' ? 'selected' : ''}>Other</option></select>
+      </div>
+      <div class="form-group"><label>Blood Group</label>
+        <select id="ep_blood" ${ro}>${['A+', 'A-', 'B+', 'B-', 'O+', 'O-', 'AB+', 'AB-'].map(b => `<option ${p.bloodGroup === b ? 'selected' : ''}>${b}</option>`).join('')}</select>
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group"><label>Phone</label><input id="ep_phone" value="${p.phone}" ${ro}></div>
+      <div class="form-group"><label>Status</label>
+        <select id="ep_status">${['Active', 'Critical', 'Recovered'].map(s => `<option ${p.status === s ? 'selected' : ''}>${s}</option>`).join('')}</select>
+      </div>
+    </div>
+    <div class="form-group"><label>Assigned Doctor</label>
+      <select id="ep_doc"><option value="">-- Unassigned --</option>${store.users.filter(u => u.role === 'doctor').map(u => `<option value="${u.id}" ${p.assignedDoctor === u.id ? 'selected' : ''}>${u.name}</option>`).join('')}</select>
+    </div>
+    <div class="form-group"><label>Address</label><input id="ep_addr" value="${p.address}" ${ro}></div>
+    <div class="form-group"><label>Conditions (comma separated)</label><input id="ep_conditions" value="${(p.conditions || []).join(', ')}"></div>
+    ${isDoctor ? '<div style="font-size:12px; color:var(--text2); margin-bottom:10px;">Note: You can only update the patient status, conditions, and assigned doctor.</div>' : ''}
+    <div class="modal-actions">
+      <button class="btn btn-secondary" onclick="closeModal()">Cancel</button>
+      <button class="btn btn-primary" onclick="savePatient('${id}')">Save Changes</button>
+    </div>
+  `);
+        }
+
+        async function savePatient(id) {
+            const updateData = {
+                name: document.getElementById('ep_name').value,
+                age: +document.getElementById('ep_age').value,
+                gender: document.getElementById('ep_gender').value,
+                bloodGroup: document.getElementById('ep_blood').value,
+                phone: document.getElementById('ep_phone').value,
+                status: document.getElementById('ep_status').value,
+                assignedDoctor: document.getElementById('ep_doc').value,
+                address: document.getElementById('ep_addr').value,
+                conditions: document.getElementById('ep_conditions').value.split(',').map(s => s.trim()).filter(Boolean)
+            };
+
+            try {
+                const res = await fetch(`${API_URL}/patients/${id}`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${store.token}` },
+                    body: JSON.stringify(updateData)
+                });
+                if (!res.ok) throw new Error('Update failed');
+                const updatedPatient = await res.json();
+
+                const idx = store.patients.findIndex(x => x.id === id);
+                if (idx !== -1) store.patients[idx] = updatedPatient;
+
+                closeModal(); renderPatients();
+                showToast('Patient updated successfully', 'success');
+            } catch (err) {
+                showToast('Failed to update patient', 'error');
+            }
+        }
+
+        async function deletePatient(id) {
+            if (!confirm('Delete this patient? This cannot be undone.')) return;
+            try {
+                const res = await fetch(`${API_URL}/patients/${id}`, {
+                    method: 'DELETE',
+                    headers: { 'Authorization': `Bearer ${store.token}` }
+                });
+                if (!res.ok) throw new Error('Deletion failed');
+                store.patients = store.patients.filter(p => p.id !== id);
+                renderPatients(); showToast('Patient deleted', 'error');
+            } catch (err) {
+                showToast('Failed to delete patient', 'error');
+            }
+        }
+
+        function showPrescribeMedicine(patientId) {
+            const patient = store.patients.find(p => p.id === patientId);
+            const meds = store.inventory.filter(i => i.category === 'Medication' || i.category === 'Vaccine');
+            openModal('Prescribe Medicine — ' + patient.name, `
+    <div class="form-group"><label>Select Medicine from Inventory (Optional)</label>
+      <select id="pm_inv">
+        <option value="">-- Or type manually below --</option>
+        ${meds.map(m => `<option value="${m.name}">${m.name} (${m.quantity} ${m.unit || 'units'} in stock)</option>`).join('')}
+      </select>
+    </div>
+    <div class="form-group"><label>Medication Name & Dosage</label>
+      <input id="pm_name" placeholder="e.g. Paracetamol 500mg (or select from above)">
+    </div>
+    <div class="form-group"><label>Instructions</label>
+      <textarea id="pm_desc" placeholder="e.g. Take twice daily after meals for 5 days"></textarea>
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-secondary" onclick="closeModal()">Cancel</button>
+      <button class="btn btn-primary" onclick="submitPrescription('${patient.id}')">Issue Prescription</button>
+    </div>
+  `);
+
+            document.getElementById('pm_inv').addEventListener('change', (e) => {
+                if (e.target.value) {
+                    document.getElementById('pm_name').value = e.target.value;
+                }
+            });
+        }
+
+        async function submitPrescription(patientId) {
+            const medName = document.getElementById('pm_name').value.trim();
+            const desc = document.getElementById('pm_desc').value.trim();
+            if (!medName || !desc) {
+                showToast('Medication and instructions are required', 'error'); return;
+            }
+
+            const payload = {
+                patientId: patientId,
+                doctorId: store.currentUser?.id || 'admin',
+                type: 'Prescription',
+                date: new Date().toISOString().split('T')[0],
+                title: 'Prescription: ' + medName,
+                description: desc,
+                medications: [medName]
+            };
+
+            try {
+                const res = await fetch(`${API_URL}/records`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${store.token}` },
+                    body: JSON.stringify(payload)
+                });
+                if (!res.ok) throw new Error('Failed');
+                const record = await res.json();
+                store.records.push(record);
+                closeModal();
+                showToast('Prescription issued successfully', 'success');
+            } catch (err) {
+                showToast('Failed to issue prescription', 'error');
+            }
+        }
+
+        function showAddPatient() {
+            openModal('Add New Patient', `
+    <div class="form-row">
+      <div class="form-group"><label>Full Name</label><input id="np_name" placeholder="Patient full name"></div>
+      <div class="form-group"><label>Age</label><input id="np_age" type="number" placeholder="Age"></div>
+    </div>
+    <div class="form-row">
+      <div class="form-group"><label>Gender</label>
+        <select id="np_gender"><option>Male</option><option>Female</option><option>Other</option></select>
+      </div>
+      <div class="form-group"><label>Blood Group</label>
+        <select id="np_blood">${['A+', 'A-', 'B+', 'B-', 'O+', 'O-', 'AB+', 'AB-'].map(b => `<option>${b}</option>`).join('')}</select>
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group"><label>Phone</label><input id="np_phone" placeholder="Mobile number"></div>
+      <div class="form-group"><label>Email</label><input id="np_email" placeholder="Email address"></div>
+    </div>
+    <div class="form-group"><label>Assigned Doctor</label>
+      <select id="np_doc"><option value="">-- Unassigned --</option>${store.users.filter(u => u.role === 'doctor').map(u => `<option value="${u.id}">${u.name}</option>`).join('')}</select>
+    </div>
+    <div class="form-group"><label>Address</label><input id="np_addr" placeholder="Full address"></div>
+    <div class="form-group"><label>Conditions (comma separated)</label><input id="np_conditions" placeholder="e.g. Hypertension, Diabetes"></div>
+    <div class="modal-actions">
+      <button class="btn btn-secondary" onclick="closeModal()">Cancel</button>
+      <button class="btn btn-primary" onclick="addPatient()">Add Patient</button>
+    </div>
+  `);
+        }
+
+        async function addPatient() {
+            const name = document.getElementById('np_name').value.trim();
+            if (!name) { showToast('Name is required', 'error'); return; }
+
+            const payload = {
+                name, age: +document.getElementById('np_age').value,
+                gender: document.getElementById('np_gender').value,
+                bloodGroup: document.getElementById('np_blood').value,
+                phone: document.getElementById('np_phone').value,
+                email: document.getElementById('np_email').value,
+                assignedDoctor: document.getElementById('np_doc').value,
+                address: document.getElementById('np_addr').value,
+                conditions: document.getElementById('np_conditions').value.split(',').map(s => s.trim()).filter(Boolean),
+                status: 'Active'
+            };
+
+            try {
+                const res = await fetch(`${API_URL}/patients`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${store.token}` },
+                    body: JSON.stringify(payload)
+                });
+                if (!res.ok) throw new Error('Creation failed');
+                const newP = await res.json();
+
+                store.patients.push(newP);
+                closeModal(); renderPatients();
+                showToast('Patient ' + name + ' added successfully', 'success');
+            } catch (err) {
+                showToast('Failed to add patient', 'error');
+            }
+        }
+
+        // ── APPOINTMENTS ──────────────────────────────────────────────────────────────
+        let apptStatusFilter = '';
+        function filterApptStatus(v) { apptStatusFilter = v; renderAppointments(); }
+
+        function renderAppointments() {
+            let appts = store.appointments.filter(a => !apptStatusFilter || a.status === apptStatusFilter);
+            document.getElementById('appointmentTable').innerHTML = appts.map(a => {
+                const patient = store.patients.find(p => p.id === a.patientId);
+                const doctor = store.users.find(u => u.id === a.doctorId);
+                return `<tr>
+      <td>
+        <div style="display:flex;align-items:center;">
+          <span class="avatar-sm" style="background:${avatarColor(patient?.name || '?')};">${(patient?.name || '?')[0]}</span>
+          <span>${patient?.name || 'Unknown'}</span>
+        </div>
+      </td>
+      <td>${doctor?.name || 'Unknown'}</td>
+      <td><strong>${a.date}</strong> at ${a.time}</td>
+      <td><span class="badge badge-blue">${a.type}</span></td>
+      <td style="max-width:150px;font-size:12px;color:var(--text2);">${a.notes}</td>
+      <td>${statusBadge(a.status)}</td>
+      <td>
+        <div style="display:flex;gap:6px;">
+          ${a.status === 'Scheduled' ? `<button class="btn btn-secondary btn-sm" onclick="completeAppt('${a.id}')">Complete</button>` : ''}
+          <button class="btn btn-danger btn-sm" onclick="deleteAppt('${a.id}')">Cancel</button>
+        </div>
+      </td>
+    </tr>`;
+            }).join('') || `<tr><td colspan="7"><div class="empty-state"><div class="icon">📅</div><h3>No appointments found</h3></div></td></tr>`;
+        }
+
+        async function completeAppt(id) {
+            const a = store.appointments.find(x => x.id === id);
+            try {
+                const res = await fetch(`${API_URL}/appointments/${id}`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${store.token}` },
+                    body: JSON.stringify({ status: 'Completed' })
+                });
+                if (!res.ok) throw new Error('Failed');
+                a.status = 'Completed'; renderAppointments();
+                showToast('Appointment marked as completed', 'success');
+            } catch (err) {
+                showToast('Failed to update appointment', 'error');
+            }
+        }
+
+        async function deleteAppt(id) {
+            try {
+                const res = await fetch(`${API_URL}/appointments/${id}`, {
+                    method: 'DELETE',
+                    headers: { 'Authorization': `Bearer ${store.token}` }
+                });
+                if (!res.ok) throw new Error('Failed');
+                store.appointments = store.appointments.filter(a => a.id !== id);
+                renderAppointments(); showToast('Appointment cancelled', 'error');
+            } catch (err) {
+                showToast('Failed to delete appointment', 'error');
+            }
+        }
+
+        function showAddAppointment() {
+            openModal('Schedule New Appointment', `
+    <div class="form-group"><label>Patient</label>
+      <select id="na_patient">${store.patients.map(p => `<option value="${p.id}">${p.name}</option>`).join('')}</select>
+    </div>
+    <div class="form-row">
+      <div class="form-group"><label>Date</label><input id="na_date" type="date" value="${new Date().toISOString().split('T')[0]}"></div>
+      <div class="form-group"><label>Time</label><input id="na_time" type="time" value="09:00"></div>
+    </div>
+    <div class="form-group"><label>Appointment Type</label>
+      <select id="na_type"><option>Consultation</option><option>Follow-up</option><option>Emergency</option><option>Discharge</option><option>Lab Test</option></select>
+    </div>
+    <div class="form-group"><label>Notes</label><textarea id="na_notes" placeholder="Appointment notes..."></textarea></div>
+    <div class="modal-actions">
+      <button class="btn btn-secondary" onclick="closeModal()">Cancel</button>
+      <button class="btn btn-primary" onclick="addAppointment()">Schedule</button>
+    </div>
+  `);
+        }
+
+        async function addAppointment() {
+            const payload = {
+                patientId: document.getElementById('na_patient').value,
+                doctorId: store.currentUser.id,
+                date: document.getElementById('na_date').value,
+                time: document.getElementById('na_time').value,
+                type: document.getElementById('na_type').value,
+                notes: document.getElementById('na_notes').value,
+                status: 'Scheduled'
+            };
+            try {
+                const res = await fetch(`${API_URL}/appointments`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${store.token}` },
+                    body: JSON.stringify(payload)
+                });
+                if (!res.ok) throw new Error('Failed');
+                const appt = await res.json();
+                store.appointments.push(appt);
+                closeModal(); renderAppointments();
+                showToast('Appointment scheduled', 'success');
+            } catch (err) {
+                showToast('Failed to schedule appointment', 'error');
+            }
+        }
+
+        // ── RECORDS ───────────────────────────────────────────────────────────────────
+        function renderRecords() {
+            document.getElementById('recordTable').innerHTML = store.records.map(r => {
+                const patient = store.patients.find(p => p.id === r.patientId);
+                const typeColors = { Diagnosis: 'badge-yellow', 'Lab Result': 'badge-blue', Emergency: 'badge-red', Prescription: 'badge-green' };
+                return `<tr>
+      <td>
+        <div style="display:flex;align-items:center;">
+          <span class="avatar-sm" style="background:${avatarColor(patient?.name || '?')};">${(patient?.name || '?')[0]}</span>
+          <span>${patient?.name || 'Unknown'}</span>
+        </div>
+      </td>
+      <td><span class="badge ${typeColors[r.type] || 'badge-gray'}">${r.type}</span></td>
+      <td><strong>${r.title}</strong><div style="font-size:11px;color:var(--text2);max-width:240px;margin-top:2px;">${r.description.substring(0, 80)}...</div></td>
+      <td>${(r.medications || []).map(m => `<span class="badge badge-gray" style="margin-right:3px;">${m}</span>`).join('')}</td>
+      <td>${r.date}</td>
+      <td>
+        <button class="btn btn-secondary btn-sm" onclick="showEditRecord('${r.id}')" style="margin-right:4px;">Edit</button>
+        <button class="btn btn-secondary btn-sm" onclick="viewRecord('${r.id}')">View</button>
+      </td>
+    </tr>`;
+            }).join('') || `<tr><td colspan="6"><div class="empty-state"><div class="icon">📋</div><h3>No records found</h3></div></td></tr>`;
+        }
+
+        function viewRecord(id) {
+            const r = store.records.find(x => x.id === id);
+            const patient = store.patients.find(p => p.id === r.patientId);
+            openModal('Medical Record — ' + r.title, `
+    <div class="detail-grid">
+      <div class="detail-item"><label>Patient</label><span>${patient?.name}</span></div>
+      <div class="detail-item"><label>Record Type</label><span>${r.type}</span></div>
+      <div class="detail-item"><label>Date</label><span>${r.date}</span></div>
+    </div>
+    <div class="form-group" style="margin-bottom:16px;"><label>Description</label>
+      <div style="background:var(--bg3);padding:12px;border-radius:8px;border:1px solid var(--border);font-size:13px;line-height:1.6;">${r.description}</div>
+    </div>
+    <div><label style="font-size:11px;color:var(--text2);text-transform:uppercase;letter-spacing:.06em;display:block;margin-bottom:8px;">Medications</label>
+      ${(r.medications || []).map(m => `<span class="badge badge-green" style="margin-right:6px;">${m}</span>`).join('')}
+    </div>
+    <div style="margin-top:20px; display:flex; justify-content:flex-end;">
+      <button class="btn btn-secondary btn-sm" onclick="showEditRecord('${r.id}')">✏️ Edit Record</button>
+    </div>
+  `);
+        }
+
+        function showAddRecord() {
+            openModal('Add Medical Record', `
+    <div class="form-group"><label>Patient</label>
+      <select id="nr_patient">${store.patients.map(p => `<option value="${p.id}">${p.name}</option>`).join('')}</select>
+    </div>
+    <div class="form-row">
+      <div class="form-group"><label>Record Type</label>
+        <select id="nr_type"><option>Diagnosis</option><option>Lab Result</option><option>Emergency</option><option>Prescription</option></select>
+      </div>
+      <div class="form-group"><label>Date</label><input id="nr_date" type="date" value="${new Date().toISOString().split('T')[0]}"></div>
+    </div>
+    <div class="form-group"><label>Title</label><input id="nr_title" placeholder="Record title"></div>
+    <div class="form-group"><label>Description</label><textarea id="nr_desc" placeholder="Detailed description..."></textarea></div>
+    <div class="form-group"><label>Medications (comma separated)</label><input id="nr_meds" placeholder="e.g. Aspirin 325mg, Metformin 500mg"></div>
+    <div class="modal-actions">
+      <button class="btn btn-secondary" onclick="closeModal()">Cancel</button>
+      <button class="btn btn-primary" onclick="addRecord()">Save Record</button>
+    </div>
+  `);
+        }
+
+        async function addRecord() {
+            const title = document.getElementById('nr_title').value.trim();
+            const description = document.getElementById('nr_desc').value.trim();
+            if (!title || !description) { showToast('Title and description are required', 'error'); return; }
+            const payload = {
+                patientId: document.getElementById('nr_patient').value,
+                doctorId: store.currentUser.id,
+                type: document.getElementById('nr_type').value,
+                date: document.getElementById('nr_date').value,
+                title,
+                description,
+                medications: document.getElementById('nr_meds').value.split(',').map(s => s.trim()).filter(Boolean)
+            };
+            try {
+                const res = await fetch(`${API_URL}/records`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${store.token}` },
+                    body: JSON.stringify(payload)
+                });
+                if (!res.ok) throw new Error('Failed');
+                const record = await res.json();
+                store.records.push(record);
+                closeModal(); renderRecords();
+                showToast('Medical record saved', 'success');
+            } catch (err) {
+                showToast('Failed to save record', 'error');
+            }
+        }
+
+        // ── DISEASES ──────────────────────────────────────────────────────────────────
+        let diseaseCatFilter = '';
+        function filterDiseaseCategory(v) { diseaseCatFilter = v; renderDiseases(); }
+
+        function renderDiseases() {
+            let diseases = store.diseases.filter(d => !diseaseCatFilter || d.category === diseaseCatFilter);
+            document.getElementById('diseaseTable').innerHTML = diseases.map(d => `
+    <tr>
+      <td><strong>${d.name}</strong></td>
+      <td><span class="badge badge-blue">${d.category}</span></td>
+      <td><strong>${d.cases.toLocaleString()}</strong></td>
+      <td style="color:var(--yellow);">${d.active}</td>
+      <td style="color:var(--green);">${d.recovered}</td>
+      <td style="color:var(--red);">${d.deaths}</td>
+      <td style="font-size:12px;color:var(--text2);">${(d.affectedRegions || []).join(', ')}</td>
+      <td>${trendBadge(d.trend)}</td>
+      <td>
+        <div style="display:flex;gap:6px;">
+          <button class="btn btn-secondary btn-sm" onclick="editDisease('${d.id}')">Update</button>
+          <button class="btn btn-danger btn-sm" onclick="deleteDisease('${d.id}')">Del</button>
+        </div>
+      </td>
+    </tr>
+  `).join('');
+        }
+
+        function editDisease(id) {
+            const d = store.diseases.find(x => x.id === id);
+            openModal('Update Disease Data — ' + d.name, `
+    <div class="form-row">
+      <div class="form-group"><label>Total Cases</label><input id="ed_cases" type="number" value="${d.cases}"></div>
+      <div class="form-group"><label>Active Cases</label><input id="ed_active" type="number" value="${d.active}"></div>
+    </div>
+    <div class="form-row">
+      <div class="form-group"><label>Recovered</label><input id="ed_recovered" type="number" value="${d.recovered}"></div>
+      <div class="form-group"><label>Deaths</label><input id="ed_deaths" type="number" value="${d.deaths}"></div>
+    </div>
+    <div class="form-group"><label>Trend</label>
+      <select id="ed_trend">
+        <option ${d.trend === 'increasing' ? 'selected' : ''}>increasing</option>
+        <option ${d.trend === 'decreasing' ? 'selected' : ''}>decreasing</option>
+        <option ${d.trend === 'stable' ? 'selected' : ''}>stable</option>
+      </select>
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-secondary" onclick="closeModal()">Cancel</button>
+      <button class="btn btn-primary" onclick="saveDisease('${id}')">Update</button>
+    </div>
+  `);
+        }
+
+        async function saveDisease(id) {
+            const d = store.diseases.find(x => x.id === id);
+            const payload = {
+                cases: +document.getElementById('ed_cases').value,
+                active: +document.getElementById('ed_active').value,
+                recovered: +document.getElementById('ed_recovered').value,
+                deaths: +document.getElementById('ed_deaths').value,
+                trend: document.getElementById('ed_trend').value
+            };
+            try {
+                const res = await fetch(`${API_URL}/diseases/${id}`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${store.token}` },
+                    body: JSON.stringify(payload)
+                });
+                if (!res.ok) throw new Error('Failed');
+                Object.assign(d, payload);
+                closeModal(); renderDiseases();
+                showToast('Disease data updated', 'success');
+            } catch (err) {
+                showToast('Failed to update disease', 'error');
+            }
+        }
+
+        async function deleteDisease(id) {
+            try {
+                const res = await fetch(`${API_URL}/diseases/${id}`, {
+                    method: 'DELETE',
+                    headers: { 'Authorization': `Bearer ${store.token}` }
+                });
+                if (!res.ok) throw new Error('Failed');
+                store.diseases = store.diseases.filter(d => d.id !== id);
+                renderDiseases(); showToast('Disease record removed', 'error');
+            } catch (err) {
+                showToast('Failed to delete disease', 'error');
+            }
+        }
+
+        function showAddDisease() {
+            openModal('Report New Disease', `
+    <div class="form-row">
+      <div class="form-group"><label>Disease Name</label><input id="nd_name" placeholder="Disease name"></div>
+      <div class="form-group"><label>Category</label>
+        <select id="nd_cat"><option>Viral</option><option>Bacterial</option><option>Parasitic</option><option>Vector-Borne</option><option>Fungal</option></select>
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group"><label>Total Cases</label><input id="nd_cases" type="number" value="0"></div>
+      <div class="form-group"><label>Active Cases</label><input id="nd_active" type="number" value="0"></div>
+    </div>
+    <div class="form-row">
+      <div class="form-group"><label>Recovered</label><input id="nd_recovered" type="number" value="0"></div>
+      <div class="form-group"><label>Deaths</label><input id="nd_deaths" type="number" value="0"></div>
+    </div>
+    <div class="form-group"><label>Affected Regions (comma separated)</label><input id="nd_regions" placeholder="e.g. Mysuru, Bengaluru"></div>
+    <div class="form-group"><label>Trend</label>
+      <select id="nd_trend"><option>stable</option><option>increasing</option><option>decreasing</option></select>
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-secondary" onclick="closeModal()">Cancel</button>
+      <button class="btn btn-primary" onclick="addDisease()">Report Disease</button>
+    </div>
+  `);
+        }
+
+        async function addDisease() {
+            const payload = {
+                name: document.getElementById('nd_name').value,
+                category: document.getElementById('nd_cat').value,
+                cases: +document.getElementById('nd_cases').value,
+                active: +document.getElementById('nd_active').value,
+                recovered: +document.getElementById('nd_recovered').value,
+                deaths: +document.getElementById('nd_deaths').value,
+                affectedRegions: document.getElementById('nd_regions').value.split(',').map(s => s.trim()).filter(Boolean),
+                trend: document.getElementById('nd_trend').value
+            };
+            try {
+                const res = await fetch(`${API_URL}/diseases`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${store.token}` },
+                    body: JSON.stringify(payload)
+                });
+                if (!res.ok) throw new Error('Failed');
+                const d = await res.json();
+                store.diseases.push(d);
+                closeModal(); renderDiseases();
+                showToast('Disease reported to surveillance system', 'warning');
+            } catch (err) {
+                showToast('Failed to report disease', 'error');
+            }
+        }
+
+        // ── INVENTORY ──────────────────────────────────────────────────────────────────
+        function renderInventory() {
+            document.getElementById('inventoryTable').innerHTML = store.inventory.map(i => {
+                const pct = Math.min(100, Math.round((i.quantity / (i.minStock * 2)) * 100));
+                const barColor = i.status === 'Critical' ? 'var(--red)' : i.status === 'Low' ? 'var(--yellow)' : 'var(--green)';
+                return `<tr>
+      <td><strong>${i.name}</strong></td>
+      <td><span class="badge badge-purple">${i.category}</span></td>
+      <td>
+        <div class="inventory-bar-wrap">
+          <div class="progress-bar" style="width:120px;"><div class="progress-fill" style="width:${pct}%;background:${barColor};"></div></div>
+          <span style="font-size:12px;font-weight:600;">${i.quantity.toLocaleString()}</span>
+        </div>
+      </td>
+      <td style="color:var(--text2);">${i.unit}</td>
+      <td style="font-size:12px;">${i.expiryDate}</td>
+      <td style="font-size:12px;color:var(--text2);">${i.supplier}</td>
+      <td>${i.status === 'Adequate' ? '<span class="badge badge-green">Adequate</span>' : i.status === 'Low' ? '<span class="badge badge-yellow">Low Stock</span>' : '<span class="badge badge-red">Critical</span>'}</td>
+      <td>
+        <div style="display:flex;gap:6px;">
+          <button class="btn btn-secondary btn-sm" onclick="restockItem('${i.id}')">Restock</button>
+          <button class="btn btn-danger btn-sm" onclick="deleteItem('${i.id}')">Del</button>
+        </div>
+      </td>
+    </tr>`;
+            }).join('');
+            document.getElementById('lowStockCount').textContent = store.inventory.filter(i => i.status === 'Low').length;
+            document.getElementById('criticalStockCount').textContent = store.inventory.filter(i => i.status === 'Critical').length;
+        }
+
+        function restockItem(id) {
+            const i = store.inventory.find(x => x.id === id);
+            openModal('Restock — ' + i.name, `
+    <div class="form-group"><label>Current Quantity</label>
+      <input type="number" id="rs_qty" value="${i.quantity}">
+    </div>
+    <div class="form-group"><label>Add Quantity</label>
+      <input type="number" id="rs_add" value="0" placeholder="Amount to add">
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-secondary" onclick="closeModal()">Cancel</button>
+      <button class="btn btn-primary" onclick="saveRestock('${id}')">Update Stock</button>
+    </div>
+  `);
+        }
+
+        async function saveRestock(id) {
+            const i = store.inventory.find(x => x.id === id);
+            const newQty = +document.getElementById('rs_qty').value + +document.getElementById('rs_add').value;
+            const newStatus = newQty === 0 ? 'Critical' : newQty <= i.minStock ? 'Low' : 'Adequate';
+
+            try {
+                const res = await fetch(`${API_URL}/inventory/${id}`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${store.token}` },
+                    body: JSON.stringify({ quantity: newQty, status: newStatus })
+                });
+                if (!res.ok) throw new Error('Failed');
+                const updated = await res.json();
+
+                Object.assign(i, updated);
+                closeModal(); renderInventory();
+                showToast('Stock updated for ' + i.name, 'success');
+            } catch (err) {
+                showToast('Failed to update stock', 'error');
+            }
+        }
+
+        async function deleteItem(id) {
+            if (!confirm('Remove this item?')) return;
+            try {
+                const res = await fetch(`${API_URL}/inventory/${id}`, {
+                    method: 'DELETE',
+                    headers: { 'Authorization': `Bearer ${store.token}` }
+                });
+                if (!res.ok) throw new Error('Failed');
+                store.inventory = store.inventory.filter(i => i.id !== id);
+                renderInventory(); showToast('Item removed from inventory', 'error');
+            } catch (err) {
+                showToast('Failed to delete item', 'error');
+            }
+        }
+
+        function showAddInventory() {
+            openModal('Add Inventory Item', `
+    <div class="form-row">
+      <div class="form-group"><label>Item Name</label><input id="ni_name" placeholder="Medicine/supply name"></div>
+      <div class="form-group"><label>Category</label>
+        <select id="ni_cat"><option>Analgesic</option><option>Antibiotic</option><option>Cardiovascular</option><option>PPE</option><option>Hormone</option><option>Other</option></select>
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group"><label>Quantity</label><input id="ni_qty" type="number" placeholder="0"></div>
+      <div class="form-group"><label>Unit</label><input id="ni_unit" placeholder="tablets/vials/pieces"></div>
+    </div>
+    <div class="form-row">
+      <div class="form-group"><label>Min. Stock Level</label><input id="ni_min" type="number" placeholder="Minimum threshold"></div>
+      <div class="form-group"><label>Expiry Date</label><input id="ni_expiry" type="date"></div>
+    </div>
+    <div class="form-group"><label>Supplier</label><input id="ni_supplier" placeholder="Supplier name"></div>
+    <div class="modal-actions">
+      <button class="btn btn-secondary" onclick="closeModal()">Cancel</button>
+      <button class="btn btn-primary" onclick="addInventory()">Add Item</button>
+    </div>
+  `);
+        }
+
+        async function addInventory() {
+            const qty = +document.getElementById('ni_qty').value;
+            const min = +document.getElementById('ni_min').value;
+            const payload = {
+                name: document.getElementById('ni_name').value,
+                category: document.getElementById('ni_cat').value,
+                quantity: qty, unit: document.getElementById('ni_unit').value,
+                minStock: min, expiryDate: document.getElementById('ni_expiry').value,
+                supplier: document.getElementById('ni_supplier').value
+            };
+            try {
+                const res = await fetch(`${API_URL}/inventory`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${store.token}` },
+                    body: JSON.stringify(payload)
+                });
+                if (!res.ok) throw new Error('Failed');
+                const item = await res.json();
+                store.inventory.push(item);
+                closeModal(); renderInventory();
+                showToast('Inventory item added', 'success');
+            } catch (err) {
+                showToast('Failed to add inventory', 'error');
+            }
+        }
+
+        // ── USERS ─────────────────────────────────────────────────────────────────────
+        function renderUsers() {
+            const roleColors = { admin: 'badge-red', doctor: 'badge-blue', nurse: 'badge-green' };
+            document.getElementById('userTable').innerHTML = store.users.map(u => `
+    <tr>
+      <td>
+        <div style="display:flex;align-items:center;">
+          <span class="avatar-sm" style="background:${avatarColor(u.name)};">${u.name[0]}</span>
+          <strong>${u.name}</strong>
+        </div>
+      </td>
+      <td style="font-size:13px;color:var(--text2);">${u.email}</td>
+      <td><span class="badge ${roleColors[u.role] || 'badge-gray'}">${u.role}</span></td>
+      <td>${u.department}</td>
+      <td style="font-size:12px;color:var(--text2);">${u.createdAt}</td>
+      <td>
+        <button class="btn btn-danger btn-sm" onclick="deleteUser('${u.id}')">Remove</button>
+      </td>
+    </tr>
+  `).join('');
+        }
+
+        async function deleteUser(id) {
+            if (id === store.currentUser.id) { showToast('Cannot delete your own account', 'error'); return; }
+            if (!confirm('Remove this staff member?')) return;
+            try {
+                const res = await fetch(`${API_URL}/users/${id}`, {
+                    method: 'DELETE',
+                    headers: { 'Authorization': `Bearer ${store.token}` }
+                });
+                if (!res.ok) throw new Error('Failed');
+                store.users = store.users.filter(u => u.id !== id);
+                renderUsers(); showToast('Staff member removed', 'error');
+            } catch (err) {
+                showToast('Failed to remove staff member', 'error');
+            }
+        }
+
+        function showAddUser() {
+            openModal('Add Staff Member', `
+    <div class="form-row">
+      <div class="form-group"><label>Full Name</label><input id="nu_name" placeholder="Full name"></div>
+      <div class="form-group"><label>Email</label><input id="nu_email" placeholder="Email address"></div>
+    </div>
+    <div class="form-row">
+      <div class="form-group"><label>Role</label>
+        <select id="nu_role"><option value="doctor">Doctor</option><option value="nurse">Nurse</option><option value="admin">Admin</option></select>
+      </div>
+      <div class="form-group"><label>Department</label><input id="nu_dept" placeholder="Department"></div>
+    </div>
+    <div class="form-group"><label>Password</label><input type="password" id="nu_pwd" placeholder="Set password"></div>
+    <div class="modal-actions">
+      <button class="btn btn-secondary" onclick="closeModal()">Cancel</button>
+      <button class="btn btn-primary" onclick="addUser()">Add Staff</button>
+    </div>
+  `);
+        }
+
+        async function addUser() {
+            const name = document.getElementById('nu_name').value.trim();
+            const email = document.getElementById('nu_email').value.trim();
+            const role = document.getElementById('nu_role').value;
+            const department = document.getElementById('nu_dept').value.trim();
+            const password = document.getElementById('nu_pwd').value;
+
+            if (!name || !email || !department || !password) {
+                showToast('All fields are required', 'error'); return;
+            }
+
+            try {
+                const res = await fetch(`${API_URL}/users`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${store.token}` },
+                    body: JSON.stringify({ name, email, role, department, password })
+                });
+                const data = await res.json();
+                if (!res.ok) {
+                    showToast('' + (data.error || 'Failed to add staff'), 'error');
+                    return;
+                }
+
+                store.users.push(data);
+                closeModal(); renderUsers();
+                showToast('Staff member added', 'success');
+            } catch (err) {
+                showToast('Failed to add staff', 'error');
+            }
+        }
+
+        // ── MODAL ──────────────────────────────────────────────────────────────────────
+        function openModal(title, body) {
+            document.getElementById('modalTitle').textContent = title;
+            document.getElementById('modalBody').innerHTML = body;
+            const overlay = document.getElementById('modal');
+            overlay.style.display = 'flex';
+            setTimeout(() => overlay.classList.add('show'), 10);
+        }
+
+        function closeModal() {
+            const overlay = document.getElementById('modal');
+            overlay.classList.remove('show');
+            setTimeout(() => overlay.style.display = 'none', 200);
+        }
+
+        // ── TOAST ──────────────────────────────────────────────────────────────────────
+        function showToast(msg, type = 'info') {
+            const colors = { success: 'var(--green)', error: 'var(--red)', warning: 'var(--yellow)', info: 'var(--blue)' };
+            const toast = document.createElement('div');
+            toast.className = 'toast';
+            toast.innerHTML = `<span style="color:${colors[type]};font-size:16px;">${type === 'success' ? '✅' : type === 'error' ? '❌' : type === 'warning' ? '⚠️' : 'ℹ️'}</span><span>${msg}</span>`;
+            document.getElementById('toast-container').appendChild(toast);
+            setTimeout(() => toast.remove(), 3500);
+        }
+
+        function downloadSingleRecord(recordId) {
+            const r = store.records.find(x => x.id === recordId);
+            if (!r) return;
+            const p = store.patients.find(x => x.id === r.patientId);
+
+            const uniqueId = 'DOC-' + Date.now().toString(36).toUpperCase() + '-' + Math.random().toString(36).substr(2, 4).toUpperCase();
+            const downloadDate = new Date().toLocaleString();
+
+            let content = `
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+      <meta charset="utf-8">
+      <title>Medical Record - ${r.title}</title>
+      <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap');
+        body { font-family: 'Inter', sans-serif; background: #f4f7f6; color: #1e293b; line-height: 1.6; padding: 40px; display: flex; justify-content: center; }
+        .document { background: #fff; width: 100%; max-width: 800px; padding: 50px; box-shadow: 0 20px 40px rgba(0,0,0,0.08); border-radius: 12px; position: relative; overflow: hidden; }
+        .document::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 6px; background: linear-gradient(90deg, #00d4a0, #0099ff); }
+        .header { display: flex; justify-content: space-between; align-items: flex-start; border-bottom: 2px solid #f1f5f9; padding-bottom: 20px; margin-bottom: 30px; }
+        .logo { font-size: 28px; font-weight: 800; color: #0f172a; display: flex; align-items: center; gap: 8px; }
+        .doc-meta { text-align: right; font-size: 12px; color: #64748b; }
+        .doc-meta strong { color: #0f172a; }
+        h1 { font-size: 24px; margin: 0 0 5px 0; color: #0f172a; }
+        .badge { display: inline-block; padding: 4px 10px; background: #e0e7ff; color: #4338ca; border-radius: 20px; font-size: 12px; font-weight: 600; margin-bottom: 20px; }
+        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 30px; background: #f8fafc; padding: 20px; border-radius: 8px; border: 1px solid #e2e8f0; }
+        .field { display: flex; flex-direction: column; gap: 4px; }
+        .label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.05em; color: #64748b; font-weight: 600; }
+        .value { font-size: 15px; font-weight: 600; color: #0f172a; }
+        .section-title { font-size: 16px; font-weight: 600; color: #0f172a; border-bottom: 1px solid #e2e8f0; padding-bottom: 8px; margin-bottom: 16px; margin-top: 30px; }
+        .description { font-size: 15px; color: #334155; background: #f8fafc; padding: 20px; border-radius: 8px; border-left: 4px solid #0099ff; white-space: pre-wrap; }
+        .med-list { list-style: none; padding: 0; display: flex; flex-wrap: wrap; gap: 10px; }
+        .med-tag { background: #d1fae5; color: #059669; padding: 6px 12px; border-radius: 6px; font-size: 13px; font-weight: 600; display: flex; align-items: center; gap: 6px; }
+        .footer { margin-top: 50px; padding-top: 20px; border-top: 1px dashed #cbd5e1; text-align: center; font-size: 12px; color: #94a3b8; }
+      </style>
+    </head>
+    <body>
+      <div class="document">
+        <div class="header">
+          <div class="logo"><span style="font-size: 32px;">🏥</span> PHMS</div>
+          <div class="doc-meta">
+            <div>Document ID: <strong>${uniqueId}</strong></div>
+            <div>Generated: <strong>${downloadDate}</strong></div>
+          </div>
+        </div>
+        
+        <h1>${r.title}</h1>
+        <div class="badge">${r.type}</div>
+        
+        <div class="grid">
+          ${p ? `
+          <div class="field"><span class="label">Patient Name</span><span class="value">${p.name}</span></div>
+          <div class="field"><span class="label">Patient ID</span><span class="value">${p.id}</span></div>
+          <div class="field"><span class="label">Age / Gender</span><span class="value">${p.age} Yrs / ${p.gender}</span></div>
+          <div class="field"><span class="label">Blood Group</span><span class="value">${p.bloodGroup}</span></div>
+          ` : ''}
+          <div class="field"><span class="label">Record Date</span><span class="value">${r.date}</span></div>
+        </div>
+        
+        <div class="section-title">Clinical Notes & Description</div>
+        <div class="description">${r.description}</div>
+  `;
+
+            if (r.medications && r.medications.length > 0) {
+                content += `
+        <div class="section-title">Prescribed Medications</div>
+        <ul class="med-list">
+          ${r.medications.map(m => `<li class="med-tag"><span>💊</span> ${m}</li>`).join('')}
+        </ul>
+    `;
+            }
+
+            content += `
+        <div class="footer">
+          This document is generated by the Public Health Management System (PHMS).<br>
+          For official medical use only. Keep this document secure.
+        </div>
+      </div>
+    </body>
+    </html>
+  `;
+
+            const blob = new Blob([content], { type: 'text/html' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `PHMS_Record_${uniqueId}.html`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            showToast('Document download started', 'success');
+        }
+
+        function escapeHTML(str) {
+            if (!str) return '';
+            return str.replace(/&/g, '&amp;')
+                      .replace(/</g, '&lt;')
+                      .replace(/>/g, '&gt;')
+                      .replace(/"/g, '&quot;')
+                      .replace(/'/g, '&#39;');
+        }
+
+        function showEditRecord(id) {
+            const r = store.records.find(x => x.id === id);
+            if (!r) return;
+            
+            openModal('Edit Medical Record', `
+              <div class="form-row">
+                <div class="form-group"><label for="ur_type">Record Type</label>
+                  <select id="ur_type">
+                    <option ${r.type === 'Diagnosis' ? 'selected' : ''}>Diagnosis</option>
+                    <option ${r.type === 'Lab Result' ? 'selected' : ''}>Lab Result</option>
+                    <option ${r.type === 'Emergency' ? 'selected' : ''}>Emergency</option>
+                    <option ${r.type === 'Prescription' ? 'selected' : ''}>Prescription</option>
+                  </select>
+                </div>
+                <div class="form-group"><label for="ur_date">Date</label><input id="ur_date" type="date" value="${r.date}"></div>
+              </div>
+              <div class="form-group"><label for="ur_title">Title</label><input id="ur_title" value="${escapeHTML(r.title)}" placeholder="Record title"></div>
+              <div class="form-group"><label for="ur_desc">Description</label><textarea id="ur_desc" placeholder="Detailed description...">${escapeHTML(r.description)}</textarea></div>
+              <div class="form-group"><label for="ur_meds">Medications (comma separated)</label><input id="ur_meds" value="${(r.medications || []).join(', ')}" placeholder="e.g. Aspirin 325mg, Metformin 500mg"></div>
+              <div class="modal-actions">
+                <button class="btn btn-secondary" onclick="closeModal()">Cancel</button>
+                <button class="btn btn-primary" onclick="updateRecord('${r.id}')">Update Record</button>
+              </div>
+            `);
+        }
+
+        async function updateRecord(id) {
+            const r = store.records.find(x => x.id === id);
+            if (!r) return;
+            
+            const title = document.getElementById('ur_title').value.trim();
+            const description = document.getElementById('ur_desc').value.trim();
+            if (!title || !description) { showToast('❌ Title and description are required', 'error'); return; }
+            
+            r.title = title;
+            r.description = description;
+            r.type = document.getElementById('ur_type').value;
+            r.date = document.getElementById('ur_date').value;
+            r.medications = document.getElementById('ur_meds').value.split(',').map(s => s.trim()).filter(Boolean);
+            
+            try {
+                const res = await fetch(`${API_URL}/records/${id}`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${store.token}` },
+                    body: JSON.stringify(r)
+                });
+                if (res.ok) {
+                    const updated = await res.json();
+                    Object.assign(r, updated);
+                }
+            } catch (e) {
+                // local save will take over
+            }
+
+            closeModal();
+            
+            if (store.currentUser && store.currentUser.id && store.currentUser.id.startsWith('p')) {
+                renderPatientPortal(store.currentUser);
+            } else if (store.currentPage) {
+                renderPage(store.currentPage);
+                if (typeof renderRecords === 'function') renderRecords();
+            }
+            
+            showToast('Record updated successfully', 'success');
+        }
+
+        let messagePollInterval = null;
+
+        function startMessagePolling() {
+            if (messagePollInterval) clearInterval(messagePollInterval);
+            messagePollInterval = setInterval(async () => {
+                if (!store.token || !store.currentUser) return;
+                
+                try {
+                    const res = await fetch(`${API_URL}/messages`, {
+                        headers: { 'Authorization': `Bearer ${store.token}` }
+                    });
+                    if (res.ok) {
+                        const messages = await res.json();
+                        const myId = store.currentUser.id;
+                        
+                        const newMessages = messages.filter(m => 
+                            (m.receiverId === myId) && 
+                            !store.messages.find(existing => existing.id === m.id)
+                        );
+                        
+                        store.messages = messages;
+
+                        if (newMessages.length > 0) {
+                            store.unreadMessagesCount = (store.unreadMessagesCount || 0) + newMessages.length;
+                            const dot = document.getElementById('alertDot');
+                            if (dot) dot.style.display = 'block';
+
+                            newMessages.forEach(msg => {
+                                const sender = store.users.find(u => u.id === msg.senderId) || store.patients.find(p => p.id === msg.senderId);
+                                const senderName = sender ? sender.name : 'Unknown';
+                                showToast(`New message from ${senderName}`, 'success');
+                            });
+                            
+                            if (store.currentUser.role === 'patient') {
+                                if (document.getElementById('patientChatBox')) {
+                                    renderPatientChat(myId);
+                                }
+                            } else {
+                                const chatBox = document.getElementById('staffChatBox');
+                                if (chatBox && document.getElementById('modal').classList.contains('show')) {
+                                    const sendBtn = chatBox.nextElementSibling.querySelector('button');
+                                    if (sendBtn) {
+                                        const match = sendBtn.getAttribute('onclick').match(/'([^']+)'/);
+                                        if (match && match[1]) {
+                                            renderStaffChatContent(match[1]);
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        
+                        // Update UI if we're on patients page to show badges on chat buttons
+                        if (store.currentPage === 'patients' && typeof renderPatients === 'function') {
+                            renderPatients();
+                        }
+                    }
+                } catch (e) {
+                    // silent ignore
+                }
+            }, 3000);
+        }
+
+        function handleBellClick() {
+            if (store.unreadMessagesCount > 0) {
+                showToast(`📥 You have ${store.unreadMessagesCount} unread messages`, 'info');
+                store.unreadMessagesCount = 0;
+                const dot = document.getElementById('alertDot');
+                if (dot) dot.style.display = 'none';
+            } else {
+                showToast('📋 No new alerts', 'info');
+            }
+        }
+
+        startMessagePolling();
+    </script>
+</body>
+
+</html>

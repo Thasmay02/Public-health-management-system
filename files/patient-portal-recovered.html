@@ -1,0 +1,2354 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Patient Portal — Public Health Management System</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Syne:wght@600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #070913;
+    --bg-gradient: radial-gradient(circle at 10% 20%, rgba(15, 23, 42, 0.9) 0%, rgba(7, 9, 19, 0.98) 100%);
+    --card-bg: rgba(16, 22, 38, 0.65);
+    --card-hover: rgba(22, 32, 55, 0.85);
+    --card-border: rgba(255, 255, 255, 0.08);
+    --card-border-glow: rgba(0, 153, 255, 0.15);
+    --input-bg: rgba(10, 15, 26, 0.6);
+    --input-border: rgba(255, 255, 255, 0.12);
+    --input-focus: #0099ff;
+    
+    --accent: #0099ff; /* Electric Blue */
+    --accent2: #00f0b5; /* Tech Emerald */
+    --accent3: #ff4757; /* Warning Coral */
+    --accent4: #ffd166; /* Warning Gold */
+    --purple: #b800ff; /* Purple */
+    
+    --text: #f8fafc;
+    --text2: #94a3b8;
+    --text3: #475569;
+    --border: rgba(255, 255, 255, 0.08);
+    --sidebar-w: 260px;
+    --header-h: 70px;
+    --radius: 16px;
+    --radius-sm: 8px;
+    --shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.4);
+    --transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { height: 100%; font-family: 'Inter', sans-serif; background-color: var(--bg); background-image: var(--bg-gradient); color: var(--text); overflow: hidden; }
+
+  /* ── BACKGROUND FLOATS ── */
+  .bg-blob {
+    position: absolute;
+    width: 500px;
+    height: 500px;
+    border-radius: 50%;
+    filter: blur(120px);
+    opacity: 0.06;
+    pointer-events: none;
+    z-index: 0;
+    animation: float 25s infinite alternate;
+  }
+  .bg-blob-1 {
+    background: var(--accent);
+    top: -10%;
+    left: -10%;
+    animation-duration: 20s;
+  }
+  .bg-blob-2 {
+    background: var(--accent2);
+    bottom: -10%;
+    right: -10%;
+    animation-duration: 25s;
+    animation-delay: -5s;
+  }
+  .bg-blob-3 {
+    background: var(--purple);
+    top: 40%;
+    left: 40%;
+    animation-duration: 30s;
+    animation-delay: -10s;
+  }
+  @keyframes float {
+    0% { transform: translate(0, 0) scale(1); }
+    50% { transform: translate(60px, 90px) scale(1.1); }
+    100% { transform: translate(-30px, -50px) scale(0.95); }
+  }
+
+  /* ── LAYOUT ── */
+  #app { display: flex; height: 100vh; overflow: hidden; position: relative; z-index: 1; }
+  
+  /* ── LOGIN PAGE ── */
+  #loginPage {
+    width: 100vw; height: 100vh;
+    display: flex; align-items: center; justify-content: center;
+    background: linear-gradient(135deg, rgba(7, 9, 19, 0.8) 0%, rgba(15, 23, 42, 0.85) 100%), url('medical_tech_bg.png') no-repeat center center;
+    background-size: cover;
+    overflow-y: auto; padding: 24px 0;
+    position: relative; z-index: 10;
+  }
+  .login-card {
+    width: 460px; max-width: 95vw;
+    background: var(--card-bg); border: 1px solid var(--card-border);
+    border-radius: 24px; box-shadow: var(--shadow); overflow: hidden;
+    backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+    transition: var(--transition); padding: 40px;
+  }
+  .login-card:hover {
+    border-color: rgba(0, 153, 255, 0.2);
+    box-shadow: 0 12px 40px rgba(0, 153, 255, 0.05);
+  }
+  .login-logo { display: flex; align-items: center; gap: 14px; margin-bottom: 30px; }
+  .login-logo .icon {
+    width: 52px; height: 52px; border-radius: 14px;
+    background: rgba(16, 22, 38, 0.6) !important;
+    border: 1px solid rgba(255, 255, 255, 0.12) !important;
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 4px 15px rgba(0, 240, 181, 0.15);
+    padding: 7px;
+    transition: var(--transition);
+  }
+  .login-logo h1 { font-family: 'Syne', sans-serif; font-size: 24px; font-weight: 800; letter-spacing: -0.5px; }
+  .login-logo small { display: block; font-size: 11px; color: var(--text2); font-weight: 400; margin-top: 1px; }
+
+  /* ── LOGO SVG STYLING ── */
+  .logo-svg {
+    width: 100%;
+    height: 100%;
+    display: block;
+    overflow: visible;
+  }
+  
+  .logo-ring-rotate {
+    transform-origin: 16px 16px;
+    animation: logoRingRotate 15s linear infinite;
+  }
+  
+  @keyframes logoRingRotate {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+
+  .form-group { margin-bottom: 20px; }
+  .form-group label { display: block; font-size: 11px; font-weight: 600; color: var(--text2); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 8px; }
+  .form-group input, .form-group select, .form-group textarea {
+    width: 100%; padding: 12px 16px;
+    background: var(--input-bg); border: 1px solid var(--input-border);
+    border-radius: 12px; color: var(--text); font-family: inherit; font-size: 14px;
+    transition: var(--transition); outline: none;
+  }
+  .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+    border-color: var(--input-focus); box-shadow: 0 0 0 4px rgba(0, 153, 255, 0.15); background: rgba(10, 15, 26, 0.8);
+  }
+  .form-group select option { background: #0c111d; }
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+
+  /* ── BUTTONS ── */
+  .btn {
+    padding: 14px 28px; border: none; border-radius: 12px;
+    font-family: inherit; font-size: 14px; font-weight: 600; cursor: pointer;
+    transition: var(--transition); display: inline-flex; align-items: center; gap: 10px; justify-content: center;
+  }
+  .btn-primary { background: linear-gradient(135deg, var(--accent), #0077cc); color: #ffffff; box-shadow: 0 4px 15px rgba(0, 153, 255, 0.15); }
+  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0, 153, 255, 0.3); }
+  .btn-secondary { background: rgba(255, 255, 255, 0.05); border: 1px solid var(--border); color: var(--text); }
+  .btn-secondary:hover { background: rgba(255, 255, 255, 0.1); transform: translateY(-1px); }
+  .btn-full { width: 100%; justify-content: center; }
+
+  .alert { padding: 14px 20px; border-radius: 12px; font-size: 13px; line-height: 1.4; display: flex; align-items: center; gap: 12px; margin-bottom: 16px; border: 1px solid transparent; }
+  .alert-error { background: rgba(255,71,87,0.06); border-color: rgba(255,71,87,0.15); color: var(--accent3); }
+
+  .demo-creds { margin-top: 20px; padding: 16px; background: rgba(255,255,255,0.02); border-radius: 12px; border: 1px solid var(--border); }
+  .demo-creds p { font-size: 12px; color: var(--text2); margin-bottom: 8px; line-height: 1.5; }
+  .demo-creds code { font-size: 11px; color: var(--accent); background: rgba(0, 153, 255, 0.1); padding: 2px 6px; border-radius: 4px; font-family: monospace; }
+
+  /* ── SIDEBAR ── */
+  #sidebar {
+    width: var(--sidebar-w); height: 100vh; background: rgba(10, 15, 30, 0.6);
+    backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+    border-right: 1px solid var(--border);
+    display: flex; flex-direction: column;
+    flex-shrink: 0; overflow: hidden;
+  }
+  .sidebar-header {
+    height: var(--header-h); padding: 0 24px;
+    display: flex; align-items: center; gap: 12px;
+    border-bottom: 1px solid var(--border);
+  }
+  .sidebar-logo {
+    width: 42px; height: 42px; border-radius: 12px;
+    background: rgba(16, 22, 38, 0.6) !important;
+    border: 1px solid rgba(255, 255, 255, 0.12) !important;
+    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+    box-shadow: 0 4px 12px rgba(0, 240, 181, 0.15);
+    padding: 6px;
+    transition: var(--transition);
+  }
+  .sidebar-title { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 16px; letter-spacing: -0.5px; white-space: nowrap; }
+  .sidebar-sub { font-size: 11px; color: var(--text2); margin-top: 1px; }
+
+  .nav-section { padding: 20px 16px 0; }
+  .nav-label { font-size: 10px; text-transform: uppercase; letter-spacing: 0.15em; color: var(--text3); padding: 0 12px; margin-bottom: 10px; font-weight: 700; }
+  .nav-item {
+    display: flex; align-items: center; gap: 12px;
+    padding: 12px 14px; border-radius: 12px; cursor: pointer;
+    font-size: 14px; font-weight: 500; color: var(--text2);
+    transition: var(--transition); white-space: nowrap; position: relative;
+    margin-bottom: 4px;
+  }
+  .nav-item:hover { background: rgba(255, 255, 255, 0.03); color: var(--text); padding-left: 18px; }
+  .nav-item.active { background: rgba(0, 153, 255, 0.08); color: var(--accent); font-weight: 600; }
+  .nav-item.active::before { content: ''; position: absolute; left: 0; top: 50%; transform: translateY(-50%); width: 4px; height: 24px; background: var(--accent); border-radius: 0 4px 4px 0; box-shadow: 0 0 10px var(--accent); }
+  .nav-icon { width: 20px; text-align: center; font-size: 18px; flex-shrink: 0; }
+
+  .sidebar-footer { margin-top: auto; padding: 20px 16px; border-top: 1px solid var(--border); background: rgba(5, 8, 16, 0.4); }
+  .user-card { display: flex; align-items: center; gap: 12px; }
+  .user-avatar {
+    width: 40px; height: 40px; border-radius: 50%;
+    background: linear-gradient(135deg, var(--accent), var(--purple));
+    display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 14px; color: white; flex-shrink: 0;
+    box-shadow: 0 4px 10px rgba(0, 153, 255, 0.2);
+  }
+  .user-name { font-size: 13px; font-weight: 600; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 120px; }
+  .user-role { font-size: 11px; color: var(--text2); margin-top: 1px; }
+  .logout-btn {
+    margin-left: auto; background: rgba(255, 71, 87, 0.1); border: 1px solid rgba(255, 71, 87, 0.2);
+    color: var(--accent3); cursor: pointer; font-size: 16px; width: 32px; height: 32px;
+    display: flex; align-items: center; justify-content: center; border-radius: 8px; transition: var(--transition);
+  }
+  .logout-btn:hover { background: var(--accent3); color: #fff; box-shadow: 0 4px 12px rgba(255, 71, 87, 0.3); }
+
+  /* ── MAIN ── */
+  #main { flex: 1; display: flex; flex-direction: column; overflow: hidden; background: transparent; position: relative; z-index: 1; }
+  #header {
+    height: var(--header-h); padding: 0 32px;
+    background: rgba(10, 15, 30, 0.4); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+    border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: space-between;
+    flex-shrink: 0;
+  }
+  .header-left h2 { font-family: 'Syne', sans-serif; font-size: 20px; font-weight: 700; letter-spacing: -0.5px; }
+  .header-left p { font-size: 12px; color: var(--text2); margin-top: 2px; }
+  #content { flex: 1; overflow-y: auto; padding: 32px; z-index: 10; }
+
+  /* ── CARDS ── */
+  .section-card { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: var(--radius); overflow: hidden; margin-bottom: 24px; backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); transition: var(--transition); }
+  .section-card:hover { border-color: rgba(255, 255, 255, 0.12); }
+  .section-header { padding: 24px 28px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+  .section-header h3 { font-family: 'Syne', sans-serif; font-size: 16px; font-weight: 700; }
+  
+  .detail-grid { display: grid; grid-template-columns: 1fr; gap: 12px; }
+  .detail-item label { display: block; font-size: 10px; text-transform: uppercase; letter-spacing: .06em; color: var(--text2); margin-bottom: 4px; font-weight: 600; }
+  .detail-item span { font-size: 13px; font-weight: 600; color: var(--text); }
+  
+  .badge { display: inline-flex; align-items: center; padding: 4px 12px; border-radius: 20px; font-size: 11px; font-weight: 700; letter-spacing: 0.02em; border: 1px solid transparent; }
+  .badge-green { background: rgba(0, 240, 181, 0.1); color: var(--accent2); border-color: rgba(0, 240, 181, 0.2); }
+  .badge-red { background: rgba(255, 71, 87, 0.1); color: var(--accent3); border-color: rgba(255, 71, 87, 0.2); }
+  .badge-yellow { background: rgba(255, 209, 102, 0.1); color: var(--accent4); border-color: rgba(255, 209, 102, 0.2); }
+  .badge-blue { background: rgba(0, 153, 255, 0.1); color: var(--accent); border-color: rgba(0, 153, 255, 0.2); }
+  .badge-purple { background: rgba(168, 85, 247, 0.1); color: var(--purple); border-color: rgba(168, 85, 247, 0.2); }
+  .badge-gray { background: rgba(148, 163, 184, 0.1); color: var(--text2); border-color: rgba(148, 163, 184, 0.2); }
+  
+  table { width: 100%; border-collapse: collapse; text-align: left; }
+  thead th { padding: 16px 24px; font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text2); font-weight: 700; border-bottom: 1px solid var(--border); background: rgba(5, 8, 16, 0.4); }
+  tbody td { padding: 18px 24px; font-size: 14px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); vertical-align: middle; color: var(--text); transition: var(--transition); }
+  tbody tr { transition: var(--transition); }
+  tbody tr:hover td { background: rgba(255, 255, 255, 0.02); }
+  tbody tr:last-child td { border-bottom: none; }
+
+  /* Toast & Utilities */
+  #toast-container { position: fixed; bottom: 32px; right: 32px; display: flex; flex-direction: column; gap: 12px; z-index: 2000; }
+  .toast {
+    background: rgba(16, 22, 38, 0.9); border: 1px solid var(--border); border-radius: 14px;
+    padding: 16px 24px; font-size: 13px; font-weight: 600; min-width: 300px;
+    display: flex; align-items: center; gap: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+    animation: toastIn .3s ease forwards;
+  }
+  @keyframes toastIn { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+
+  .empty-state { display: flex; flex-direction: column; align-items: center; text-align: center; padding: 40px; }
+  .empty-state .icon { font-size: 40px; margin-bottom: 12px; opacity: 0.8; }
+  .empty-state h3 { font-family: 'Syne', sans-serif; font-size: 16px; margin-bottom: 6px; color: var(--text); }
+  .empty-state p { font-size: 12px; color: var(--text2); max-width: 280px; }
+
+  /* Modals */
+  .modal-overlay {
+    position: fixed; inset: 0; background: rgba(3, 5, 10, 0.85); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+    display: flex; align-items: center; justify-content: center; z-index: 1000; opacity: 0; pointer-events: none; transition: opacity 0.3s ease;
+  }
+  .modal-overlay.show { opacity: 1; pointer-events: auto; }
+  .modal {
+    background: rgba(16, 22, 38, 0.95); border: 1px solid var(--border); border-radius: 24px;
+    width: 620px; max-width: 95vw; max-height: 90vh; overflow-y: auto; padding: 36px;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6); transform: scale(0.95) translateY(20px);
+    transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+  .modal-overlay.show .modal { transform: scale(1) translateY(0); }
+  .modal-title { font-family: 'Syne', sans-serif; font-size: 20px; font-weight: 700; margin-bottom: 24px; display: flex; align-items: center; justify-content: space-between; color: var(--text); }
+  .modal-close {
+    background: rgba(255, 255, 255, 0.05); border: 1px solid var(--border); color: var(--text2); cursor: pointer;
+    font-size: 16px; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; border-radius: 50%; transition: var(--transition);
+  }
+  .modal-close:hover { background: rgba(255, 71, 87, 0.15); color: var(--accent); border-color: rgba(255, 71, 87, 0.3); }
+  .modal-actions { display: flex; justify-content: flex-end; gap: 16px; margin-top: 24px; }
+  
+  /* Formal Letter Styling */
+  .letter-preview {
+    background: #ffffff;
+    color: #0f172a;
+    padding: 36px;
+    border-radius: 16px;
+    font-family: 'Georgia', 'Times New Roman', serif;
+    font-size: 14px;
+    line-height: 1.6;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+    margin-top: 15px;
+    border: 1px solid #e2e8f0;
+    max-height: 400px;
+    overflow-y: auto;
+    position: relative;
+    text-align: left;
+  }
+  .letter-head {
+    text-align: center;
+    border-bottom: 2px double #cbd5e1;
+    padding-bottom: 12px;
+    margin-bottom: 24px;
+  }
+  .letter-head h4 {
+    font-family: 'Syne', sans-serif;
+    color: #0077cc;
+    font-size: 16px;
+    font-weight: 800;
+    letter-spacing: 1px;
+    margin-bottom: 2px;
+  }
+  .letter-head p {
+    font-family: 'Inter', sans-serif;
+    font-size: 11px;
+    color: #64748b;
+    margin: 0;
+  }
+  .letter-meta {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 24px;
+    font-family: 'Inter', sans-serif;
+    font-size: 12px;
+    color: #475569;
+  }
+  .letter-meta-col {
+    width: 45%;
+    line-height: 1.5;
+  }
+  .letter-date {
+    margin-bottom: 20px;
+    font-family: 'Inter', sans-serif;
+    font-size: 13px;
+    color: #475569;
+  }
+  .letter-subject {
+    font-family: 'Inter', sans-serif;
+    font-weight: 700;
+    margin-bottom: 24px;
+    text-transform: uppercase;
+    font-size: 13px;
+    color: #0f172a;
+    border-left: 3px solid #0099ff;
+    padding-left: 10px;
+  }
+  .letter-body {
+    white-space: pre-wrap;
+    margin-bottom: 32px;
+    color: #334155;
+  }
+  .letter-signature-block {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-top: 40px;
+    font-family: 'Inter', sans-serif;
+    font-size: 12px;
+    color: #475569;
+  }
+  .letter-sign-line {
+    border-top: 1px solid #94a3b8;
+    width: 150px;
+    margin-top: 40px;
+    text-align: center;
+    padding-top: 4px;
+  }
+  .password-toggle-btn:hover {
+    color: var(--text) !important;
+    transform: translateY(-50%) scale(1.15) !important;
+  }
+
+  .med-history-card {
+    transition: var(--transition) !important;
+  }
+  .med-history-card:hover {
+    background: rgba(255, 255, 255, 0.03) !important;
+    border-color: rgba(255, 255, 255, 0.15) !important;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+  }
+</style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script>
+</head>
+<body>
+<div class="bg-blob bg-blob-1"></div>
+<div class="bg-blob bg-blob-2"></div>
+<div class="bg-blob bg-blob-3"></div>
+<!-- PATIENT AUTH PAGE -->
+<div id="loginPage">
+  <div class="login-card" id="authCard">
+    <div class="login-logo">
+      <div class="icon">
+        <svg class="logo-svg" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="healthGradLogin" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="var(--accent, #00f0b5)" />
+              <stop offset="100%" stop-color="var(--accent2, #0099ff)" />
+            </linearGradient>
+            <filter id="logoGlowLogin" x="-20%" y="-20%" width="140%" height="140%">
+              <feGaussianBlur stdDeviation="1.5" result="blur" />
+              <feComposite in="SourceGraphic" in2="blur" operator="over" />
+            </filter>
+          </defs>
+          <circle cx="16" cy="16" r="14" stroke="url(#healthGradLogin)" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="6 4" class="logo-ring-rotate" />
+          <circle cx="16" cy="16" r="10" stroke="url(#healthGradLogin)" stroke-width="1" stroke-opacity="0.25" />
+          <path d="M16 8V24M8 16H24" stroke="url(#healthGradLogin)" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" filter="url(#logoGlowLogin)" />
+          <path d="M9 16H11L12.5 13L14.5 19.5L16.5 13.5L17.5 17L19 16H23" stroke="#ffffff" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" opacity="0.9" />
+        </svg>
+      </div>
+      <div>
+        <h1 id="authTitle">Patient Portal</h1>
+        <small id="authSubtitle">Public Health Management System</small>
+      </div>
+    </div>
+    <div id="authError" class="alert alert-error" style="display:none;"></div>
+    
+    <!-- LOGIN FORM -->
+    <div id="loginFields">
+      <div class="form-group">
+        <label for="loginEmail">Email Address</label>
+        <input type="email" id="loginEmail" placeholder="Enter patient email" />
+      </div>
+      <div class="form-group">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+          <label for="regName">Password</label>
+          <a href="javascript:void(0)" onclick="showForgotPasswordModal('patient')" style="font-size:11px; color:var(--accent); text-decoration:none; font-weight:500; transition: var(--transition);" onmouseover="this.style.color='var(--text)'" onmouseout="this.style.color='var(--accent)'">Forgot Password?</a>
+        </div>
+        <div style="position: relative;">
+          <input type="password" id="loginPassword" placeholder="Enter your password" style="padding-right: 48px;" />
+          <button type="button" class="password-toggle-btn" onclick="togglePasswordVisibility('loginPassword', this)" style="position: absolute; right: 16px; top: 50%; transform: translateY(-50%); background: none; border: none; color: var(--text2); cursor: pointer; font-size: 16px; padding: 4px; display: flex; align-items: center; justify-content: center; outline: none; transition: var(--transition);">👁️</button>
+        </div>
+      </div>
+      <button class="btn btn-primary btn-full" onclick="login()">Sign In to Portal →</button>
+      
+      <div style="text-align: center; margin-top: 16px; font-size: 13px;">
+        <span style="color: var(--text2);">New patient?</span>
+        <a href="javascript:void(0)" onclick="toggleAuth(true)" style="color: var(--accent); font-weight: 600; text-decoration: none; margin-left: 4px;">Register Portal Account &rarr;</a>
+      </div>
+      
+      <div class="demo-creds">
+        <p>Demo Patient Credential:</p>
+        <p>Email: <code>ravi@example.com</code></p>
+        <p>Password: <code>patient123</code></p>
+      </div>
+    </div>
+
+    <!-- REGISTER FORM -->
+    <div id="registerFields" style="display: none;">
+      <div class="form-row">
+        <div class="form-group">
+          <label for="regName">Full Name</label>
+          <a href="javascript:void(0)" onclick="showForgotPasswordModal('patient')" style="font-size:11px; color:var(--accent); text-decoration:none; font-weight:500; transition: var(--transition);" onmouseover="this.style.color='var(--text)'" onmouseout="this.style.color='var(--accent)'">Forgot Password?</a>
+        </div>
+        <div style="position: relative;">
+          <input type="password" id="loginPassword" placeholder="Enter your password" style="padding-right: 48px;" />
+          <button type="button" class="password-toggle-btn" onclick="togglePasswordVisibility('loginPassword', this)" style="position: absolute; right: 16px; top: 50%; transform: translateY(-50%); background: none; border: none; color: var(--text2); cursor: pointer; font-size: 16px; padding: 4px; display: flex; align-items: center; justify-content: center; outline: none; transition: var(--transition);">👁️</button>
+        </div>
+      </div>
+      <button class="btn btn-primary btn-full" onclick="login()">Sign In to Portal →</button>
+      
+      <div style="text-align: center; margin-top: 16px; font-size: 13px;">
+        <span style="color: var(--text2);">New patient?</span>
+        <a href="javascript:void(0)" onclick="toggleAuth(true)" style="color: var(--accent); font-weight: 600; text-decoration: none; margin-left: 4px;">Register Portal Account &rarr;</a>
+      </div>
+      
+      <div class="demo-creds">
+        <p>Demo Patient Credential:</p>
+        <p>Email: <code>ravi@example.com</code></p>
+        <p>Password: <code>patient123</code></p>
+      </div>
+    </div>
+
+    <!-- REGISTER FORM -->
+    <div id="registerFields" style="display: none;">
+      <div class="form-row">
+        <div class="form-group">
+          <label>Full Name</label>
+          <input type="text" id="regName" placeholder="Ravi Kumar" />
+        </div>
+        <div class="form-group">
+          <label for="regAge">Age</label>
+          <input type="number" id="regAge" placeholder="45" />
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="regGender">Gender</label>
+          <select id="regGender">
+            <option>Male</option>
+            <option>Female</option>
+            <option>Other</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="regBlood">Blood Group</label>
+          <select id="regBlood">
+            <option>A+</option><option>A-</option>
+            <option>B+</option><option>B-</option>
+            <option>O+</option><option>O-</option>
+            <option>AB+</option><option>AB-</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="regPhone">Phone Number</label>
+          <input type="text" id="regPhone" placeholder="e.g. 9876543210" />
+        </div>
+        <div class="form-group">
+          <label for="regEmail">Email Address</label>
+          <input type="email" id="regEmail" placeholder="ravi@example.com" />
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="regPassword">Set Password</label>
+        <div style="position: relative;">
+          <input type="password" id="regPassword" placeholder="Minimum 6 characters" style="padding-right: 48px;" />
+          <button type="button" class="password-toggle-btn" onclick="togglePasswordVisibility('regPassword', this)" style="position: absolute; right: 16px; top: 50%; transform: translateY(-50%); background: none; border: none; color: var(--text2); cursor: pointer; font-size: 16px; padding: 4px; display: flex; align-items: center; justify-content: center; outline: none; transition: var(--transition);">👁️</button>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="regAddress">Home Address</label>
+        <input type="text" id="regAddress" placeholder="Enter full address" />
+      </div>
+      <button class="btn btn-primary btn-full" onclick="register()">Create Portal Account &rarr;</button>
+      
+      <div style="text-align: center; margin-top: 16px; font-size: 13px;">
+        <span style="color: var(--text2);">Already registered?</span>
+        <a href="javascript:void(0)" onclick="toggleAuth(false)" style="color: var(--accent); font-weight: 600; text-decoration: none; margin-left: 4px;">Sign In &larr;</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PATIENT DASHBOARD SHELL -->
+<div id="appShell" style="display:none; flex: 1; width:100%; height:100vh; overflow:hidden;">
+  <div id="app" style="display:flex; width:100%; height:100vh; overflow:hidden;">
+    
+    <!-- SIDEBAR -->
+    <div id="sidebar">
+      <div class="sidebar-header">
+        <div class="sidebar-logo">
+          <svg class="logo-svg" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="healthGradSidebar" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="var(--accent, #00f0b5)" />
+                <stop offset="100%" stop-color="var(--accent2, #0099ff)" />
+              </linearGradient>
+              <filter id="logoGlowSidebar" x="-20%" y="-20%" width="140%" height="140%">
+                <feGaussianBlur stdDeviation="1.5" result="blur" />
+                <feComposite in="SourceGraphic" in2="blur" operator="over" />
+              </filter>
+            </defs>
+            <circle cx="16" cy="16" r="14" stroke="url(#healthGradSidebar)" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="6 4" class="logo-ring-rotate" />
+            <circle cx="16" cy="16" r="10" stroke="url(#healthGradSidebar)" stroke-width="1" stroke-opacity="0.25" />
+            <path d="M16 8V24M8 16H24" stroke="url(#healthGradSidebar)" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" filter="url(#logoGlowSidebar)" />
+            <path d="M9 16H11L12.5 13L14.5 19.5L16.5 13.5L17.5 17L19 16H23" stroke="#ffffff" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" opacity="0.9" />
+          </svg>
+        </div>
+        <div>
+          <div class="sidebar-title">PHMS</div>
+          <div class="sidebar-sub">Patient Portal</div>
+        </div>
+      </div>
+      <div class="nav-section">
+        <div class="nav-label">Main Menu</div>
+        <div class="nav-item active">
+          <span class="nav-icon">🏥</span><span>My Dashboard</span>
+        </div>
+      </div>
+      
+      <div class="sidebar-footer">
+        <div class="user-card">
+          <div class="user-avatar" id="sidebarAvatar">R</div>
+          <div>
+            <div class="user-name" id="sidebarName">Patient Name</div>
+            <div class="user-role">Patient</div>
+          </div>
+          <button class="logout-btn" onclick="logout()" title="Logout">🚪</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- MAIN PANEL -->
+    <div id="main">
+      <div id="header">
+        <div class="header-left">
+          <h2 id="pageTitle">Patient Health Portal</h2>
+          <p id="pageSubtitle">View your conditions, tablets, and medical history</p>
+        </div>
+      </div>
+      
+      <div id="content">
+        <div style="display:grid; grid-template-columns: 320px 1fr; gap:20px;">
+          
+          <!-- Left Column: Personal info & conditions -->
+          <div>
+            <div class="section-card" style="padding: 24px; margin-bottom: 20px;">
+              <div style="display:flex; flex-direction:column; align-items:center; text-align:center; gap:12px; margin-bottom:20px;">
+                <div class="user-avatar" id="pdAvatar" style="width:72px; height:72px; font-size:28px; border-radius:50%;">R</div>
+                <div>
+                  <h3 style="font-family:'Syne', sans-serif; font-size:18px; font-weight:700;" id="pdName">Patient Name</h3>
+                  <p style="font-size:12px; color:var(--text2);" id="pdContact">Phone & Email</p>
+                </div>
+              </div>
+              <hr style="border:none; border-top:1px solid var(--border); margin-bottom:16px;" />
+              <div class="detail-grid">
+                <div class="detail-item"><label for="apptDoctor">Age / Gender</label><span id="pdAgeGender">45 yrs / Male</span></div>
+                <div class="detail-item"><label for="apptDoctor">Blood Group</label><span id="pdBlood" class="badge badge-blue" style="width:fit-content; margin-top:2px;">O+</span></div>
+                <div class="detail-item"><label>Address</label><span id="pdAddress">Address</span></div>
+                <div class="detail-item" style="grid-column: span 2; margin-top: 8px;"><label>Assigned Doctor</label><span id="pdDoctor" style="color:var(--accent2); font-weight:600;">Not Assigned</span></div>
+              </div>
+            </div>
+            
+            <div class="section-card" style="padding: 20px;">
+              <div class="section-header" style="padding: 0 0 12px 0; margin-bottom: 12px; border-bottom: 1px solid var(--border);">
+                <h3 style="font-size: 14px;">Active Conditions</h3>
+              </div>
+              <div id="pdConditions" style="display:flex; flex-wrap:wrap; gap:6px;"></div>
+            </div>
+          </div>
+
+          <!-- Right Column: Medical History & Tablets -->
+          <div style="display:flex; flex-direction:column; gap:20px;">
+            
+            <!-- Tablets & Medications -->
+            <div class="section-card" style="border: 1px solid var(--accent); background: linear-gradient(180deg, rgba(0, 212, 160, 0.04) 0%, rgba(0, 0, 0, 0) 100%);">
+              <div class="section-header" style="border-bottom: 1px solid rgba(0, 212, 160, 0.2);">
+                <h3 style="color: var(--accent); display: flex; align-items: center; gap: 8px;">💊 Necessity Tablets & Medications</h3>
+                <span class="badge badge-green" id="tabletCountBadge">0 Medications</span>
+              </div>
+              <div style="padding: 20px;" id="pdMedsContainer"></div>
+            </div>
+            
+            <!-- Appointments -->
+            <div class="section-card">
+              <div class="section-header">
+                <h3>Upcoming Appointments</h3>
+                <button class="btn btn-primary btn-sm" onclick="showApplyAppointmentModal()">Apply for Appointment</button>
+              </div>
+              <table>
+                <thead>
+                  <tr><th>Doctor</th><th>Date & Time</th><th>Type</th><th>Notes</th><th>Status</th></tr>
+                </thead>
+                <tbody id="pdAppointmentsTable"></tbody>
+              </table>
+            </div>
+
+            <!-- Timeline history -->
+            <div class="section-card">
+              <div class="section-header">
+                <h3>My Medical History</h3>
+              </div>
+              <div style="padding: 20px;" id="pdHistoryTimeline"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL OVERLAY -->
+<div id="modal" class="modal-overlay" onclick="if(event.target===this)closeModal()">
+  <div class="modal">
+    <div class="modal-title">
+      <span id="modalTitle">Appointment Application Form</span>
+      <button class="modal-close" onclick="closeModal()">✕</button>
+    </div>
+    <div id="modalBody"></div>
+  </div>
+</div>
+
+<div id="toast-container"></div>
+
+<script>
+// Mock data structure matching phms.html
+const store = {
+  currentUser: null,
+  patients: [
+    { id: 'p1', name: 'Ravi Kumar', age: 45, gender: 'Male', phone: '9876543210', email: 'ravi@example.com', password: 'patient123', bloodGroup: 'O+', address: 'Mysuru, Karnataka', status: 'Active', createdAt: '2024-03-01', conditions: ['Hypertension', 'Diabetes Type 2'] },
+    { id: 'p2', name: 'Sunita Patel', age: 32, gender: 'Female', phone: '9845678901', email: 'sunita@example.com', password: 'patient123', bloodGroup: 'A+', address: 'Bengaluru, Karnataka', status: 'Active', createdAt: '2024-03-05', conditions: ['Asthma'] },
+    { id: 'p3', name: 'Mohammed Ismail', age: 60, gender: 'Male', phone: '9123456789', email: 'ismail@example.com', password: 'patient123', bloodGroup: 'B-', address: 'Hubballi, Karnataka', status: 'Critical', createdAt: '2024-03-10', conditions: ['Heart Disease', 'COPD'] },
+    { id: 'p4', name: 'Lakshmi Devi', age: 28, gender: 'Female', phone: '9786543210', email: 'lakshmi@example.com', password: 'patient123', bloodGroup: 'AB+', address: 'Mangaluru, Karnataka', status: 'Recovered', createdAt: '2024-02-20', conditions: ['COVID-19'] },
+    { id: 'p5', name: 'Arjun Hegde', age: 52, gender: 'Male', phone: '9654321098', email: 'arjun@example.com', password: 'patient123', bloodGroup: 'O-', address: 'Mysuru, Karnataka', status: 'Active', createdAt: '2024-04-01', conditions: ['Tuberculosis'] },
+  ],
+  appointments: [
+    { id: 'a1', patientId: 'p1', doctorId: 'u2', date: '2025-06-10', time: '09:00', type: 'Follow-up', status: 'Scheduled', notes: 'Blood pressure check' },
+    { id: 'a2', patientId: 'p2', doctorId: 'u2', date: '2025-06-11', time: '10:30', type: 'Consultation', status: 'Scheduled', notes: 'Asthma management review' },
+    { id: 'a3', patientId: 'p3', doctorId: 'u2', date: '2025-06-09', time: '08:00', type: 'Emergency', status: 'Completed', notes: 'Chest pain evaluation' },
+    { id: 'a4', patientId: 'p4', doctorId: 'u2', date: '2025-06-12', time: '14:00', type: 'Discharge', status: 'Scheduled', notes: 'Final COVID check' },
+    { id: 'a5', patientId: 'p5', doctorId: 'u2', date: '2025-06-08', time: '11:00', type: 'Follow-up', status: 'Completed', notes: 'TB medication review' },
+  ],
+  records: [
+    { id: 'r1', patientId: 'p1', doctorId: 'u2', type: 'Diagnosis', title: 'Hypertension Management', description: 'BP: 160/100 mmHg. Prescribed Amlodipine 5mg daily. Lifestyle modifications advised.', date: '2024-05-01', medications: ['Amlodipine 5mg', 'Metoprolol 25mg'] },
+    { id: 'r2', patientId: 'p2', doctorId: 'u2', type: 'Lab Result', title: 'Spirometry Test', description: 'FEV1/FVC ratio: 0.65. Moderate obstruction. Inhaler therapy continued.', date: '2024-05-10', medications: ['Salbutamol Inhaler', 'Fluticasone 100mcg'] },
+    { id: 'r3', patientId: 'p3', doctorId: 'u2', type: 'Emergency', title: 'Cardiac Event', description: 'Acute chest pain, ECG showed ST elevation. Immediate cardiac care initiated.', date: '2024-05-15', medications: ['Aspirin 325mg', 'Nitroglycerin'] },
+  ],
+  users: [
+    { id: 'u1', name: 'Dr. Admin', email: 'admin@phms.gov', password: 'admin123', role: 'admin', department: 'Administration', createdAt: '2024-01-01' },
+    { id: 'u2', name: 'Dr. Priya Sharma', email: 'doctor@phms.gov', password: 'doctor123', role: 'doctor', department: 'General Medicine', createdAt: '2024-01-15' },
+    { id: 'u3', name: 'Nurse Kavitha', email: 'nurse@phms.gov', password: 'nurse123', role: 'nurse', department: 'Emergency', createdAt: '2024-02-01' },
+  ],
+  patientAccounts: [],
+  diseases: [],
+  inventory: []
+};
+
+// ── SYNC ──
+function loadStore() {
+  const saved = localStorage.getItem('phms_store');
+  if (saved) {
+    try {
+      const parsed = JSON.parse(saved);
+      if (parsed.patients) store.patients = parsed.patients;
+      if (parsed.appointments) store.appointments = parsed.appointments;
+      if (parsed.records) store.records = parsed.records;
+      if (parsed.users) {
+        const defaults = {
+          'admin@phms.gov': 'admin123',
+          'doctor@phms.gov': 'doctor123',
+          'nurse@phms.gov': 'nurse123'
+        };
+        store.users = parsed.users.map(u => {
+          if (!u.password && defaults[u.email]) {
+            u.password = defaults[u.email];
+          }
+          return u;
+        });
+      }
+      if (parsed.patientAccounts) store.patientAccounts = parsed.patientAccounts;
+      if (parsed.diseases) store.diseases = parsed.diseases;
+      if (parsed.inventory) store.inventory = parsed.inventory;
+    } catch (e) {
+      console.error(e);
+    }
+  }
+}
+
+// Load store immediately
+loadStore();
+
+function syncFromServer() {
+  fetch('/api/store')
+    .then(res => res.json())
+    .then(parsed => {
+      if (parsed) {
+        if (parsed.patients) store.patients = parsed.patients;
+        if (parsed.appointments) store.appointments = parsed.appointments;
+        if (parsed.records) store.records = parsed.records;
+        if (parsed.users) {
+          const defaults = {
+            'admin@phms.gov': 'admin123',
+            'doctor@phms.gov': 'doctor123',
+            'nurse@phms.gov': 'nurse123'
+          };
+          store.users = parsed.users.map(u => {
+            if (!u.password && defaults[u.email]) {
+              u.password = defaults[u.email];
+            }
+            return u;
+          });
+        }
+        if (parsed.patientAccounts) store.patientAccounts = parsed.patientAccounts;
+        if (parsed.diseases) store.diseases = parsed.diseases;
+        if (parsed.inventory) store.inventory = parsed.inventory;
+
+        // Backup to local storage
+        localStorage.setItem('phms_store', JSON.stringify({
+          patients: store.patients,
+          appointments: store.appointments,
+          records: store.records,
+          users: store.users,
+          patientAccounts: store.patientAccounts,
+          diseases: store.diseases,
+          inventory: store.inventory
+        }));
+
+        // Refresh UI if logged in
+        const currentPatient = JSON.parse(sessionStorage.getItem('phms_current_patient'));
+        if (currentPatient && document.getElementById('appShell').style.display !== 'none') {
+          renderDashboard(currentPatient);
+        }
+      }
+    })
+    .catch(err => console.warn('Server database offline, using local backup.', err));
+}
+
+// Initial Sync load
+syncFromServer();
+
+function saveStore() {
+  const payload = {
+    patients: store.patients,
+    appointments: store.appointments,
+    records: store.records,
+    users: store.users,
+    patientAccounts: store.patientAccounts,
+    diseases: store.diseases,
+    inventory: store.inventory
+  };
+  localStorage.setItem('phms_store', JSON.stringify(payload));
+  
+  // Sync with server if backend is running
+  fetch('/api/store', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(payload)
+  }).catch(err => console.error('Error saving to server database:', err));
+}
+
+// ── AUTH TOGGLE ──
+function toggleAuth(isRegister) {
+  document.getElementById('authError').style.display = 'none';
+  if (isRegister) {
+    document.getElementById('loginFields').style.display = 'none';
+    document.getElementById('registerFields').style.display = 'block';
+    document.getElementById('authTitle').textContent = 'Register Portal';
+    document.getElementById('authSubtitle').textContent = 'Create patient portal credentials';
+  } else {
+    document.getElementById('loginFields').style.display = 'block';
+    document.getElementById('registerFields').style.display = 'none';
+    document.getElementById('authTitle').textContent = 'Patient Portal';
+    document.getElementById('authSubtitle').textContent = 'Public Health Management System';
+  }
+}
+
+// ── ACTIONS ──
+function login() {
+  loadStore(); // Reload fresh data in case store updated
+  const email = document.getElementById('loginEmail').value.trim();
+  const password = document.getElementById('loginPassword').value;
+
+  if (!email || !password) {
+    showError('Email and Password are required.');
+    return;
+  }
+
+  const patient = store.patients.find(p => p.email === email);
+  if (patient && (patient.password === password || (!patient.password && password === 'patient123'))) {
+    sessionStorage.setItem('phms_current_patient', JSON.stringify(patient));
+    enterDashboard(patient);
+  } else {
+    showError('Invalid patient credentials.');
+  }
+}
+
+function register() {
+  loadStore();
+  const name = document.getElementById('regName').value.trim();
+  const age = +document.getElementById('regAge').value;
+  const gender = document.getElementById('regGender').value;
+  const bloodGroup = document.getElementById('regBlood').value;
+  const phone = document.getElementById('regPhone').value.trim();
+  const email = document.getElementById('regEmail').value.trim();
+  const password = document.getElementById('regPassword').value;
+  const address = document.getElementById('regAddress').value.trim();
+
+  if (!name || !email || !password) {
+    showError('Name, Email, and Password are required.');
+    return;
+  }
+  if (password.length < 6) {
+    showError('Password must be at least 6 characters.');
+    return;
+  }
+
+  if (store.patients.some(p => p.email === email)) {
+    showError('This email is already registered.');
+    return;
+  }
+
+  const newPatient = {
+    id: 'p' + Date.now(),
+    name,
+    age,
+    gender,
+    bloodGroup,
+    phone,
+    email,
+    password,
+    address,
+    status: 'Active',
+    createdAt: new Date().toISOString().split('T')[0],
+    conditions: []
+  };
+
+  store.patients.push(newPatient);
+  saveStore();
+  
+  // Auto-login
+  sessionStorage.setItem('phms_current_patient', JSON.stringify(newPatient));
+  enterDashboard(newPatient);
+  showToast('✅ Registration successful!', 'success');
+}
+
+function enterDashboard(patient) {
+  document.getElementById('loginPage').style.display = 'none';
+  document.getElementById('appShell').style.display = 'flex';
+  
+  // Sidebar footer updates
+  document.getElementById('sidebarName').textContent = patient.name;
+  document.getElementById('sidebarAvatar').textContent = patient.name[0];
+  document.getElementById('sidebarAvatar').style.background = avatarColor(patient.name);
+  
+  renderDashboard(patient);
+}
+
+function logout() {
+  sessionStorage.removeItem('phms_current_patient');
+  document.getElementById('loginPage').style.display = 'flex';
+  document.getElementById('appShell').style.display = 'none';
+  document.getElementById('loginEmail').value = '';
+  document.getElementById('loginPassword').value = '';
+  toggleAuth(false);
+}
+
+// ── APPOINTMENT APPLICATION MODAL ──
+function showApplyAppointmentModal() {
+  loadStore();
+  const currentPatient = JSON.parse(sessionStorage.getItem('phms_current_patient'));
+  if (!currentPatient) {
+    showToast('❌ Session expired. Please log in again.', 'error');
+    return;
+  }
+  
+  // Get all doctors in store
+  const doctors = store.users.filter(u => u.role === 'doctor');
+  
+  if (doctors.length === 0) {
+    showToast('⚠️ No doctors available in the system currently.', 'warning');
+    return;
+  }
+  
+  // Date limits: starting from tomorrow
+  const today = new Date();
+  const tomorrow = new Date(today);
+  tomorrow.setDate(tomorrow.getDate() + 1);
+  const tomorrowStr = tomorrow.toISOString().split('T')[0];
+  
+  const modalBody = document.getElementById('modalBody');
+  document.getElementById('modalTitle').textContent = 'Apply for Doctor Appointment';
+  
+  modalBody.innerHTML = `
+    <div id="apptFormView" style="animation: slideUp 0.3s ease forwards;">
+      <p style="font-size: 13px; color: var(--text2); margin-bottom: 20px;">
+        Fill in the details below. The system will automatically compile this request into a formal appointment request letter for your doctor.
+      </p>
+      
+      <div class="form-group">
+        <label style="color: var(--text2); font-size: 11px; font-weight:600; text-transform: uppercase;">Consulting Physician (Doctor)</label><span id="pdAgeGender">45 yrs / Male</span></div>
+                <div class="detail-item"><label>Blood Group</label><span id="pdBlood" class="badge badge-blue" style="width:fit-content; margin-top:2px;">O+</span></div>
+                <div class="detail-item"><label>Address</label><span id="pdAddress">Address</span></div>
+                <div class="detail-item" style="grid-column: span 2; margin-top: 8px;"><label>Assigned Doctor</label><span id="pdDoctor" style="color:var(--accent2); font-weight:600;">Not Assigned</span></div>
+              </div>
+            </div>
+            
+            <div class="section-card" style="padding: 20px;">
+              <div class="section-header" style="padding: 0 0 12px 0; margin-bottom: 12px; border-bottom: 1px solid var(--border);">
+                <h3 style="font-size: 14px;">Active Conditions</h3>
+              </div>
+              <div id="pdConditions" style="display:flex; flex-wrap:wrap; gap:6px;"></div>
+            </div>
+          </div>
+
+          <!-- Right Column: Medical History & Tablets -->
+          <div style="display:flex; flex-direction:column; gap:20px;">
+            
+            <!-- Tablets & Medications -->
+            <div class="section-card" style="border: 1px solid var(--accent); background: linear-gradient(180deg, rgba(0, 212, 160, 0.04) 0%, rgba(0, 0, 0, 0) 100%);">
+              <div class="section-header" style="border-bottom: 1px solid rgba(0, 212, 160, 0.2);">
+                <h3 style="color: var(--accent); display: flex; align-items: center; gap: 8px;">💊 Necessity Tablets & Medications</h3>
+                <span class="badge badge-green" id="tabletCountBadge">0 Medications</span>
+              </div>
+              <div style="padding: 20px;" id="pdMedsContainer"></div>
+            </div>
+            
+            <!-- Appointments -->
+            <div class="section-card">
+              <div class="section-header">
+                <h3>Upcoming Appointments</h3>
+                <button class="btn btn-primary btn-sm" onclick="showApplyAppointmentModal()">Apply for Appointment</button>
+              </div>
+              <table>
+                <thead>
+                  <tr><th>Doctor</th><th>Date & Time</th><th>Type</th><th>Notes</th><th>Status</th></tr>
+                </thead>
+                <tbody id="pdAppointmentsTable"></tbody>
+              </table>
+            </div>
+
+            <!-- Timeline history -->
+            <div class="section-card">
+              <div class="section-header">
+                <h3>My Medical History</h3>
+              </div>
+              <div style="padding: 20px;" id="pdHistoryTimeline"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL OVERLAY -->
+<div id="modal" class="modal-overlay" onclick="if(event.target===this)closeModal()">
+  <div class="modal">
+    <div class="modal-title">
+      <span id="modalTitle">Appointment Application Form</span>
+      <button class="modal-close" onclick="closeModal()">✕</button>
+    </div>
+    <div id="modalBody"></div>
+  </div>
+</div>
+
+<div id="toast-container"></div>
+
+<script>
+// Mock data structure matching phms.html
+const store = {
+  currentUser: null,
+  patients: [
+    { id: 'p1', name: 'Ravi Kumar', age: 45, gender: 'Male', phone: '9876543210', email: 'ravi@example.com', password: 'patient123', bloodGroup: 'O+', address: 'Mysuru, Karnataka', status: 'Active', createdAt: '2024-03-01', conditions: ['Hypertension', 'Diabetes Type 2'] },
+    { id: 'p2', name: 'Sunita Patel', age: 32, gender: 'Female', phone: '9845678901', email: 'sunita@example.com', password: 'patient123', bloodGroup: 'A+', address: 'Bengaluru, Karnataka', status: 'Active', createdAt: '2024-03-05', conditions: ['Asthma'] },
+    { id: 'p3', name: 'Mohammed Ismail', age: 60, gender: 'Male', phone: '9123456789', email: 'ismail@example.com', password: 'patient123', bloodGroup: 'B-', address: 'Hubballi, Karnataka', status: 'Critical', createdAt: '2024-03-10', conditions: ['Heart Disease', 'COPD'] },
+    { id: 'p4', name: 'Lakshmi Devi', age: 28, gender: 'Female', phone: '9786543210', email: 'lakshmi@example.com', password: 'patient123', bloodGroup: 'AB+', address: 'Mangaluru, Karnataka', status: 'Recovered', createdAt: '2024-02-20', conditions: ['COVID-19'] },
+    { id: 'p5', name: 'Arjun Hegde', age: 52, gender: 'Male', phone: '9654321098', email: 'arjun@example.com', password: 'patient123', bloodGroup: 'O-', address: 'Mysuru, Karnataka', status: 'Active', createdAt: '2024-04-01', conditions: ['Tuberculosis'] },
+  ],
+  appointments: [
+    { id: 'a1', patientId: 'p1', doctorId: 'u2', date: '2025-06-10', time: '09:00', type: 'Follow-up', status: 'Scheduled', notes: 'Blood pressure check' },
+    { id: 'a2', patientId: 'p2', doctorId: 'u2', date: '2025-06-11', time: '10:30', type: 'Consultation', status: 'Scheduled', notes: 'Asthma management review' },
+    { id: 'a3', patientId: 'p3', doctorId: 'u2', date: '2025-06-09', time: '08:00', type: 'Emergency', status: 'Completed', notes: 'Chest pain evaluation' },
+    { id: 'a4', patientId: 'p4', doctorId: 'u2', date: '2025-06-12', time: '14:00', type: 'Discharge', status: 'Scheduled', notes: 'Final COVID check' },
+    { id: 'a5', patientId: 'p5', doctorId: 'u2', date: '2025-06-08', time: '11:00', type: 'Follow-up', status: 'Completed', notes: 'TB medication review' },
+  ],
+  records: [
+    { id: 'r1', patientId: 'p1', doctorId: 'u2', type: 'Diagnosis', title: 'Hypertension Management', description: 'BP: 160/100 mmHg. Prescribed Amlodipine 5mg daily. Lifestyle modifications advised.', date: '2024-05-01', medications: ['Amlodipine 5mg', 'Metoprolol 25mg'] },
+    { id: 'r2', patientId: 'p2', doctorId: 'u2', type: 'Lab Result', title: 'Spirometry Test', description: 'FEV1/FVC ratio: 0.65. Moderate obstruction. Inhaler therapy continued.', date: '2024-05-10', medications: ['Salbutamol Inhaler', 'Fluticasone 100mcg'] },
+    { id: 'r3', patientId: 'p3', doctorId: 'u2', type: 'Emergency', title: 'Cardiac Event', description: 'Acute chest pain, ECG showed ST elevation. Immediate cardiac care initiated.', date: '2024-05-15', medications: ['Aspirin 325mg', 'Nitroglycerin'] },
+  ],
+  users: [
+    { id: 'u1', name: 'Dr. Admin', email: 'admin@phms.gov', password: 'admin123', role: 'admin', department: 'Administration', createdAt: '2024-01-01' },
+    { id: 'u2', name: 'Dr. Priya Sharma', email: 'doctor@phms.gov', password: 'doctor123', role: 'doctor', department: 'General Medicine', createdAt: '2024-01-15' },
+    { id: 'u3', name: 'Nurse Kavitha', email: 'nurse@phms.gov', password: 'nurse123', role: 'nurse', department: 'Emergency', createdAt: '2024-02-01' },
+  ],
+  patientAccounts: [],
+  diseases: [],
+  inventory: []
+};
+
+// ── SYNC ──
+function loadStore() {
+  const saved = localStorage.getItem('phms_store');
+  if (saved) {
+    try {
+      const parsed = JSON.parse(saved);
+      if (parsed.patients) store.patients = parsed.patients;
+      if (parsed.appointments) store.appointments = parsed.appointments;
+      if (parsed.records) store.records = parsed.records;
+      if (parsed.users) {
+        const defaults = {
+          'admin@phms.gov': 'admin123',
+          'doctor@phms.gov': 'doctor123',
+          'nurse@phms.gov': 'nurse123'
+        };
+        store.users = parsed.users.map(u => {
+          if (!u.password && defaults[u.email]) {
+            u.password = defaults[u.email];
+          }
+          return u;
+        });
+      }
+      if (parsed.patientAccounts) store.patientAccounts = parsed.patientAccounts;
+      if (parsed.diseases) store.diseases = parsed.diseases;
+      if (parsed.inventory) store.inventory = parsed.inventory;
+    } catch (e) {
+      console.error(e);
+    }
+  }
+}
+
+// Load store immediately
+loadStore();
+
+function syncFromServer() {
+  fetch('/api/store')
+    .then(res => res.json())
+    .then(parsed => {
+      if (parsed) {
+        if (parsed.patients) store.patients = parsed.patients;
+        if (parsed.appointments) store.appointments = parsed.appointments;
+        if (parsed.records) store.records = parsed.records;
+        if (parsed.users) {
+          const defaults = {
+            'admin@phms.gov': 'admin123',
+            'doctor@phms.gov': 'doctor123',
+            'nurse@phms.gov': 'nurse123'
+          };
+          store.users = parsed.users.map(u => {
+            if (!u.password && defaults[u.email]) {
+              u.password = defaults[u.email];
+            }
+            return u;
+          });
+        }
+        if (parsed.patientAccounts) store.patientAccounts = parsed.patientAccounts;
+        if (parsed.diseases) store.diseases = parsed.diseases;
+        if (parsed.inventory) store.inventory = parsed.inventory;
+
+        // Backup to local storage
+        localStorage.setItem('phms_store', JSON.stringify({
+          patients: store.patients,
+          appointments: store.appointments,
+          records: store.records,
+          users: store.users,
+          patientAccounts: store.patientAccounts,
+          diseases: store.diseases,
+          inventory: store.inventory
+        }));
+
+        // Refresh UI if logged in
+        const currentPatient = JSON.parse(sessionStorage.getItem('phms_current_patient'));
+        if (currentPatient && document.getElementById('appShell').style.display !== 'none') {
+          renderDashboard(currentPatient);
+        }
+      }
+    })
+    .catch(err => console.warn('Server database offline, using local backup.', err));
+}
+
+// Initial Sync load
+syncFromServer();
+
+function saveStore() {
+  const payload = {
+    patients: store.patients,
+    appointments: store.appointments,
+    records: store.records,
+    users: store.users,
+    patientAccounts: store.patientAccounts,
+    diseases: store.diseases,
+    inventory: store.inventory
+  };
+  localStorage.setItem('phms_store', JSON.stringify(payload));
+  
+  // Sync with server if backend is running
+  fetch('/api/store', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(payload)
+  }).catch(err => console.error('Error saving to server database:', err));
+}
+
+// ── AUTH TOGGLE ──
+function toggleAuth(isRegister) {
+  document.getElementById('authError').style.display = 'none';
+  if (isRegister) {
+    document.getElementById('loginFields').style.display = 'none';
+    document.getElementById('registerFields').style.display = 'block';
+    document.getElementById('authTitle').textContent = 'Register Portal';
+    document.getElementById('authSubtitle').textContent = 'Create patient portal credentials';
+  } else {
+    document.getElementById('loginFields').style.display = 'block';
+    document.getElementById('registerFields').style.display = 'none';
+    document.getElementById('authTitle').textContent = 'Patient Portal';
+    document.getElementById('authSubtitle').textContent = 'Public Health Management System';
+  }
+}
+
+// ── ACTIONS ──
+function login() {
+  loadStore(); // Reload fresh data in case store updated
+  const email = document.getElementById('loginEmail').value.trim();
+  const password = document.getElementById('loginPassword').value;
+
+  if (!email || !password) {
+    showError('Email and Password are required.');
+    return;
+  }
+
+  const patient = store.patients.find(p => p.email === email);
+  if (patient && (patient.password === password || (!patient.password && password === 'patient123'))) {
+    sessionStorage.setItem('phms_current_patient', JSON.stringify(patient));
+    enterDashboard(patient);
+  } else {
+    showError('Invalid patient credentials.');
+  }
+}
+
+function register() {
+  loadStore();
+  const name = document.getElementById('regName').value.trim();
+  const age = +document.getElementById('regAge').value;
+  const gender = document.getElementById('regGender').value;
+  const bloodGroup = document.getElementById('regBlood').value;
+  const phone = document.getElementById('regPhone').value.trim();
+  const email = document.getElementById('regEmail').value.trim();
+  const password = document.getElementById('regPassword').value;
+  const address = document.getElementById('regAddress').value.trim();
+
+  if (!name || !email || !password) {
+    showError('Name, Email, and Password are required.');
+    return;
+  }
+  if (password.length < 6) {
+    showError('Password must be at least 6 characters.');
+    return;
+  }
+
+  if (store.patients.some(p => p.email === email)) {
+    showError('This email is already registered.');
+    return;
+  }
+
+  const newPatient = {
+    id: 'p' + Date.now(),
+    name,
+    age,
+    gender,
+    bloodGroup,
+    phone,
+    email,
+    password,
+    address,
+    status: 'Active',
+    createdAt: new Date().toISOString().split('T')[0],
+    conditions: []
+  };
+
+  store.patients.push(newPatient);
+  saveStore();
+  
+  // Auto-login
+  sessionStorage.setItem('phms_current_patient', JSON.stringify(newPatient));
+  enterDashboard(newPatient);
+  showToast('✅ Registration successful!', 'success');
+}
+
+function enterDashboard(patient) {
+  document.getElementById('loginPage').style.display = 'none';
+  document.getElementById('appShell').style.display = 'flex';
+  
+  // Sidebar footer updates
+  document.getElementById('sidebarName').textContent = patient.name;
+  document.getElementById('sidebarAvatar').textContent = patient.name[0];
+  document.getElementById('sidebarAvatar').style.background = avatarColor(patient.name);
+  
+  renderDashboard(patient);
+}
+
+function logout() {
+  sessionStorage.removeItem('phms_current_patient');
+  document.getElementById('loginPage').style.display = 'flex';
+  document.getElementById('appShell').style.display = 'none';
+  document.getElementById('loginEmail').value = '';
+  document.getElementById('loginPassword').value = '';
+  toggleAuth(false);
+}
+
+// ── APPOINTMENT APPLICATION MODAL ──
+function showApplyAppointmentModal() {
+  loadStore();
+  const currentPatient = JSON.parse(sessionStorage.getItem('phms_current_patient'));
+  if (!currentPatient) {
+    showToast('❌ Session expired. Please log in again.', 'error');
+    return;
+  }
+  
+  // Get all doctors in store
+  const doctors = store.users.filter(u => u.role === 'doctor');
+  
+  if (doctors.length === 0) {
+    showToast('⚠️ No doctors available in the system currently.', 'warning');
+    return;
+  }
+  
+  // Date limits: starting from tomorrow
+  const today = new Date();
+  const tomorrow = new Date(today);
+  tomorrow.setDate(tomorrow.getDate() + 1);
+  const tomorrowStr = tomorrow.toISOString().split('T')[0];
+  
+  const modalBody = document.getElementById('modalBody');
+  document.getElementById('modalTitle').textContent = 'Apply for Doctor Appointment';
+  
+  modalBody.innerHTML = `
+    <div id="apptFormView" style="animation: slideUp 0.3s ease forwards;">
+      <p style="font-size: 13px; color: var(--text2); margin-bottom: 20px;">
+        Fill in the details below. The system will automatically compile this request into a formal appointment request letter for your doctor.
+      </p>
+      
+      <div class="form-group">
+        <label style="color: var(--text2); font-size: 11px; font-weight:600; text-transform: uppercase;">Consulting Physician (Doctor)</label>
+        <select id="apptDoctor">
+          ${doctors.map(d => `<option value="${d.id}" ${currentPatient.assignedDoctor === d.id ? 'selected' : ''}>${d.name} — ${d.department}</option>`).join('')}
+        </select>
+      </div>
+      
+      <div class="form-row">
+        <div class="form-group">
+          <label for="apptDate">Appointment Date</label>
+          <input type="date" id="apptDate" min="${tomorrowStr}" value="${tomorrowStr}" required />
+        </div>
+        <div class="form-group">
+          <label for="apptTime">Appointment Time</label>
+          <input type="time" id="apptTime" value="09:30" required />
+        </div>
+      </div>
+      
+      <div class="form-group">
+        <label for="apptType">Consultation Type</label>
+        <select id="apptType">
+          <option value="Consultation">General Consultation</option>
+          <option value="Follow-up">Regular Follow-up</option>
+          <option value="Emergency">Emergency Evaluation</option>
+          <option value="Second Opinion">Second Opinion Assessment</option>
+          <option value="Preventive Care">Preventive Health Checkup</option>
+        </select>
+      </div>
+      
+      <div class="form-group">
+        <label for="apptNotes">Reason / Symptoms (Detailed Notes)</label>
+        <textarea id="apptNotes" placeholder="Explain your symptoms, reason for the checkup, or medical history relevant to this request..." rows="4" required></textarea>
+      </div>
+      
+      <div class="modal-actions">
+        <button class="btn btn-secondary" onclick="closeModal()">Cancel</button>
+        <button class="btn btn-primary" onclick="generateAppointmentLetter()">Generate Request Letter &rarr;</button>
+      </div>
+    </div>
+  `;
+  
+  const modal = document.getElementById('modal');
+  modal.style.display = 'flex';
+  setTimeout(() => modal.classList.add('show'), 10);
+}
+
+function generateAppointmentLetter() {
+  const doctorId = document.getElementById('apptDoctor').value;
+  const date = document.getElementById('apptDate').value;
+  const time = document.getElementById('apptTime').value;
+  const type = document.getElementById('apptType').value;
+  const notes = document.getElementById('apptNotes').value.trim();
+  
+  if (!date || !time) {
+    showToast('❌ Please select a valid Date and Time.', 'error');
+    return;
+  }
+  if (!notes) {
+    showToast('❌ Please describe the reason for your appointment request.', 'error');
+    return;
+  }
+  
+  const currentPatient = JSON.parse(sessionStorage.getItem('phms_current_patient'));
+  const doctor = store.users.find(u => u.id === doctorId);
+  
+  if (!currentPatient || !doctor) {
+    showToast('❌ Internal error: Patient or Doctor records not found.', 'error');
+    return;
+  }
+  
+  // Format Date for letter
+  const formattedLetterDate = new Date().toLocaleDateString('en-US', {
+    weekday: 'long',
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric'
+  });
+  
+  const formattedApptDate = new Date(date).toLocaleDateString('en-US', {
+    weekday: 'long',
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric'
+  });
+  
+  const modalBody = document.getElementById('modalBody');
+  document.getElementById('modalTitle').textContent = 'Review Appointment Request Letter';
+  
+  // Escape notes for js injection
+  const escapedNotes = notes.replace(/`/g, '\\`').replace(/\$/g, '\\$');
+  
+  modalBody.innerHTML = `
+    <div id="apptLetterView" style="animation: slideUp 0.3s ease forwards;">
+      <p style="font-size: 13px; color: var(--text2); margin-bottom: 15px;">
+        Review your formal application letter. Clicking submit will send this application to ${doctor.name} and record the appointment.
+      </p>
+      
+      <div class="letter-preview">
+        <div class="letter-head">
+          <h4>PHMS MEDICAL CLINIC</h4>
+          <p>Outpatient Services Division · Digital Healthcare Network</p>
+        </div>
+        
+        <div class="letter-meta">
+          <div class="letter-meta-col">
+            <strong>FROM:</strong><br>
+            ${currentPatient.name}<br>
+            ${currentPatient.address || 'Address: Not Registered'}<br>
+            Tel: ${currentPatient.phone || 'N/A'}<br>
+            Email: ${currentPatient.email}
+          </div>
+          <div class="letter-meta-col" style="text-align: right;">
+            <strong>TO:</strong><br>
+            ${doctor.name}<br>
+            Dept. of ${doctor.department}<br>
+            PHMS Healthcare Center
+          </div>
+        </div>
+        
+        <div class="letter-date">
+          <strong>DATE:</strong> ${formattedLetterDate}
+        </div>
+        
+        <div class="letter-subject">
+          <strong>SUBJECT:</strong> Application for ${type} Appointment Booking
+        </div>
+        
+        <div class="letter-body">
+Dear ${doctor.name},
+
+I am writing this letter to request a formal ${type} appointment with you at your clinic.
+
+I would like to request this consultation on <strong>${formattedApptDate}</strong> at <strong>${time}</strong>.
+
+The specific symptoms and concerns prompting this consultation are described below:
+"${notes}"
+
+Please review this scheduling request and verify your availability. Thank you for your medical assistance, guidance, and consideration of this request.
+
+Sincerely,
+        </div>
+        
+        <div class="letter-signature-block">
+          <div>
+            <div class="letter-sign-line">${currentPatient.name}</div>
+            <div style="font-size: 10px; color: #64748b; text-align: center;">Patient Signature</div>
+          </div>
+          <div>
+            <div style="border-top: 1px dashed #cbd5e1; width: 150px; text-align: center; padding-top: 4px;">Pending Approval</div>
+            <div style="font-size: 10px; color: #64748b; text-align: center;">Clinician/Admin Signature</div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="modal-actions">
+        <button class="btn btn-secondary" onclick="backToApptForm('${doctorId}', '${date}', '${time}', '${type}', \`${escapedNotes}\`)">
+          ✏️ Edit Details
+        </button>
+        <button class="btn btn-primary" style="background: linear-gradient(135deg, var(--accent), #0077cc);" onclick="submitAppointmentApplication('${doctorId}', '${date}', '${time}', '${type}', \`${escapedNotes}\`)">
+          ✉️ Submit Application
+        </button>
+      </div>
+    </div>
+  `;
+}
+
+function backToApptForm(doctorId, date, time, type, notes) {
+  const doctors = store.users.filter(u => u.role === 'doctor');
+  const modalBody = document.getElementById('modalBody');
+  document.getElementById('modalTitle').textContent = 'Apply for Doctor Appointment';
+  
+  modalBody.innerHTML = `
+    <div id="apptFormView" style="animation: slideUp 0.3s ease forwards;">
+      <p style="font-size: 13px; color: var(--text2); margin-bottom: 20px;">
+        Fill in the details below. The system will automatically compile this request into a formal appointment request letter for your doctor.
+      </p>
+      
+      <div class="form-group">
+        <label for="apptDoctor">Consulting Physician (Doctor)</label>
+        <select id="apptDoctor">
+          ${doctors.map(d => `<option value="${d.id}" ${doctorId === d.id ? 'selected' : ''}>${d.name} — ${d.department}</option>`).join('')}
+        </select>
+      </div>
+      
+      <div class="form-row">
+        <div class="form-group">
+          <label for="apptDate">Appointment Date</label>
+          <input type="date" id="apptDate" min="${new Date().toISOString().split('T')[0]}" value="${date}" required />
+        </div>
+        <div class="form-group">
+          <label for="apptTime">Appointment Time</label>
+          <input type="time" id="apptTime" value="${time}" required />
+        </div>
+      </div>
+      
+      <div class="form-group">
+        <label for="apptType">Consultation Type</label>
+        <select id="apptType">
+          <option value="Consultation" ${type === 'Consultation' ? 'selected' : ''}>General Consultation</option>
+          <option value="Follow-up" ${type === 'Follow-up' ? 'selected' : ''}>Regular Follow-up</option>
+          <option value="Emergency" ${type === 'Emergency' ? 'selected' : ''}>Emergency Evaluation</option>
+          <option value="Second Opinion" ${type === 'Second Opinion' ? 'selected' : ''}>Second Opinion Assessment</option>
+          <option value="Preventive Care" ${type === 'Preventive Care' ? 'selected' : ''}>Preventive Health Checkup</option>
+        </select>
+      </div>
+      
+      <div class="form-group">
+        <label for="apptNotes">Reason / Symptoms (Detailed Notes)</label>
+        <textarea id="apptNotes" placeholder="Explain your symptoms..." rows="4" required>${notes}</textarea>
+      </div>
+      
+      <div class="modal-actions">
+        <button class="btn btn-secondary" onclick="closeModal()">Cancel</button>
+        <button class="btn btn-primary" onclick="generateAppointmentLetter()">Generate Request Letter &rarr;</button>
+      </div>
+    </div>
+  `;
+}
+
+function submitAppointmentApplication(doctorId, date, time, type, notes) {
+  loadStore();
+  const currentPatient = JSON.parse(sessionStorage.getItem('phms_current_patient'));
+  if (!currentPatient) {
+    showToast('❌ Session expired. Please log in again.', 'error');
+    return;
+  }
+  
+  const apptId = 'a' + Date.now();
+  const newAppt = {
+    id: apptId,
+    patientId: currentPatient.id,
+    doctorId: doctorId,
+    date: date,
+    time: time,
+    type: type,
+    status: 'Scheduled',
+    notes: notes,
+    createdAt: new Date().toISOString()
+  };
+  
+  // Append to appointments list
+  store.appointments.push(newAppt);
+  
+  // Save both locally and sync with backend
+  saveStore();
+  
+  // Re-render UI
+  renderDashboard(currentPatient);
+  
+  // Close Modal
+  closeModal();
+  
+  // Show Toast Success
+  showToast('✉️ Appointment request submitted and letter registered!', 'success');
+}
+
+function closeModal() {
+  const overlay = document.getElementById('modal');
+  overlay.classList.remove('show');
+  setTimeout(() => overlay.style.display = 'none', 200);
+}
+
+function openModal(title, html) {
+  document.getElementById('modalTitle').textContent = title;
+  document.getElementById('modalBody').innerHTML = html;
+  const modal = document.getElementById('modal');
+  modal.style.display = 'flex';
+  setTimeout(() => modal.classList.add('show'), 10);
+}
+
+function escapeHTML(str) {
+  if (!str) return '';
+  return str.replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;')
+            .replace(/'/g, '&#39;');
+}
+
+function showEditRecord(id) {
+  const r = store.records.find(x => x.id === id);
+  if (!r) return;
+  
+  openModal('Edit Medical Record', `
+    <div class="form-row">
+      <div class="form-group"><label for="ur_type">Record Type</label>
+        <select id="ur_type">
+          <option ${r.type === 'Diagnosis' ? 'selected' : ''}>Diagnosis</option>
+          <option ${r.type === 'Lab Result' ? 'selected' : ''}>Lab Result</option>
+          <option ${r.type === 'Emergency' ? 'selected' : ''}>Emergency</option>
+          <option ${r.type === 'Prescription' ? 'selected' : ''}>Prescription</option>
+        </select>
+      </div>
+      <div class="form-group"><label for="ur_date">Date</label><input id="ur_date" type="date" value="${r.date}"></div>
+    </div>
+    <div class="form-group"><label for="ur_title">Title</label><input id="ur_title" value="${escapeHTML(r.title)}" placeholder="Record title"></div>
+    <div class="form-group"><label for="ur_desc">Description</label><textarea id="ur_desc" placeholder="Detailed description...">${escapeHTML(r.description)}</textarea></div>
+    <div class="form-group"><label for="ur_meds">Medications (comma separated)</label><input id="ur_meds" value="${(r.medications || []).join(', ')}" placeholder="e.g. Aspirin 325mg, Metformin 500mg"></div>
+    <div class="modal-actions">
+      <button class="btn btn-secondary" onclick="closeModal()">Cancel</button>
+      <button class="btn btn-primary" onclick="updateRecord('${r.id}')">Update Record</button>
+    </div>
+  `);
+}
+
+function updateRecord(id) {
+  const r = store.records.find(x => x.id === id);
+  if (!r) return;
+  
+  const title = document.getElementById('ur_title').value.trim();
+  const description = document.getElementById('ur_desc').value.trim();
+  if (!title || !description) { showToast('❌ Title and description are required', 'error'); return; }
+  
+  r.title = title;
+  r.description = description;
+  r.type = document.getElementById('ur_type').value;
+  r.date = document.getElementById('ur_date').value;
+  r.medications = document.getElementById('ur_meds').value.split(',').map(s => s.trim()).filter(Boolean);
+  
+  saveStore();
+  closeModal();
+  
+  // Re-render patient dashboard
+  const currentPatient = JSON.parse(sessionStorage.getItem('phms_current_patient'));
+  if (currentPatient) {
+    renderDashboard(currentPatient);
+  }
+  
+  showToast('✅ Medical record updated', 'success');
+}
+
+let tempResetState = {
+  email: '',
+  role: '',
+  code: '',
+  attempts: 0
+};
+
+function showForgotPasswordModal(role) {
+  tempResetState = { email: '', role: role, code: '', attempts: 0 };
+  
+  openModal('Reset Account Password', `
+    <div style="display:flex; flex-direction:column; gap:16px;">
+      <p style="font-size:13px; color:var(--text2); line-height:1.5; margin:0;">
+        Enter your registered email address. We will verify your account and simulate sending a verification code.
+      </p>
+      <div class="form-group" style="margin:0;">
+        <label for="reset_email">Registered Email Address</label>
+        <input type="email" id="reset_email" placeholder="e.g. user@example.com" style="width:100%;" />
+      </div>
+      <div class="modal-actions" style="margin-top:8px;">
+        <button class="btn btn-secondary" onclick="closeModal()">Cancel</button>
+        <button class="btn btn-primary" onclick="sendPasswordResetCode()">Send Verification Code</button>
+      </div>
+    </div>
+  `);
+}
+
+function sendPasswordResetCode() {
+  loadStore();
+  const email = document.getElementById('reset_email').value.trim().toLowerCase();
+  if (!email) { showToast('❌ Please enter your email address', 'error'); return; }
+  
+  let accountExists = false;
+  const staffUser = store.users.find(u => u.email && u.email.toLowerCase() === email);
+  const patientUser = store.patients.find(p => p.email && p.email.toLowerCase() === email);
+  
+  if (staffUser) {
+    accountExists = true;
+    tempResetState.role = 'staff';
+  } else if (patientUser) {
+    accountExists = true;
+    tempResetState.role = 'patient';
+  }
+  
+  if (!accountExists) {
+    showToast('❌ Registered email address not found', 'error');
+    return;
+  }
+  
+  const code = Math.floor(100000 + Math.random() * 900000).toString();
+  tempResetState.email = email;
+  tempResetState.code = code;
+  
+  showToast(`🔑 Reset code simulated! Copy: ${code}`, 'info');
+  
+  openModal('Enter Verification Code', `
+    <div style="display:flex; flex-direction:column; gap:16px;">
+      <p style="font-size:13px; color:var(--text2); line-height:1.5; margin:0;">
+        A simulated 6-digit verification code has been generated. Enter it below to verify your identity.
+      </p>
+      <div style="background:rgba(0, 212, 160, 0.05); border:1px dashed var(--accent); border-radius:10px; padding:12px; font-size:13px; text-align:center;">
+        <strong>Simulated Code Sent To:</strong> <code>${email}</code><br/>
+        <strong style="color:var(--accent); font-size:16px; display:block; margin-top:8px;">Code: ${code}</strong>
+      </div>
+      <div class="form-group" style="margin:0;">
+        <label for="reset_code">6-Digit Verification Code</label>
+        <input type="text" id="reset_code" placeholder="Enter 6-digit code" maxlength="6" style="width:100%; text-align:center; letter-spacing:0.3em; font-weight:700; font-size:16px;" />
+      </div>
+      <div class="modal-actions" style="margin-top:8px;">
+        <button class="btn btn-secondary" onclick="showForgotPasswordModal('${tempResetState.role}')">&larr; Back</button>
+        <button class="btn btn-primary" onclick="verifyPasswordResetCode()">Verify Code</button>
+      </div>
+    </div>
+  `);
+}
+
+function verifyPasswordResetCode() {
+  const codeInput = document.getElementById('reset_code').value.trim();
+  if (codeInput !== tempResetState.code) {
+    tempResetState.attempts++;
+    if (tempResetState.attempts >= 3) {
+      showToast('❌ Too many failed attempts. Reset restarted.', 'error');
+      closeModal();
+      return;
+    }
+    showToast('❌ Invalid verification code. Try again.', 'error');
+    return;
+  }
+  
+  openModal('Set New Password', `
+    <div style="display:flex; flex-direction:column; gap:16px;">
+      <p style="font-size:13px; color:var(--text2); line-height:1.5; margin:0;">
+        Identity verified. Please set a new secure password for your account.
+      </p>
+      <div class="form-group" style="margin:0;">
+        <label for="new_reset_pwd">New Password</label>
+        <div style="position: relative;">
+          <input type="password" id="new_reset_pwd" placeholder="Enter new password" style="width:100%; padding-right:48px;" />
+          <button type="button" class="password-toggle-btn" onclick="togglePasswordVisibility('new_reset_pwd', this)" style="position: absolute; right: 16px; top: 50%; transform: translateY(-50%); background: none; border: none; color: var(--text2); cursor: pointer; font-size: 16px; padding: 4px; display: flex; align-items: center; justify-content: center; outline: none; transition: var(--transition);">👁️</button>
+        </div>
+      </div>
+      <div class="form-group" style="margin:0;">
+        <label for="new_reset_pwd2">Confirm New Password</label>
+        <div style="position: relative;">
+          <input type="password" id="new_reset_pwd2" placeholder="Confirm new password" style="width:100%; padding-right:48px;" />
+          <button type="button" class="password-toggle-btn" onclick="togglePasswordVisibility('new_reset_pwd2', this)" style="position: absolute; right: 16px; top: 50%; transform: translateY(-50%); background: none; border: none; color: var(--text2); cursor: pointer; font-size: 16px; padding: 4px; display: flex; align-items: center; justify-content: center; outline: none; transition: var(--transition);">👁️</button>
+        </div>
+      </div>
+      <div class="modal-actions" style="margin-top:8px;">
+        <button class="btn btn-secondary" onclick="closeModal()">Cancel</button>
+        <button class="btn btn-primary" onclick="resetAccountPassword()">Reset Password</button>
+      </div>
+    </div>
+  `);
+}
+
+function resetAccountPassword() {
+  const pwd = document.getElementById('new_reset_pwd').value;
+  const pwd2 = document.getElementById('new_reset_pwd2').value;
+  
+  if (!pwd) { showToast('❌ Password cannot be empty', 'error'); return; }
+  if (pwd !== pwd2) { showToast('❌ Passwords do not match', 'error'); return; }
+  if (pwd.length < 6) { showToast('❌ Password must be at least 6 characters', 'error'); return; }
+  
+  loadStore();
+  let updated = false;
+  
+  if (tempResetState.role === 'staff') {
+    const staffUser = store.users.find(u => u.email && u.email.toLowerCase() === tempResetState.email);
+    if (staffUser) {
+      staffUser.password = pwd;
+      updated = true;
+    }
+  } else if (tempResetState.role === 'patient') {
+    const patientAcc = store.patients.find(p => p.email && p.email.toLowerCase() === tempResetState.email);
+    if (patientAcc) {
+      patientAcc.password = pwd;
+      updated = true;
+    }
+  }
+  
+  if (updated) {
+    fetch('/api/auth/reset-password', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email: tempResetState.email, password: pwd, role: tempResetState.role })
+    })
+    .then(res => {
+      if (!res.ok) throw new Error('Reset failed on server');
+      return res.json();
+    })
+    .then(() => {
+      closeModal();
+      showToast('✅ Password reset successful! You can now log in.', 'success');
+    })
+    .catch(err => {
+      console.error(err);
+      showToast('❌ Password reset failed on server. Try again.', 'error');
+    });
+  } else {
+    showToast('❌ Account not found. Reset failed.', 'error');
+  }
+}
+
+// ── RENDER ENGINE ──
+function renderDashboard(patient) {
+  loadStore();
+  // Fetch freshest copy of patient details from store
+  const freshPatient = store.patients.find(p => p.id === patient.id) || patient;
+  
+  document.getElementById('pdAvatar').textContent = freshPatient.name[0];
+  document.getElementById('pdAvatar').style.background = avatarColor(freshPatient.name);
+  document.getElementById('pdName').textContent = freshPatient.name;
+  document.getElementById('pdContact').textContent = `${freshPatient.phone || 'No phone'} · ${freshPatient.email}`;
+  document.getElementById('pdAgeGender').textContent = `${freshPatient.age || '—'} yrs / ${freshPatient.gender}`;
+  document.getElementById('pdBlood').textContent = freshPatient.bloodGroup || '—';
+  document.getElementById('pdAddress').textContent = freshPatient.address || 'Not Provided';
+
+  const doctor = store.users.find(u => u.id === freshPatient.assignedDoctor);
+  document.getElementById('pdDoctor').textContent = doctor ? `👨‍⚕️ ${doctor.name} (${doctor.department})` : 'Not Assigned';
+
+  // Active conditions
+  const conditions = freshPatient.conditions || [];
+  const condContainer = document.getElementById('pdConditions');
+  if (conditions.length) {
+    condContainer.innerHTML = conditions.map(c => `<span class="badge badge-yellow">${c}</span>`).join('');
+  } else {
+    condContainer.innerHTML = '<span style="color:var(--text3); font-size:13px;">No diagnosed conditions.</span>';
+  }
+
+  // Medications
+  const meds = getPatientMedications(freshPatient.id);
+  document.getElementById('tabletCountBadge').textContent = `${meds.length} Prescribed`;
+  const medsContainer = document.getElementById('pdMedsContainer');
+  if (meds.length) {
+    medsContainer.innerHTML = `
+      <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap:12px;">
+        ${meds.map(m => `
+          <div style="background:var(--bg3); border:1px solid var(--border); border-radius:10px; padding:16px; display:flex; flex-direction:column; gap:8px;">
+            <div style="display:flex; justify-content:space-between; align-items:start;">
+              <span style="font-weight:600; font-size:15px; color:var(--text);">${m.name}</span>
+              <span class="badge badge-green" style="font-size:10px;">Tablet</span>
+            </div>
+            <div style="font-size:12px; color:var(--text2);">Prescribed for: <strong>${m.sourceRecord}</strong></div>
+            <div style="font-size:11px; color:var(--text3); margin-top:auto; display:flex; justify-content:space-between;">
+              <span>Type: ${m.type}</span>
+              <span>Date: ${m.prescribedOn}</span>
+            </div>
+          </div>
+        `).join('')}
+      </div>
+    `;
+  } else {
+    medsContainer.innerHTML = `
+      <div class="empty-state">
+        <div class="icon">💊</div>
+        <h3>No Prescribed Tablets</h3>
+        <p>No active medications prescribed by doctors were found in your records.</p>
+      </div>
+    `;
+  }
+
+  // Appointments
+  const appts = store.appointments.filter(a => a.patientId === freshPatient.id);
+  const apptsTable = document.getElementById('pdAppointmentsTable');
+  if (appts.length) {
+    apptsTable.innerHTML = appts.map(a => {
+      const doctor = store.users.find(u => u.id === a.doctorId);
+      return `<tr>
+        <td><strong>${doctor?.name || 'Unknown Doctor'}</strong></td>
+        <td><strong>${a.date}</strong> at ${a.time}</td>
+        <td><span class="badge badge-blue">${a.type}</span></td>
+        <td style="font-size:12px; color:var(--text2);">${a.notes || '—'}</td>
+        <td>${statusBadge(a.status)}</td>
+      </tr>`;
+    }).join('');
+  } else {
+    apptsTable.innerHTML = `<tr><td colspan="5"><div class="empty-state" style="padding: 20px;"><h3>No appointments scheduled</h3></div></td></tr>`;
+  }
+
+  // History timeline
+  const records = store.records.filter(r => r.patientId === freshPatient.id);
+  const historyTimeline = document.getElementById('pdHistoryTimeline');
+  if (records.length) {
+    historyTimeline.innerHTML = records.map(r => {
+      const typeColors = { Diagnosis: 'purple', 'Lab Result': 'blue', Emergency: 'red', Prescription: 'green' };
+      const colorMap = { Diagnosis: 'var(--purple)', 'Lab Result': 'var(--blue)', Emergency: 'var(--red)', Prescription: 'var(--accent)' };
+      const borderCol = colorMap[r.type] || 'var(--border)';
+      return `
+      <div class="med-history-card" style="background: rgba(255,255,255,0.01); border: 1px solid var(--border); border-left: 4px solid ${borderCol}; border-radius: 12px; padding: 16px; position:relative; display:flex; flex-direction:column; gap:8px; margin-bottom:12px; text-align:left;">
+        <div style="display:flex; justify-content:space-between; align-items:start;">
+          <div>
+            <h4 style="font-size:14px; font-weight:700; color:var(--text); display:flex; align-items:center; gap:6px; margin:0;">
+              <span>🩺</span> ${r.title}
+            </h4>
+            <div style="font-size:11px; color:var(--text3); margin-top:2px; display:flex; align-items:center; gap:4px;">
+              <span>📅</span> Date: ${r.date}
+            </div>
+          </div>
+          <div style="display:flex; align-items:center; gap:8px;">
+            <span class="badge badge-${typeColors[r.type] || 'gray'}">${r.type}</span>
+            <button class="btn btn-secondary btn-sm" onclick="downloadSingleMedicalRecord('${r.id}')" style="padding: 4px 8px; font-size: 11px; display:flex; align-items:center; gap:4px; height:auto; border-radius:6px; font-weight:500;" id="btn-download-${r.id}">
+              <span>📥</span> Download
+            </button>
+          </div>
+        </div>
+        <p style="font-size:13px; color:var(--text2); line-height:1.5; margin:0; background:rgba(0,0,0,0.15); padding:8px 12px; border-radius:6px; border:1px solid rgba(255,255,255,0.02);">${r.description}</p>
+        ${r.medications && r.medications.length ? `
+          <div style="display:flex; align-items:center; gap:6px; flex-wrap:wrap; margin-top:4px;">
+            <span style="font-size:11px; color:var(--text3); text-transform:uppercase; letter-spacing:0.04em;">Medications: </span>
+            ${r.medications.map(med => `<span class="badge badge-gray" style="margin-right:2px; display:flex; align-items:center; gap:3px;">💊 ${med}</span>`).join('')}
+          </div>
+        ` : ''}
+      </div>
+      `;
+    }).join('');
+  } else {
+    historyTimeline.innerHTML = '<span style="color:var(--text3); font-size:13px;">No medical records found.</span>';
+  }
+}
+
+// ── HELPERS ──
+async function downloadMedicalHistory() {
+  loadStore();
+  const currentPatient = JSON.parse(sessionStorage.getItem('phms_current_patient'));
+  if (!currentPatient) {
+    showToast('❌ Session expired. Please log in again.', 'error');
+    return;
+  }
+  
+  const records = store.records.filter(r => r.patientId === currentPatient.id);
+  if (!records || records.length === 0) {
+    showToast('❌ No medical records available to download.', 'error');
+    return;
+  }
+  
+  const btn = document.getElementById('downloadPdfBtn');
+  const originalText = btn.textContent;
+  btn.textContent = 'Generating...';
+  btn.disabled = true;
+  
+  try {
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF();
+    
+    // Header
+    doc.setFontSize(22);
+    doc.setTextColor(0, 119, 204);
+    doc.text('PHMS MEDICAL CLINIC', 105, 20, { align: 'center' });
+    doc.setFontSize(10);
+    doc.setTextColor(100, 100, 100);
+    doc.text('Public Health Management System - Medical History Report', 105, 28, { align: 'center' });
+    doc.setDrawColor(200, 200, 200);
+    doc.line(14, 32, 196, 32);
+    
+    // Patient Details
+    const doctor = store.users.find(u => u.id === currentPatient.assignedDoctor);
+    const doctorName = doctor ? doctor.name + ' (' + doctor.department + ')' : 'Not Assigned';
+    
+    doc.setFontSize(14);
+    doc.setTextColor(0, 0, 0);
+    doc.text('Patient Information', 14, 42);
+    
+    doc.autoTable({
+      startY: 46,
+      theme: 'plain',
+      styles: { cellPadding: 2, fontSize: 10, textColor: [50, 50, 50] },
+      columnStyles: { 
+        0: { fontStyle: 'bold', cellWidth: 35 }, 
+        1: { cellWidth: 60 }, 
+        2: { fontStyle: 'bold', cellWidth: 35 }
+      },
+      body: [
+        ['Patient Name:', currentPatient.name, 'Patient ID:', currentPatient.id],
+        ['Age / Gender:', currentPatient.age + ' yrs / ' + currentPatient.gender, 'Blood Group:', currentPatient.bloodGroup || 'N/A'],
+        ['Contact:', currentPatient.phone || 'N/A', 'Assigned Doctor:', doctorName],
+        ['Address:', currentPatient.address || 'N/A', '', '']
+      ]
+    });
+    
+    let currentY = doc.lastAutoTable.finalY + 10;
+    
+    // Active Conditions
+    if (currentPatient.conditions && currentPatient.conditions.length > 0) {
+      doc.setFontSize(12);
+      doc.setTextColor(50, 50, 50);
+      doc.text('Active Conditions: ' + currentPatient.conditions.join(', '), 14, currentY);
+      currentY += 10;
+    }
+    
+    // Medications
+    const meds = getPatientMedications(currentPatient.id);
+    if (meds && meds.length > 0) {
+      doc.setFontSize(14);
+      doc.setTextColor(0, 0, 0);
+      doc.text('Current Medications', 14, currentY);
+      currentY += 6;
+      
+      const medsData = meds.map(m => [m.name, m.type, m.sourceRecord, m.prescribedOn]);
+      doc.autoTable({
+        startY: currentY,
+        head: [['Medication', 'Type', 'Prescribed For', 'Date']],
+        body: medsData,
+        theme: 'striped',
+        headStyles: { fillColor: [0, 212, 160], textColor: [255, 255, 255] },
+        styles: { fontSize: 9 }
+      });
+      currentY = doc.lastAutoTable.finalY + 10;
+    }
+    
+    // Medical History Timeline
+    doc.setFontSize(14);
+    doc.setTextColor(0, 0, 0);
+    doc.text('Medical History (Chronological)', 14, currentY);
+    currentY += 6;
+    
+    const sortedRecords = [...records].sort((a, b) => new Date(b.date) - new Date(a.date));
+    const recordsData = sortedRecords.map(r => [
+      r.date,
+      r.type,
+      r.title,
+      r.description,
+      (r.medications || []).join(', ') || 'None'
+    ]);
+    
+    doc.autoTable({
+      startY: currentY,
+      head: [['Date', 'Type', 'Diagnosis / Title', 'Treatment Notes & Symptoms', 'Medications']],
+      body: recordsData,
+      theme: 'grid',
+      headStyles: { fillColor: [100, 116, 139], textColor: [255, 255, 255] },
+      styles: { fontSize: 9 },
+      columnStyles: { 3: { cellWidth: 70 } }
+    });
+    
+    // Footer
+    const pageCount = doc.internal.getNumberOfPages();
+    const generatedDate = new Date().toLocaleString();
+    for (let i = 1; i <= pageCount; i++) {
+      doc.setPage(i);
+      doc.setFontSize(8);
+      doc.setTextColor(150, 150, 150);
+      doc.text(`Generated by Public Health Management System (PHMS) on ${generatedDate}`, 14, 290);
+      doc.text(`Page ${i} of ${pageCount}`, 196, 290, { align: 'right' });
+    }
+    
+    // Save PDF
+    const filename = `Medical_History_${currentPatient.name.replace(/\s+/g, '_')}_${new Date().toISOString().split('T')[0]}.pdf`;
+    doc.save(filename);
+    
+    showToast('✅ Medical history PDF downloaded!', 'success');
+  } catch (error) {
+    console.error('PDF Generation Error:', error);
+    showToast('❌ Error generating PDF. Check console.', 'error');
+  } finally {
+    btn.textContent = originalText;
+    btn.disabled = false;
+  }
+}
+
+// ── HELPERS ──
+async function downloadSingleMedicalRecord(recordId) {
+  loadStore();
+  const currentPatient = JSON.parse(sessionStorage.getItem('phms_current_patient'));
+  if (!currentPatient) {
+    showToast('❌ Session expired.', 'error');
+    return;
+  }
+  const record = store.records.find(r => r.id === recordId);
+  if (!record) return;
+  
+  const btn = document.getElementById('btn-download-' + recordId);
+  const originalText = btn.innerHTML;
+  btn.innerHTML = '<span>⏳</span>...';
+  btn.disabled = true;
+  
+  try {
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF();
+    doc.setFontSize(22); doc.setTextColor(0, 119, 204);
+    doc.text('PHMS MEDICAL CLINIC', 105, 20, { align: 'center' });
+    doc.setFontSize(10); doc.setTextColor(100, 100, 100);
+    doc.text('Individual Medical Record Report', 105, 28, { align: 'center' });
+    doc.setDrawColor(200, 200, 200); doc.line(14, 32, 196, 32);
+    
+    doc.setFontSize(14); doc.setTextColor(0, 0, 0);
+    doc.text('Patient Information', 14, 42);
+    doc.autoTable({
+      startY: 46, theme: 'plain', styles: { cellPadding: 2, fontSize: 10, textColor: [50, 50, 50] },
+      columnStyles: { 0: { fontStyle: 'bold', cellWidth: 35 }, 1: { cellWidth: 60 } },
+      body: [
+        ['Patient Name:', currentPatient.name, 'Patient ID:', currentPatient.id],
+        ['Age / Gender:', currentPatient.age + ' yrs / ' + currentPatient.gender, 'Date:', record.date]
+      ]
+    });
+    
+    let currentY = doc.lastAutoTable.finalY + 10;
+    doc.setFontSize(14); doc.setTextColor(0, 0, 0);
+    doc.text('Record Details', 14, currentY);
+    
+    doc.autoTable({
+      startY: currentY + 6, theme: 'grid', headStyles: { fillColor: [100, 116, 139], textColor: [255, 255, 255] },
+      styles: { fontSize: 10 }, columnStyles: { 0: { fontStyle: 'bold', cellWidth: 40 } },
+      body: [
+        ['Record ID', record.id],
+        ['Type', record.type],
+        ['Diagnosis / Title', record.title],
+        ['Description / Notes', record.description],
+        ['Medications', (record.medications || []).join(', ') || 'None']
+      ]
+    });
+    
+    doc.setFontSize(8); doc.setTextColor(150, 150, 150);
+    doc.text(`Generated by PHMS on ${new Date().toLocaleString()}`, 14, 290);
+    doc.save(`Record_${currentPatient.name.replace(/\s+/g, '_')}_${record.date}.pdf`);
+    showToast('✅ Record PDF downloaded!', 'success');
+  } catch (e) {
+    console.error(e);
+    showToast('❌ Error generating PDF.', 'error');
+  } finally {
+    btn.innerHTML = originalText; btn.disabled = false;
+  }
+}
+
+function getPatientMedications(patientId) {
+  const records = store.records.filter(r => r.patientId === patientId);
+  const meds = [];
+  records.forEach(r => {
+    if (r.medications && r.medications.length) {
+      r.medications.forEach(m => {
+        meds.push({ name: m, prescribedOn: r.date, sourceRecord: r.title, type: r.type });
+      });
+    }
+  });
+  return meds;
+}
+
+function statusBadge(s) {
+  const map = { Scheduled: 'badge-yellow', Completed: 'badge-green', Cancelled: 'badge-red' };
+  return `<span class="badge ${map[s]||'badge-gray'}">${s}</span>`;
+}
+
+function avatarColor(name) {
+  const colors = ['rgba(0,212,160,0.3)', 'rgba(0,153,255,0.3)', 'rgba(168,85,247,0.3)', 'rgba(255,107,107,0.3)', 'rgba(255,209,102,0.3)'];
+  return colors[name.charCodeAt(0) % colors.length];
+}
+
+function showError(msg) {
+  const errDiv = document.getElementById('authError');
+  errDiv.textContent = '❌ ' + msg;
+  errDiv.style.display = 'flex';
+}
+
+function showToast(msg, type = 'info') {
+  msg = msg.replace(/^(?:✅|❌|⚠️|ℹ️|🔑)\s*/, '');
+  const colors = { success: 'var(--green)', error: 'var(--red)', warning: 'var(--yellow)', info: 'var(--blue)' };
+  const toast = document.createElement('div');
+  toast.className = 'toast';
+  toast.innerHTML = `<span style="color:${colors[type]};font-size:16px;">${type==='success'?'✅':type==='error'?'❌':type==='warning'?'⚠️':'ℹ️'}</span><span>${msg}</span>`;
+  document.getElementById('toast-container').appendChild(toast);
+  setTimeout(() => toast.remove(), 3500);
+}
+
+let isPointerDown = false;
+let currentTargetInputId = null;
+let currentTargetBtn = null;
+
+function showPassword(inputId, btn) {
+  const input = document.getElementById(inputId);
+  if (input) {
+    input.type = 'text';
+    btn.textContent = '🙈';
+  }
+}
+
+function hidePassword(inputId, btn) {
+  const input = document.getElementById(inputId);
+  if (input) {
+    input.type = 'password';
+    btn.textContent = '👁️';
+  }
+}
+
+function togglePasswordVisibility(inputId, btn) {
+  if (isPointerDown) {
+    return;
+  }
+  const input = document.getElementById(inputId);
+  if (input) {
+    if (input.type === 'password') {
+      showPassword(inputId, btn);
+    } else {
+      hidePassword(inputId, btn);
+    }
+  }
+}
+
+// Pointer-down and Pointer-up event delegation for password toggles
+document.addEventListener('mousedown', (e) => {
+  const btn = e.target.closest('.password-toggle-btn');
+  if (btn) {
+    const onclickAttr = btn.getAttribute('onclick');
+    if (onclickAttr && onclickAttr.includes('togglePasswordVisibility')) {
+      const match = onclickAttr.match(/'([^']+)'/);
+      if (match && match[1]) {
+        isPointerDown = true;
+        currentTargetInputId = match[1];
+        currentTargetBtn = btn;
+        showPassword(currentTargetInputId, btn);
+      }
+    }
+  }
+});
+
+const clearPointerDownState = () => {
+  if (isPointerDown && currentTargetInputId && currentTargetBtn) {
+    hidePassword(currentTargetInputId, currentTargetBtn);
+    setTimeout(() => {
+      isPointerDown = false;
+      currentTargetInputId = null;
+      currentTargetBtn = null;
+    }, 50);
+  }
+};
+
+document.addEventListener('mouseup', clearPointerDownState);
+document.addEventListener('mouseleave', clearPointerDownState);
+
+document.addEventListener('touchstart', (e) => {
+  const btn = e.target.closest('.password-toggle-btn');
+  if (btn) {
+    const onclickAttr = btn.getAttribute('onclick');
+    if (onclickAttr && onclickAttr.includes('togglePasswordVisibility')) {
+      const match = onclickAttr.match(/'([^']+)'/);
+      if (match && match[1]) {
+        isPointerDown = true;
+        currentTargetInputId = match[1];
+        currentTargetBtn = btn;
+        showPassword(currentTargetInputId, btn);
+        e.preventDefault();
+      }
+    }
+  }
+}, { passive: false });
+
+document.addEventListener('touchend', clearPointerDownState);
+document.addEventListener('touchcancel', clearPointerDownState);
+
+// Auto session recovery
+window.onload = function() {
+  loadStore();
+  syncFromServer();
+  const savedUser = sessionStorage.getItem('phms_current_patient');
+  if (savedUser) {
+    try {
+      enterDashboard(JSON.parse(savedUser));
+    } catch(e) {}
+  }
+};
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'Enter' && document.getElementById('loginPage').style.display !== 'none') {
+    if (document.getElementById('registerFields').style.display === 'none') {
+      login();
+    } else {
+      register();
+    }
+  }
+});
+
+// ── PARTICLE MOTION PICTURES BACKGROUND ──────────────────────────────────────────
+(function() {
+  const canvas = document.createElement('canvas');
+  canvas.id = 'login-particles-canvas';
+  canvas.style.position = 'fixed';
+  canvas.style.top = '0';
+  canvas.style.left = '0';
+  canvas.style.width = '100vw';
+  canvas.style.height = '100vh';
+  canvas.style.zIndex = '1';
+  canvas.style.pointerEvents = 'none';
+  // Insert canvas as first element of loginPage
+  const loginPage = document.getElementById('loginPage');
+  if (loginPage) {
+    loginPage.prepend(canvas);
+  }
+
+  const ctx = canvas.getContext('2d');
+  let width = canvas.width = window.innerWidth;
+  let height = canvas.height = window.innerHeight;
+
+  const particles = [];
+  const particleCount = 45;
+  const connectionDistance = 120;
+  
+  class Particle {
+    constructor() {
+      this.x = Math.random() * width;
+      this.y = Math.random() * height;
+      this.vx = (Math.random() - 0.5) * 0.4;
+      this.vy = (Math.random() - 0.5) * 0.4;
+      this.radius = Math.random() * 2 + 1.5;
+    }
+    update() {
+      this.x += this.vx;
+      this.y += this.vy;
+      if (this.x < 0 || this.x > width) this.vx *= -1;
+      if (this.y < 0 || this.y > height) this.vy *= -1;
+    }
+    draw() {
+      ctx.beginPath();
+      ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+      ctx.fillStyle = 'rgba(0, 153, 255, 0.45)';
+      ctx.fill();
+    }
+  }
+
+  for (let i = 0; i < particleCount; i++) {
+    particles.push(new Particle());
+  }
+
+  function animate() {
+    ctx.clearRect(0, 0, width, height);
+    for (let i = 0; i < particles.length; i++) {
+      particles[i].update();
+      particles[i].draw();
+      for (let j = i + 1; j < particles.length; j++) {
+        const dx = particles[i].x - particles[j].x;
+        const dy = particles[i].y - particles[j].y;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+        if (dist < connectionDistance) {
+          ctx.beginPath();
+          ctx.moveTo(particles[i].x, particles[i].y);
+          ctx.lineTo(particles[j].x, particles[j].y);
+          const alpha = (1 - dist / connectionDistance) * 0.2;
+          ctx.strokeStyle = `rgba(0, 240, 181, ${alpha})`;
+          ctx.lineWidth = 1;
+          ctx.stroke();
+        }
+      }
+    }
+    requestAnimationFrame(animate);
+  }
+
+  window.addEventListener('resize', () => {
+    width = canvas.width = window.innerWidth;
+    height = canvas.height = window.innerHeight;
+  });
+
+  animate();
+})();
+</script>
+</body>
+</html>

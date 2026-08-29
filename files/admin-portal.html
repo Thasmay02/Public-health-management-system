@@ -1,0 +1,2263 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Portal — Public Health Management System</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Syne:wght@600;700;800&display=swap"
+    rel="stylesheet">
+  <style>
+    :root {
+      --bg: #070913;
+      --bg-gradient: radial-gradient(circle at 10% 20%, rgba(15, 23, 42, 0.9) 0%, rgba(7, 9, 19, 0.98) 100%);
+      --card-bg: rgba(16, 22, 38, 0.65);
+      --card-hover: rgba(22, 32, 55, 0.85);
+      --card-border: rgba(255, 255, 255, 0.08);
+      --card-border-glow: rgba(255, 71, 87, 0.15);
+      --input-bg: rgba(10, 15, 26, 0.6);
+      --input-border: rgba(255, 255, 255, 0.12);
+      --input-focus: #ff4757;
+
+      --accent: #ff4757;
+      /* System Admin Coral Red */
+      --accent2: #ff6b81;
+      --accent3: #00d4a0;
+      /* Tech Emerald */
+      --accent4: #0099ff;
+      /* Electric Blue */
+      --purple: #b800ff;
+      /* Purple */
+
+      --text: #f8fafc;
+      --text2: #94a3b8;
+      --text3: #475569;
+      --border: rgba(255, 255, 255, 0.08);
+      --sidebar-w: 260px;
+      --header-h: 70px;
+      --radius: 16px;
+      --radius-sm: 8px;
+      --shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.4);
+      --transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html,
+    body {
+      height: 100%;
+      font-family: 'Inter', sans-serif;
+      background-color: var(--bg);
+      background-image: var(--bg-gradient);
+      color: var(--text);
+      overflow: hidden;
+    }
+
+    /* ── BACKGROUND FLOATS ── */
+    .bg-blob {
+      position: absolute;
+      width: 500px;
+      height: 500px;
+      border-radius: 50%;
+      filter: blur(120px);
+      opacity: 0.06;
+      pointer-events: none;
+      z-index: 0;
+      animation: float 25s infinite alternate;
+    }
+
+    .bg-blob-1 {
+      background: var(--accent);
+      top: -10%;
+      left: -10%;
+      animation-duration: 20s;
+    }
+
+    .bg-blob-2 {
+      background: var(--accent4);
+      bottom: -10%;
+      right: -10%;
+      animation-duration: 25s;
+      animation-delay: -5s;
+    }
+
+    .bg-blob-3 {
+      background: var(--purple);
+      top: 40%;
+      left: 40%;
+      animation-duration: 30s;
+      animation-delay: -10s;
+    }
+
+    @keyframes float {
+      0% {
+        transform: translate(0, 0) scale(1);
+      }
+
+      50% {
+        transform: translate(60px, 90px) scale(1.1);
+      }
+
+      100% {
+        transform: translate(-30px, -50px) scale(0.95);
+      }
+    }
+
+    /* ── LAYOUT ── */
+    #app {
+      display: flex;
+      height: 100vh;
+      overflow: hidden;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* ── LOGIN PAGE ── */
+    #loginPage {
+      width: 100vw;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, rgba(7, 9, 19, 0.85) 0%, rgba(15, 23, 42, 0.9) 100%), url('medical_tech_bg.png') no-repeat center center;
+      background-size: cover;
+      position: relative;
+      z-index: 10;
+    }
+
+    .login-card {
+      width: 420px;
+      max-width: 95vw;
+      padding: 48px;
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 24px;
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      transition: var(--transition);
+    }
+
+    .login-card:hover {
+      border-color: rgba(255, 71, 87, 0.2);
+      box-shadow: 0 12px 40px rgba(255, 71, 87, 0.05);
+    }
+
+    .login-logo {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 40px;
+    }
+
+    .login-logo .icon {
+      width: 52px;
+      height: 52px;
+      border-radius: 14px;
+      background: rgba(16, 22, 38, 0.6) !important;
+      border: 1px solid rgba(255, 255, 255, 0.12) !important;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 15px rgba(255, 71, 87, 0.15);
+      padding: 7px;
+      transition: var(--transition);
+    }
+
+    .login-logo h1 {
+      font-family: 'Syne', sans-serif;
+      font-size: 24px;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+    }
+
+    .login-logo small {
+      display: block;
+      font-size: 11px;
+      color: var(--text2);
+      font-weight: 400;
+      margin-top: 1px;
+    }
+
+    /* ── LOGO SVG STYLING ── */
+    .logo-svg {
+      width: 100%;
+      height: 100%;
+      display: block;
+      overflow: visible;
+    }
+
+    .logo-gear-rotate {
+      transform-origin: 16px 16px;
+      animation: logoGearRotate 12s linear infinite;
+    }
+
+    @keyframes logoGearRotate {
+      0% {
+        transform: rotate(0deg);
+      }
+
+      100% {
+        transform: rotate(360deg);
+      }
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--text2);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 8px;
+    }
+
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      width: 100%;
+      padding: 12px 16px;
+      background: var(--input-bg);
+      border: 1px solid var(--input-border);
+      border-radius: 12px;
+      color: var(--text);
+      font-family: inherit;
+      font-size: 14px;
+      transition: var(--transition);
+      outline: none;
+    }
+
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus {
+      border-color: var(--input-focus);
+      box-shadow: 0 0 0 4px rgba(255, 71, 87, 0.15);
+      background: rgba(10, 15, 26, 0.8);
+    }
+
+    .form-group select option {
+      background: #0c111d;
+    }
+
+    .form-group textarea {
+      resize: vertical;
+      min-height: 80px;
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    /* ── BUTTONS ── */
+    .btn {
+      padding: 14px 28px;
+      border: none;
+      border-radius: 12px;
+      font-family: inherit;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: var(--transition);
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      justify-content: center;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      color: #ffffff;
+      box-shadow: 0 4px 15px rgba(255, 71, 87, 0.15);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(255, 71, 87, 0.3);
+    }
+
+    .btn-secondary {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--border);
+      color: var(--text);
+    }
+
+    .btn-secondary:hover {
+      background: rgba(255, 255, 255, 0.1);
+      transform: translateY(-1px);
+    }
+
+    .btn-danger {
+      background: rgba(255, 71, 87, 0.15);
+      border: 1px solid rgba(255, 71, 87, 0.3);
+      color: var(--red);
+    }
+
+    .btn-danger:hover {
+      background: rgba(255, 71, 87, 0.25);
+      transform: translateY(-1px);
+    }
+
+    .btn-sm {
+      padding: 8px 16px;
+      font-size: 12px;
+      border-radius: 8px;
+    }
+
+    .btn-full {
+      width: 100%;
+      justify-content: center;
+    }
+
+    .alert {
+      padding: 14px 20px;
+      border-radius: 12px;
+      font-size: 13px;
+      line-height: 1.4;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 16px;
+      border: 1px solid transparent;
+    }
+
+    .alert-error {
+      background: rgba(255, 71, 87, 0.06);
+      border-color: rgba(255, 71, 87, 0.15);
+      color: var(--red);
+    }
+
+    .demo-creds {
+      margin-top: 20px;
+      padding: 16px;
+      background: rgba(255, 255, 255, 0.02);
+      border-radius: 12px;
+      border: 1px solid var(--border);
+    }
+
+    .demo-creds p {
+      font-size: 12px;
+      color: var(--text2);
+      margin-bottom: 8px;
+      line-height: 1.5;
+    }
+
+    .demo-creds code {
+      font-size: 11px;
+      color: var(--accent2);
+      background: rgba(255, 71, 87, 0.1);
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-family: monospace;
+    }
+
+    /* ── SIDEBAR ── */
+    #sidebar {
+      width: var(--sidebar-w);
+      height: 100vh;
+      background: rgba(10, 15, 30, 0.6);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-right: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      flex-shrink: 0;
+      overflow: hidden;
+    }
+
+    .sidebar-header {
+      height: var(--header-h);
+      padding: 0 24px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .sidebar-logo {
+      width: 42px;
+      height: 42px;
+      border-radius: 12px;
+      background: rgba(16, 22, 38, 0.6) !important;
+      border: 1px solid rgba(255, 255, 255, 0.12) !important;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      box-shadow: 0 4px 12px rgba(255, 71, 87, 0.15);
+      padding: 6px;
+      transition: var(--transition);
+    }
+
+    .sidebar-title {
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      font-size: 16px;
+      letter-spacing: -0.5px;
+      white-space: nowrap;
+    }
+
+    .sidebar-sub {
+      font-size: 11px;
+      color: var(--text2);
+      margin-top: 1px;
+    }
+
+    .nav-section {
+      padding: 20px 16px 0;
+    }
+
+    .nav-label {
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      color: var(--text3);
+      padding: 0 12px;
+      margin-bottom: 10px;
+      font-weight: 700;
+    }
+
+    .nav-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 14px;
+      border-radius: 12px;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--text2);
+      transition: var(--transition);
+      white-space: nowrap;
+      position: relative;
+      margin-bottom: 4px;
+    }
+
+    .nav-item:hover {
+      background: rgba(255, 255, 255, 0.03);
+      color: var(--text);
+      padding-left: 18px;
+    }
+
+    .nav-item.active {
+      background: rgba(255, 71, 87, 0.08);
+      color: var(--accent2);
+      font-weight: 600;
+    }
+
+    .nav-item.active::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 4px;
+      height: 24px;
+      background: var(--accent2);
+      border-radius: 0 4px 4px 0;
+      box-shadow: 0 0 10px var(--accent2);
+    }
+
+    .nav-icon {
+      width: 20px;
+      text-align: center;
+      font-size: 18px;
+      flex-shrink: 0;
+    }
+
+    .nav-badge {
+      margin-left: auto;
+      background: var(--red);
+      color: white;
+      font-size: 10px;
+      padding: 2px 8px;
+      border-radius: 10px;
+      font-weight: 700;
+      box-shadow: 0 2px 8px rgba(255, 71, 87, 0.3);
+    }
+
+    .sidebar-footer {
+      margin-top: auto;
+      padding: 20px 16px;
+      border-top: 1px solid var(--border);
+      background: rgba(5, 8, 16, 0.4);
+    }
+
+    .user-card {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .user-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 14px;
+      color: white;
+      flex-shrink: 0;
+      box-shadow: 0 4px 10px rgba(255, 71, 87, 0.2);
+    }
+
+    .user-name {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 120px;
+    }
+
+    .user-role {
+      font-size: 11px;
+      color: var(--text2);
+      margin-top: 1px;
+    }
+
+    .logout-btn {
+      margin-left: auto;
+      background: rgba(255, 71, 87, 0.1);
+      border: 1px solid rgba(255, 71, 87, 0.2);
+      color: var(--accent);
+      cursor: pointer;
+      font-size: 16px;
+      width: 32px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 8px;
+      transition: var(--transition);
+    }
+
+    .logout-btn:hover {
+      background: var(--accent);
+      color: #fff;
+      box-shadow: 0 4px 12px rgba(255, 71, 87, 0.3);
+    }
+
+    /* ── MAIN ── */
+    #main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      background: transparent;
+      position: relative;
+      z-index: 1;
+    }
+
+    #header {
+      height: var(--header-h);
+      padding: 0 32px;
+      background: rgba(10, 15, 30, 0.4);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-shrink: 0;
+    }
+
+    .header-left h2 {
+      font-family: 'Syne', sans-serif;
+      font-size: 20px;
+      font-weight: 700;
+      letter-spacing: -0.5px;
+    }
+
+    .header-left p {
+      font-size: 12px;
+      color: var(--text2);
+      margin-top: 2px;
+    }
+
+    .header-right {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    #content {
+      flex: 1;
+      overflow-y: auto;
+      padding: 32px;
+      z-index: 10;
+    }
+
+    /* ── STAT CARDS ── */
+    .stat-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 20px;
+      margin-bottom: 32px;
+    }
+
+    .stat-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius);
+      padding: 24px;
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      transition: var(--transition);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .stat-card::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at 10% 20%, rgba(255, 255, 255, 0.02) 0%, transparent 80%);
+      pointer-events: none;
+    }
+
+    .stat-card:hover {
+      transform: translateY(-4px);
+      border-color: var(--card-border-glow);
+      box-shadow: 0 12px 24px rgba(0, 0, 0, 0.3);
+      background: var(--card-hover);
+    }
+
+    .stat-icon {
+      width: 52px;
+      height: 52px;
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      flex-shrink: 0;
+    }
+
+    .stat-icon.red {
+      background: rgba(255, 71, 87, 0.12);
+      color: var(--accent);
+      border: 1px solid rgba(255, 71, 87, 0.2);
+    }
+
+    .stat-icon.blue {
+      background: rgba(0, 153, 255, 0.12);
+      color: var(--accent4);
+      border: 1px solid rgba(0, 153, 255, 0.2);
+    }
+
+    .stat-icon.green {
+      background: rgba(0, 240, 181, 0.12);
+      color: var(--accent3);
+      border: 1px solid rgba(0, 240, 181, 0.2);
+    }
+
+    .stat-icon.yellow {
+      background: rgba(255, 209, 102, 0.12);
+      color: var(--yellow);
+      border: 1px solid rgba(255, 209, 102, 0.2);
+    }
+
+    .stat-val {
+      font-family: 'Syne', sans-serif;
+      font-size: 32px;
+      font-weight: 800;
+      line-height: 1;
+      letter-spacing: -0.5px;
+    }
+
+    .stat-label {
+      font-size: 13px;
+      color: var(--text2);
+      margin-top: 6px;
+      font-weight: 500;
+    }
+
+    /* ── CARDS & TABLES ── */
+    .section-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      margin-bottom: 24px;
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      transition: var(--transition);
+    }
+
+    .section-card:hover {
+      border-color: rgba(255, 255, 255, 0.12);
+    }
+
+    .section-header {
+      padding: 24px 28px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    .section-header h3 {
+      font-family: 'Syne', sans-serif;
+      font-size: 16px;
+      font-weight: 700;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+    }
+
+    thead th {
+      padding: 16px 24px;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--text2);
+      font-weight: 700;
+      border-bottom: 1px solid var(--border);
+      background: rgba(5, 8, 16, 0.4);
+    }
+
+    tbody td {
+      padding: 18px 24px;
+      font-size: 14px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+      vertical-align: middle;
+      color: var(--text);
+      transition: var(--transition);
+    }
+
+    tbody tr {
+      transition: var(--transition);
+    }
+
+    tbody tr:hover td {
+      background: rgba(255, 255, 255, 0.02);
+    }
+
+    tbody tr:last-child td {
+      border-bottom: none;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+      border: 1px solid transparent;
+    }
+
+    .badge-green {
+      background: rgba(0, 240, 181, 0.1);
+      color: var(--green);
+      border-color: rgba(0, 240, 181, 0.2);
+    }
+
+    .badge-red {
+      background: rgba(255, 71, 87, 0.1);
+      color: var(--red);
+      border-color: rgba(255, 71, 87, 0.2);
+    }
+
+    .badge-yellow {
+      background: rgba(255, 209, 102, 0.1);
+      color: var(--yellow);
+      border-color: rgba(255, 209, 102, 0.2);
+    }
+
+    .badge-blue {
+      background: rgba(0, 153, 255, 0.1);
+      color: var(--blue);
+      border-color: rgba(0, 153, 255, 0.2);
+    }
+
+    .badge-purple {
+      background: rgba(168, 85, 247, 0.1);
+      color: var(--purple);
+      border-color: rgba(168, 85, 247, 0.2);
+    }
+
+    .badge-gray {
+      background: rgba(148, 163, 184, 0.1);
+      color: var(--text2);
+      border-color: rgba(148, 163, 184, 0.2);
+    }
+
+    .avatar-sm {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      font-weight: 700;
+      margin-right: 12px;
+      color: white;
+    }
+
+    /* ── PAGES ── */
+    .page {
+      display: none;
+    }
+
+    .page.active {
+      display: block;
+      animation: slideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+
+    @keyframes slideUp {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* ── MODALS ── */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(3, 5, 10, 0.85);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+
+    .modal-overlay.show {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .modal {
+      background: rgba(16, 22, 38, 0.95);
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      width: 560px;
+      max-width: 95vw;
+      max-height: 90vh;
+      overflow-y: auto;
+      padding: 36px;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
+      transform: scale(0.95) translateY(20px);
+      transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    .modal-overlay.show .modal {
+      transform: scale(1) translateY(0);
+    }
+
+    .modal-title {
+      font-family: 'Syne', sans-serif;
+      font-size: 20px;
+      font-weight: 700;
+      margin-bottom: 28px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      color: var(--text);
+    }
+
+    .modal-close {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--border);
+      color: var(--text2);
+      cursor: pointer;
+      font-size: 16px;
+      width: 32px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      transition: var(--transition);
+    }
+
+    .modal-close:hover {
+      background: rgba(255, 71, 87, 0.15);
+      color: var(--accent);
+      border-color: rgba(255, 71, 87, 0.3);
+    }
+
+    .modal-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 16px;
+      margin-top: 32px;
+    }
+
+    /* Toast & Utilities */
+    #toast-container {
+      position: fixed;
+      bottom: 32px;
+      right: 32px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      z-index: 2000;
+    }
+
+    .toast {
+      background: rgba(16, 22, 38, 0.9);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 16px 24px;
+      font-size: 13px;
+      font-weight: 600;
+      min-width: 300px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      animation: toastIn .3s ease forwards;
+    }
+
+    @keyframes toastIn {
+      from {
+        transform: translateY(20px);
+        opacity: 0;
+      }
+
+      to {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
+
+    .empty-state {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      padding: 40px;
+    }
+
+    .empty-state .icon {
+      font-size: 40px;
+      margin-bottom: 12px;
+      opacity: 0.8;
+    }
+
+    .empty-state h3 {
+      font-family: 'Syne', sans-serif;
+      font-size: 16px;
+      margin-bottom: 6px;
+      color: var(--text);
+    }
+
+    .inventory-bar-wrap {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .progress-bar {
+      height: 8px;
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 4px;
+      overflow: hidden;
+      flex: 1;
+    }
+
+    .progress-fill {
+      height: 100%;
+      border-radius: 4px;
+      transition: width 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .password-toggle-btn:hover {
+      color: var(--text) !important;
+      transform: translateY(-50%) scale(1.15) !important;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="bg-blob bg-blob-1"></div>
+  <div class="bg-blob bg-blob-2"></div>
+  <div class="bg-blob bg-blob-3"></div>
+  <!-- ADMIN LOGIN PAGE -->
+  <div id="loginPage">
+    <div class="login-card">
+      <div class="login-logo">
+        <div class="icon">
+          <svg class="logo-svg" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="adminGradLogin" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="var(--accent, #ff4757)" />
+                <stop offset="100%" stop-color="var(--accent2, #ff6b81)" />
+              </linearGradient>
+              <filter id="logoGlowAdminLogin" x="-20%" y="-20%" width="140%" height="140%">
+                <feGaussianBlur stdDeviation="1.5" result="blur" />
+                <feComposite in="SourceGraphic" in2="blur" operator="over" />
+              </filter>
+            </defs>
+            <path d="M16 4L26 8V15C26 21 22 26 16 28C10 26 6 21 6 15V8L16 4Z" stroke="url(#adminGradLogin)"
+              stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="4 2" />
+            <g class="logo-gear-rotate">
+              <circle cx="16" cy="16" r="6" stroke="url(#adminGradLogin)" stroke-width="2" />
+              <path d="M16 6V10M16 22V26M6 16H10M22 16H26M11.7 11.7L9 9M20.3 20.3L23 23M11.7 20.3L9 23M20.3 11.7L23 9"
+                stroke="url(#adminGradLogin)" stroke-width="2.5" stroke-linecap="round" />
+              <circle cx="16" cy="16" r="2.5" fill="url(#adminGradLogin)" />
+            </g>
+          </svg>
+        </div>
+        <div>
+          <h1>PHMS Admin</h1>
+          <small>System Security & Configuration</small>
+        </div>
+      </div>
+      <div id="loginError" class="alert alert-error" style="display:none;margin-bottom:16px;"></div>
+      <div class="form-group">
+        <label for="loginEmail">Admin Email</label>
+        <input type="email" id="loginEmail" placeholder="admin@phms.gov" />
+      </div>
+      <div class="form-group">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+          <label for="nu_name">Security Password</label>
+          <a href="javascript:void(0)" onclick="showForgotPasswordModal('admin')"
+            style="font-size:11px; color:var(--accent); text-decoration:none; font-weight:500; transition: var(--transition);"
+            onmouseover="this.style.color='var(--text)'" onmouseout="this.style.color='var(--accent)'">Forgot
+            Password?</a>
+        </div>
+        <div style="position: relative;">
+          <input type="password" id="loginPassword" placeholder="Enter security credentials"
+            style="padding-right: 48px;" />
+          <button type="button" class="password-toggle-btn" onclick="togglePasswordVisibility('loginPassword', this)"
+            style="position: absolute; right: 16px; top: 50%; transform: translateY(-50%); background: none; border: none; color: var(--text2); cursor: pointer; font-size: 16px; padding: 4px; display: flex; align-items: center; justify-content: center; outline: none; transition: var(--transition);">👁️</button>
+        </div>
+      </div>
+      <button class="btn btn-primary btn-full" onclick="login()">Authenticate Portal →</button>
+      <div class="demo-creds">
+        <p>System Administrator Credential:</p>
+        <p>Email: <code>admin@phms.gov</code></p>
+        <p>Password: <code>admin123</code></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ADMIN WORKSPACE SHELL -->
+  <div id="appShell" style="display:none; flex: 1; width:100%; height:100vh; overflow:hidden;">
+    <div id="app" style="display:flex; width:100%; height:100vh; overflow:hidden;">
+
+      <!-- SIDEBAR -->
+      <div id="sidebar">
+        <div class="sidebar-header">
+          <div class="sidebar-logo">
+            <svg class="logo-svg" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <linearGradient id="adminGradSidebar" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stop-color="var(--accent, #ff4757)" />
+                  <stop offset="100%" stop-color="var(--accent2, #ff6b81)" />
+                </linearGradient>
+                <filter id="logoGlowAdminSidebar" x="-20%" y="-20%" width="140%" height="140%">
+                  <feGaussianBlur stdDeviation="1.5" result="blur" />
+                  <feComposite in="SourceGraphic" in2="blur" operator="over" />
+                </filter>
+              </defs>
+              <path d="M16 4L26 8V15C26 21 22 26 16 28C10 26 6 21 6 15V8L16 4Z" stroke="url(#adminGradSidebar)"
+                stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="4 2" />
+              <g class="logo-gear-rotate">
+                <circle cx="16" cy="16" r="6" stroke="url(#adminGradSidebar)" stroke-width="2" />
+                <path d="M16 6V10M16 22V26M6 16H10M22 16H26M11.7 11.7L9 9M20.3 20.3L23 23M11.7 20.3L9 23M20.3 11.7L23 9"
+                  stroke="url(#adminGradSidebar)" stroke-width="2.5" stroke-linecap="round" />
+                <circle cx="16" cy="16" r="2.5" fill="url(#adminGradSidebar)" />
+              </g>
+            </svg>
+          </div>
+          <div>
+            <div class="sidebar-title">PHMS Admin</div>
+            <div class="sidebar-sub">Control Center</div>
+          </div>
+        </div>
+
+        <div class="nav-section">
+          <div class="nav-label">Overview</div>
+          <div class="nav-item active" onclick="navigate('dashboard')">
+            <span class="nav-icon">📊</span><span>Dashboard</span>
+          </div>
+        </div>
+
+        <div class="nav-section">
+          <div class="nav-label">Administration</div>
+          <div class="nav-item" onclick="navigate('users')">
+            <span class="nav-icon">👤</span><span>Staff Management</span>
+          </div>
+          <div class="nav-item" onclick="navigate('diseases')">
+            <span class="nav-icon">🦠</span><span>Surveillance System</span>
+          </div>
+          <div class="nav-item" onclick="navigate('inventory')">
+            <span class="nav-icon">💊</span><span>Medical Supply Stock</span>
+          </div>
+        </div>
+
+        <div class="sidebar-footer">
+          <div class="user-card">
+            <div class="user-avatar" id="sidebarAvatar" style="background:var(--accent);">A</div>
+            <div>
+              <div class="user-name" id="sidebarName">Dr. Admin</div>
+              <div class="user-role">Administrator</div>
+            </div>
+            <button class="logout-btn" onclick="logout()" title="Secure Logout">🚪</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- MAIN PANEL -->
+      <div id="main">
+        <div id="header">
+          <div class="header-left">
+            <h2 id="pageTitle">Admin Dashboard</h2>
+            <p id="pageSubtitle">System security and active parameters</p>
+          </div>
+          <div class="header-right">
+            <button class="btn btn-primary btn-sm" id="headerActionBtn" onclick="triggerHeaderAction()">+
+              Action</button>
+          </div>
+        </div>
+
+        <div id="content">
+
+          <!-- DASHBOARD PAGE -->
+          <div id="page-dashboard" class="page active">
+            <div class="stat-grid">
+              <div class="stat-card">
+                <div class="stat-icon red">👤</div>
+                <div>
+                  <div class="stat-val" id="statUsers">0</div>
+                  <div class="stat-label">System Staff Users</div>
+                </div>
+              </div>
+              <div class="stat-card">
+                <div class="stat-icon blue">👥</div>
+                <div>
+                  <div class="stat-val" id="statPatients">0</div>
+                  <div class="stat-label">Registered Patients</div>
+                </div>
+              </div>
+              <div class="stat-card">
+                <div class="stat-icon green">💊</div>
+                <div>
+                  <div class="stat-val" id="statInventory">0</div>
+                  <div class="stat-label">Total Inventory Supplies</div>
+                </div>
+              </div>
+              <div class="stat-card">
+                <div class="stat-icon yellow">🦠</div>
+                <div>
+                  <div class="stat-val" id="statDiseases">0</div>
+                  <div class="stat-label">Active Diseases Tracked</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="section-card" style="padding: 24px;">
+              <div class="section-header" style="padding: 0 0 16px 0; margin-bottom: 20px;">
+                <h3>Administrative Controls Overview</h3>
+              </div>
+              <p style="color:var(--text2); font-size:14px; line-height:1.6; margin-bottom:16px;">
+                Welcome back to the Public Health Management System Administration workspace. You have full access
+                credentials to add or remove clinicians, manage vaccine and pharmaceutical reserves, and monitor
+                emerging epidemiological surveillance records.
+              </p>
+              <div style="display:grid; grid-template-columns: 1fr 1fr; gap:16px; margin-top:20px;">
+                <div style="background:var(--bg3); padding:16px; border-radius:8px; border:1px solid var(--border);">
+                  <h4 style="font-size:14px; font-weight:600; margin-bottom:8px; color:var(--accent2);">🔒 Staff Policy
+                  </h4>
+                  <p style="font-size:12px; color:var(--text2);">Doctors and nurses are registered through this portal.
+                    Make sure credentials align with hospital registration policies.</p>
+                </div>
+                <div style="background:var(--bg3); padding:16px; border-radius:8px; border:1px solid var(--border);">
+                  <h4 style="font-size:14px; font-weight:600; margin-bottom:8px; color:var(--green);">📦 Supply
+                    Operations</h4>
+                  <p style="font-size:12px; color:var(--text2);">Ensure stock levels remain above critical thresholds.
+                    System alarms will alert doctors when items fall low.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- STAFF MANAGEMENT PAGE -->
+          <div id="page-users" class="page">
+            <div class="section-card">
+              <div class="section-header">
+                <h3>System Staff Registry</h3>
+              </div>
+              <table>
+                <thead>
+                  <tr>
+                    <th>Staff Member</th>
+                    <th>Email</th>
+                    <th>Role</th>
+                    <th>Department</th>
+                    <th>Joined Date</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="userTable"></tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- SURVEILLANCE PAGE -->
+          <div id="page-diseases" class="page">
+            <div class="section-card">
+              <div class="section-header">
+                <h3>Epidemiological Outbreak Surveillance</h3>
+              </div>
+              <table>
+                <thead>
+                  <tr>
+                    <th>Disease</th>
+                    <th>Category</th>
+                    <th>Total Cases</th>
+                    <th>Active</th>
+                    <th>Recovered</th>
+                    <th>Deaths</th>
+                    <th>Regions</th>
+                    <th>Trend</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="diseaseTable"></tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- MEDICAL SUPPLY STOCK PAGE -->
+          <div id="page-inventory" class="page">
+            <div class="section-card">
+              <div class="section-header">
+                <h3>System Pharmaceutical Supplies</h3>
+              </div>
+              <table>
+                <thead>
+                  <tr>
+                    <th>Item Name</th>
+                    <th>Category</th>
+                    <th>Stock level</th>
+                    <th>Unit</th>
+                    <th>Expiry</th>
+                    <th>Supplier</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="inventoryTable"></tbody>
+              </table>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODALS -->
+  <div id="modal" class="modal-overlay" onclick="if(event.target===this)closeModal()">
+    <div class="modal">
+      <div class="modal-title">
+        <span id="modalTitle">Configuration Dialog</span>
+        <button class="modal-close" onclick="closeModal()">✕</button>
+      </div>
+      <div id="modalBody"></div>
+    </div>
+  </div>
+
+  <div id="toast-container"></div>
+
+  <script>
+    // Mock data store structure synced via localStorage
+    const store = {
+      currentUser: null,
+      patients: [
+        { id: 'p1', name: 'Ravi Kumar', age: 45, gender: 'Male', phone: '9876543210', email: 'ravi@example.com', password: 'patient123', bloodGroup: 'O+', address: 'Mysuru, Karnataka', status: 'Active', createdAt: '2024-03-01', conditions: ['Hypertension', 'Diabetes Type 2'] },
+        { id: 'p2', name: 'Sunita Patel', age: 32, gender: 'Female', phone: '9845678901', email: 'sunita@example.com', password: 'patient123', bloodGroup: 'A+', address: 'Bengaluru, Karnataka', status: 'Active', createdAt: '2024-03-05', conditions: ['Asthma'] },
+        { id: 'p3', name: 'Mohammed Ismail', age: 60, gender: 'Male', phone: '9123456789', email: 'ismail@example.com', password: 'patient123', bloodGroup: 'B-', address: 'Hubballi, Karnataka', status: 'Critical', createdAt: '2024-03-10', conditions: ['Heart Disease', 'COPD'] },
+      ],
+      appointments: [],
+      records: [],
+      diseases: [
+        { id: 'd1', name: 'COVID-19', category: 'Viral', cases: 1240, active: 45, recovered: 1180, deaths: 15, trend: 'decreasing', affectedRegions: ['Bengaluru', 'Mysuru'] },
+        { id: 'd2', name: 'Dengue Fever', category: 'Vector-Borne', cases: 580, active: 120, recovered: 455, deaths: 5, trend: 'increasing', affectedRegions: ['Mysuru', 'Hassan'] },
+      ],
+      inventory: [
+        { id: 'i1', name: 'Paracetamol 500mg', category: 'Analgesic', quantity: 5000, unit: 'tablets', minStock: 500, expiryDate: '2026-12-31', supplier: 'Sun Pharma', status: 'Adequate' },
+        { id: 'i2', name: 'Amoxicillin 250mg', category: 'Antibiotic', quantity: 120, unit: 'capsules', minStock: 200, expiryDate: '2025-08-31', supplier: 'Cipla', status: 'Low' },
+      ],
+      users: [
+        { id: 'u1', name: 'Dr. Admin', email: 'admin@phms.gov', password: 'admin123', role: 'admin', department: 'Administration', createdAt: '2024-01-01' },
+        { id: 'u2', name: 'Dr. Priya Sharma', email: 'doctor@phms.gov', password: 'doctor123', role: 'doctor', department: 'General Medicine', createdAt: '2024-01-15' },
+        { id: 'u3', name: 'Nurse Kavitha', email: 'nurse@phms.gov', password: 'nurse123', role: 'nurse', department: 'Emergency', createdAt: '2024-02-01' }
+      ],
+      patientAccounts: []
+    };
+
+    // ── SYNC SYSTEM ──
+    function loadStore() {
+      const saved = localStorage.getItem('phms_store');
+      if (saved) {
+        try {
+          const parsed = JSON.parse(saved);
+          if (parsed.patients) store.patients = parsed.patients;
+          if (parsed.appointments) store.appointments = parsed.appointments;
+          if (parsed.records) store.records = parsed.records;
+          if (parsed.diseases) store.diseases = parsed.diseases;
+          if (parsed.inventory) store.inventory = parsed.inventory;
+          if (parsed.users) {
+            const defaults = {
+              'admin@phms.gov': 'admin123',
+              'doctor@phms.gov': 'doctor123',
+              'nurse@phms.gov': 'nurse123'
+            };
+            store.users = parsed.users.map(u => {
+              if (!u.password && defaults[u.email]) {
+                u.password = defaults[u.email];
+              }
+              return u;
+            });
+          }
+          if (parsed.patientAccounts) store.patientAccounts = parsed.patientAccounts;
+        } catch (e) {
+          console.error('Error loading store:', e);
+        }
+      }
+    }
+
+    function syncFromServer() {
+      fetch('/api/store')
+        .then(res => res.json())
+        .then(parsed => {
+          if (parsed) {
+            if (parsed.patients) store.patients = parsed.patients;
+            if (parsed.appointments) store.appointments = parsed.appointments;
+            if (parsed.records) store.records = parsed.records;
+            if (parsed.diseases) store.diseases = parsed.diseases;
+            if (parsed.inventory) store.inventory = parsed.inventory;
+            if (parsed.users) {
+              const defaults = {
+                'admin@phms.gov': 'admin123',
+                'doctor@phms.gov': 'doctor123',
+                'nurse@phms.gov': 'nurse123'
+              };
+              store.users = parsed.users.map(u => {
+                if (!u.password && defaults[u.email]) {
+                  u.password = defaults[u.email];
+                }
+                return u;
+              });
+            }
+            if (parsed.patientAccounts) store.patientAccounts = parsed.patientAccounts;
+
+            // Backup to local storage
+            localStorage.setItem('phms_store', JSON.stringify({
+              patients: store.patients,
+              appointments: store.appointments,
+              records: store.records,
+              diseases: store.diseases,
+              inventory: store.inventory,
+              users: store.users,
+              patientAccounts: store.patientAccounts
+            }));
+
+            // Refresh UI if logged in
+            if (document.getElementById('appShell').style.display !== 'none') {
+              renderPage(store.currentPage || 'dashboard');
+            }
+          }
+        })
+        .catch(err => console.warn('Server database offline, using local backup.', err));
+    }
+
+    function saveStore() {
+      const payload = {
+        patients: store.patients,
+        appointments: store.appointments,
+        records: store.records,
+        diseases: store.diseases,
+        inventory: store.inventory,
+        users: store.users,
+        patientAccounts: store.patientAccounts
+      };
+      // Save locally immediately
+      localStorage.setItem('phms_store', JSON.stringify(payload));
+      // Save permanently to server
+      fetch('/api/store', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      }).catch(err => console.error('Error saving permanently to database:', err));
+    }
+
+    // Initial Sync Load & Sync
+    loadStore();
+    syncFromServer();
+
+    // ── PAGE CONFIGURATION ──
+    const pageConfig = {
+      dashboard: { title: 'Admin Overview', subtitle: 'Global status registers and access metrics', action: '', actionFn: '' },
+      users: { title: 'Staff Users Control', subtitle: 'Configure staff accounts and roles', action: '+ Add Staff Member', actionFn: 'showAddUser' },
+      diseases: { title: 'Surveillance Registry', subtitle: 'Epidemiological monitoring records', action: '+ Report Disease Outbreak', actionFn: 'showAddDisease' },
+      inventory: { title: 'Supply Stock Registry', subtitle: 'Configure central medical repository levels', action: '+ Add Inventory Supply', actionFn: 'showAddInventory' }
+    };
+
+    function navigate(page) {
+      document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+      document.querySelectorAll('.nav-item').forEach(n => {
+        if (n.getAttribute('onclick')?.includes(page)) n.classList.add('active');
+      });
+
+      document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+      document.getElementById('page-' + page).classList.add('active');
+
+      const cfg = pageConfig[page];
+      document.getElementById('pageTitle').textContent = cfg.title;
+      document.getElementById('pageSubtitle').textContent = cfg.subtitle;
+
+      const actionBtn = document.getElementById('headerActionBtn');
+      if (cfg.action) {
+        actionBtn.style.display = 'inline-flex';
+        actionBtn.textContent = cfg.action;
+      } else {
+        actionBtn.style.display = 'none';
+      }
+
+      renderPage(page);
+    }
+
+    function triggerHeaderAction() {
+      const cfg = pageConfig[store.currentPage || 'dashboard'];
+      if (cfg && cfg.actionFn) {
+        window[cfg.actionFn]?.();
+      }
+    }
+
+    function renderPage(page) {
+      store.currentPage = page;
+      loadStore();
+      if (page === 'dashboard') renderDashboard();
+      else if (page === 'users') renderUsers();
+      else if (page === 'diseases') renderDiseases();
+      else if (page === 'inventory') renderInventory();
+    }
+
+    // ── ACTIONS ──
+    function login() {
+      const email = document.getElementById('loginEmail').value.trim();
+      const password = document.getElementById('loginPassword').value;
+
+      if (email === 'admin@phms.gov' && password === 'admin123') {
+        const adminUser = { id: 'u1', name: 'Dr. Admin', email, role: 'admin' };
+        sessionStorage.setItem('phms_current_admin', JSON.stringify(adminUser));
+        enterWorkspace(adminUser);
+      } else {
+        const errDiv = document.getElementById('loginError');
+        errDiv.textContent = '❌ Access Denied: Invalid Security Credentials.';
+        errDiv.style.display = 'flex';
+      }
+    }
+
+    function enterWorkspace(user) {
+      document.getElementById('loginPage').style.display = 'none';
+      document.getElementById('appShell').style.display = 'flex';
+      navigate('dashboard');
+      showToast('🔒 Administrator Access Authenticated', 'success');
+    }
+
+    function logout() {
+      sessionStorage.removeItem('phms_current_admin');
+      document.getElementById('loginPage').style.display = 'flex';
+      document.getElementById('appShell').style.display = 'none';
+      document.getElementById('loginEmail').value = '';
+      document.getElementById('loginPassword').value = '';
+      document.getElementById('loginError').style.display = 'none';
+    }
+
+    // ── RENDERING METHODS ──
+    function renderDashboard() {
+      document.getElementById('statUsers').textContent = store.users.length;
+      document.getElementById('statPatients').textContent = store.patients.length;
+      document.getElementById('statInventory').textContent = store.inventory.length;
+      document.getElementById('statDiseases').textContent = store.diseases.length;
+    }
+
+    function renderUsers() {
+      const roleColors = { admin: 'badge-red', doctor: 'badge-blue', nurse: 'badge-green' };
+      document.getElementById('userTable').innerHTML = store.users.map(u => `
+    <tr>
+      <td>
+        <div style="display:flex;align-items:center;">
+          <span class="avatar-sm" style="background:${avatarColor(u.name)};">${u.name[0]}</span>
+          <strong>${u.name}</strong>
+        </div>
+      </td>
+      <td style="font-size:13px;color:var(--text2);">${u.email}</td>
+      <td><span class="badge ${roleColors[u.role] || 'badge-gray'}">${u.role}</span></td>
+      <td>${u.department}</td>
+      <td style="font-size:12px;color:var(--text2);">${u.createdAt}</td>
+      <td>
+        <button class="btn btn-danger btn-sm" onclick="deleteUser('${u.id}')">Remove</button>
+      </td>
+    </tr>
+  `).join('');
+    }
+
+    function renderDiseases() {
+      document.getElementById('diseaseTable').innerHTML = store.diseases.map(d => `
+    <tr>
+      <td><strong>${d.name}</strong></td>
+      <td><span class="badge badge-blue">${d.category}</span></td>
+      <td><strong>${d.cases.toLocaleString()}</strong></td>
+      <td style="color:var(--yellow);">${d.active}</td>
+      <td style="color:var(--green);">${d.recovered}</td>
+      <td style="color:var(--red);">${d.deaths}</td>
+      <td style="font-size:12px;color:var(--text2);">${d.affectedRegions.join(', ')}</td>
+      <td>${trendBadge(d.trend)}</td>
+      <td>
+        <div style="display:flex;gap:6px;">
+          <button class="btn btn-secondary btn-sm" onclick="editDisease('${d.id}')">Update</button>
+          <button class="btn btn-danger btn-sm" onclick="deleteDisease('${d.id}')">Delete</button>
+        </div>
+      </td>
+    </tr>
+  `).join('');
+    }
+
+    function renderInventory() {
+      document.getElementById('inventoryTable').innerHTML = store.inventory.map(i => {
+        const pct = Math.min(100, Math.round((i.quantity / (i.minStock * 2)) * 100));
+        const barColor = i.status === 'Critical' ? 'var(--red)' : i.status === 'Low' ? 'var(--yellow)' : 'var(--green)';
+        return `
+      <tr>
+        <td><strong>${i.name}</strong></td>
+        <td><span class="badge badge-purple">${i.category}</span></td>
+        <td>
+          <div class="inventory-bar-wrap">
+            <div class="progress-bar" style="width:120px;"><div class="progress-fill" style="width:${pct}%;background:${barColor};"></div></div>
+            <span style="font-size:12px;font-weight:600;">${i.quantity.toLocaleString()}</span>
+          </div>
+        </td>
+        <td style="color:var(--text2);">${i.unit}</td>
+        <td style="font-size:12px;">${i.expiryDate}</td>
+        <td style="font-size:12px;color:var(--text2);">${i.supplier}</td>
+        <td>${i.status === 'Adequate' ? '<span class="badge badge-green">Adequate</span>' : i.status === 'Low' ? '<span class="badge badge-yellow">Low Stock</span>' : '<span class="badge badge-red">Critical</span>'}</td>
+        <td>
+          <div style="display:flex;gap:6px;">
+            <button class="btn btn-secondary btn-sm" onclick="restockItem('${i.id}')">Restock</button>
+            <button class="btn btn-danger btn-sm" onclick="deleteItem('${i.id}')">Delete</button>
+          </div>
+        </td>
+      </tr>
+    `;
+      }).join('');
+    }
+
+    // ── MUTATIONS ──
+    function showAddUser() {
+      openModal('Register New Staff Member', `
+    <div class="form-row">
+      <div class="form-group"><label>Full Name</label><input id="nu_name" placeholder="Name"></div>
+      <div class="form-group"><label for="nu_email">Email Address</label><input id="nu_email" placeholder="Email"></div>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label for="nu_role">System Role</label>
+        <select id="nu_role">
+          <option value="doctor">Doctor</option>
+          <option value="nurse">Nurse</option>
+          <option value="admin">Administrator</option>
+        </select>
+      </div>
+      <div class="form-group"><label for="nu_dept">Department</label><input id="nu_dept" placeholder="Department"></div>
+    </div>
+    <div class="form-group">
+      <label for="nu_pwd">Initial Password</label>
+      <div style="position: relative;">
+        <input type="password" id="nu_pwd" value="staff123" style="padding-right: 48px; width: 100%;">
+        <button type="button" class="password-toggle-btn" onclick="togglePasswordVisibility('nu_pwd', this)" style="position: absolute; right: 16px; top: 50%; transform: translateY(-50%); background: none; border: none; color: var(--text2); cursor: pointer; font-size: 16px; padding: 4px; display: flex; align-items: center; justify-content: center; outline: none; transition: var(--transition);">👁️</button>
+      </div>
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-secondary" onclick="closeModal()">Cancel</button>
+      <button class="btn btn-primary" onclick="addUser()">Create Account</button>
+    </div>
+  `);
+    }
+
+    function addUser() {
+      const name = document.getElementById('nu_name').value.trim();
+      const email = document.getElementById('nu_email').value.trim();
+      const role = document.getElementById('nu_role').value;
+      const dept = document.getElementById('nu_dept').value.trim();
+
+      if (!name || !email) {
+        showToast('❌ Full Name and Email are required fields.', 'error');
+        return;
+      }
+
+      const pwd = document.getElementById('nu_pwd').value;
+
+      const user = {
+        id: 'u' + Date.now(),
+        name,
+        email,
+        role,
+        department: dept || 'General Medicine',
+        password: pwd || 'staff123',
+        createdAt: new Date().toISOString().split('T')[0]
+      };
+
+      store.users.push(user);
+      saveStore();
+      closeModal();
+      renderUsers();
+      showToast('✅ New staff account configured successfully', 'success');
+    }
+
+    function deleteUser(id) {
+      if (id === 'u1') {
+        showToast('❌ Security Override: Cannot delete primary admin.', 'error');
+        return;
+      }
+      if (!confirm('Permanently revoke access credentials for this staff member?')) return;
+
+      store.users = store.users.filter(u => u.id !== id);
+      saveStore();
+      renderUsers();
+      showToast('🗑️ Credentials successfully revoked', 'error');
+    }
+
+    function showAddDisease() {
+      openModal('Report Outbreak Surveillance Record', `
+    <div class="form-row">
+      <div class="form-group"><label for="nd_name">Outbreak/Disease Name</label><input id="nd_name" placeholder="Name"></div>
+      <div class="form-group">
+        <label for="nd_cat">Disease Category</label>
+        <select id="nd_cat">
+          <option>Viral</option>
+          <option>Bacterial</option>
+          <option>Parasitic</option>
+          <option>Vector-Borne</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group"><label for="nd_cases">Identified Cases</label><input id="nd_cases" type="number" value="0"></div>
+      <div class="form-group"><label for="nd_active">Active Cases</label><input id="nd_active" type="number" value="0"></div>
+    </div>
+    <div class="form-row">
+      <div class="form-group"><label for="nd_recovered">Recovered</label><input id="nd_recovered" type="number" value="0"></div>
+      <div class="form-group"><label for="nd_deaths">Deaths Recorded</label><input id="nd_deaths" type="number" value="0"></div>
+    </div>
+    <div class="form-group"><label for="nd_regions">Affected Regions (comma separated)</label><input id="nd_regions" placeholder="e.g. Mysuru, Bengaluru"></div>
+    <div class="form-group">
+      <label for="nd_trend">Epidemiological Trend</label>
+      <select id="nd_trend">
+        <option>stable</option>
+        <option>increasing</option>
+        <option>decreasing</option>
+      </select>
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-secondary" onclick="closeModal()">Cancel</button>
+      <button class="btn btn-primary" onclick="addDisease()">Record Surveillance</button>
+    </div>
+  `);
+    }
+
+    function addDisease() {
+      const name = document.getElementById('nd_name').value.trim();
+      if (!name) {
+        showToast('❌ Outbreak name is required.', 'error');
+        return;
+      }
+
+      const d = {
+        id: 'd' + Date.now(),
+        name,
+        category: document.getElementById('nd_cat').value,
+        cases: +document.getElementById('nd_cases').value || 0,
+        active: +document.getElementById('nd_active').value || 0,
+        recovered: +document.getElementById('nd_recovered').value || 0,
+        deaths: +document.getElementById('nd_deaths').value || 0,
+        affectedRegions: document.getElementById('nd_regions').value.split(',').map(s => s.trim()).filter(Boolean),
+        trend: document.getElementById('nd_trend').value
+      };
+
+      store.diseases.push(d);
+      saveStore();
+      closeModal();
+      renderDiseases();
+      showToast('⚠️ Disease outbreak alert broadcasted', 'warning');
+    }
+
+    function editDisease(id) {
+      const d = store.diseases.find(x => x.id === id);
+      openModal('Update surveillance metrics: ' + d.name, `
+    <div class="form-row">
+      <div class="form-group"><label for="ed_cases">Total Cases</label><input id="ed_cases" type="number" value="${d.cases}"></div>
+      <div class="form-group"><label for="ed_active">Active Cases</label><input id="ed_active" type="number" value="${d.active}"></div>
+    </div>
+    <div class="form-row">
+      <div class="form-group"><label for="ed_recovered">Recovered</label><input id="ed_recovered" type="number" value="${d.recovered}"></div>
+      <div class="form-group"><label for="ed_deaths">Deaths</label><input id="ed_deaths" type="number" value="${d.deaths}"></div>
+    </div>
+    <div class="form-group"><label for="ed_trend">Trend</label>
+      <select id="ed_trend">
+        <option ${d.trend === 'increasing' ? 'selected' : ''}>increasing</option>
+        <option ${d.trend === 'decreasing' ? 'selected' : ''}>decreasing</option>
+        <option ${d.trend === 'stable' ? 'selected' : ''}>stable</option>
+      </select>
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-secondary" onclick="closeModal()">Cancel</button>
+      <button class="btn btn-primary" onclick="saveDisease('${id}')">Save Changes</button>
+    </div>
+  `);
+    }
+
+    function saveDisease(id) {
+      const d = store.diseases.find(x => x.id === id);
+      d.cases = +document.getElementById('ed_cases').value || 0;
+      d.active = +document.getElementById('ed_active').value || 0;
+      d.recovered = +document.getElementById('ed_recovered').value || 0;
+      d.deaths = +document.getElementById('ed_deaths').value || 0;
+      d.trend = document.getElementById('ed_trend').value;
+
+      saveStore();
+      closeModal();
+      renderDiseases();
+      showToast('✅ Surveillance metrics updated', 'success');
+    }
+
+    function deleteDisease(id) {
+      if (!confirm('Remove this disease surveillance entry?')) return;
+      store.diseases = store.diseases.filter(d => d.id !== id);
+      saveStore();
+      renderDiseases();
+      showToast('🗑️ Outbreak entry removed', 'error');
+    }
+
+    function showAddInventory() {
+      openModal('Add Central Supply Inventory Item', `
+    <div class="form-row">
+      <div class="form-group"><label for="ni_name">Item Name</label><input id="ni_name" placeholder="Item Name"></div>
+      <div class="form-group">
+        <label for="ni_cat">Category</label>
+        <select id="ni_cat">
+          <option>Analgesic</option>
+          <option>Antibiotic</option>
+          <option>Cardiovascular</option>
+          <option>PPE</option>
+          <option>Hormone</option>
+          <option>Other</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group"><label for="ni_qty">Quantity</label><input id="ni_qty" type="number" placeholder="0"></div>
+      <div class="form-group"><label for="ni_unit">Unit</label><input id="ni_unit" placeholder="e.g. tablets"></div>
+    </div>
+    <div class="form-row">
+      <div class="form-group"><label for="ni_min">Minimum Threshold</label><input id="ni_min" type="number" placeholder="Min level"></div>
+      <div class="form-group"><label for="ni_expiry">Expiry Date</label><input id="ni_expiry" type="date"></div>
+    </div>
+    <div class="form-group"><label for="ni_supplier">Supplier Name</label><input id="ni_supplier" placeholder="Supplier"></div>
+    <div class="modal-actions">
+      <button class="btn btn-secondary" onclick="closeModal()">Cancel</button>
+      <button class="btn btn-primary" onclick="addInventory()">Register Item</button>
+    </div>
+  `);
+    }
+
+    function addInventory() {
+      const name = document.getElementById('ni_name').value.trim();
+      const qty = +document.getElementById('ni_qty').value || 0;
+      const min = +document.getElementById('ni_min').value || 0;
+
+      if (!name) {
+        showToast('❌ Item name is required.', 'error');
+        return;
+      }
+
+      const item = {
+        id: 'i' + Date.now(),
+        name,
+        category: document.getElementById('ni_cat').value,
+        quantity: qty,
+        unit: document.getElementById('ni_unit').value || 'units',
+        minStock: min,
+        expiryDate: document.getElementById('ni_expiry').value || new Date().toISOString().split('T')[0],
+        supplier: document.getElementById('ni_supplier').value || 'Local Reserves',
+        status: qty === 0 ? 'Critical' : qty <= min ? 'Low' : 'Adequate'
+      };
+
+      store.inventory.push(item);
+      saveStore();
+      closeModal();
+      renderInventory();
+      showToast('✅ Central supply item configured', 'success');
+    }
+
+    function restockItem(id) {
+      const i = store.inventory.find(x => x.id === id);
+      openModal('Restock Supply — ' + i.name, `
+    <div class="form-group"><label for="rs_qty">Current Quantity</label>
+      <input type="number" id="rs_qty" value="${i.quantity}">
+    </div>
+    <div class="form-group"><label for="rs_add">Add Quantity</label>
+      <input type="number" id="rs_add" value="0" placeholder="Amount to add">
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-secondary" onclick="closeModal()">Cancel</button>
+      <button class="btn btn-primary" onclick="saveRestock('${id}')">Update Stock</button>
+    </div>
+  `);
+    }
+
+    function saveRestock(id) {
+      const i = store.inventory.find(x => x.id === id);
+      const newQty = +document.getElementById('rs_qty').value + +document.getElementById('rs_add').value;
+      i.quantity = newQty;
+      i.status = newQty === 0 ? 'Critical' : newQty <= i.minStock ? 'Low' : 'Adequate';
+
+      saveStore();
+      closeModal();
+      renderInventory();
+      showToast('📦 Central pharmaceutical supply stock adjusted', 'success');
+    }
+
+    function deleteItem(id) {
+      if (!confirm('Remove this item from system inventory tracking?')) return;
+      store.inventory = store.inventory.filter(i => i.id !== id);
+      saveStore();
+      renderInventory();
+      showToast('🗑️ Item removed from inventory tracking', 'error');
+    }
+
+    // ── UTILS ──
+    function openModal(title, body) {
+      document.getElementById('modalTitle').textContent = title;
+      document.getElementById('modalBody').innerHTML = body;
+      const overlay = document.getElementById('modal');
+      overlay.style.display = 'flex';
+      setTimeout(() => overlay.classList.add('show'), 10);
+    }
+
+    function closeModal() {
+      const overlay = document.getElementById('modal');
+      overlay.classList.remove('show');
+      setTimeout(() => overlay.style.display = 'none', 200);
+    }
+
+    function trendBadge(t) {
+      const map = { increasing: 'badge-red', decreasing: 'badge-green', stable: 'badge-yellow' };
+      return `<span class="badge ${map[t] || 'badge-gray'}">${t}</span>`;
+    }
+
+    function avatarColor(name) {
+      const colors = ['rgba(255,71,87,0.3)', 'rgba(0,153,255,0.3)', 'rgba(168,85,247,0.3)', 'rgba(255,107,107,0.3)'];
+      return colors[name.charCodeAt(0) % colors.length];
+    }
+
+    function showToast(msg, type = 'info') {
+      msg = msg.replace(/^(?:✅|❌|⚠️|ℹ️|🔑)\s*/, '');
+      const colors = { success: 'var(--green)', error: 'var(--red)', warning: 'var(--yellow)', info: 'var(--blue)' };
+      const toast = document.createElement('div');
+      toast.className = 'toast';
+      toast.innerHTML = `<span style="color:${colors[type]};font-size:16px;">${type === 'success' ? '✅' : type === 'error' ? '❌' : type === 'warning' ? '⚠️' : 'ℹ️'}</span><span>${msg}</span>`;
+      document.getElementById('toast-container').appendChild(toast);
+      setTimeout(() => toast.remove(), 3500);
+    }
+
+    // Auto Session recovery
+    window.onload = function () {
+      const savedAdmin = sessionStorage.getItem('phms_current_admin');
+      if (savedAdmin) {
+        try {
+          enterWorkspace(JSON.parse(savedAdmin));
+        } catch (e) { }
+      }
+    };
+
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Enter' && document.getElementById('loginPage').style.display !== 'none') login();
+    });
+
+    // ── PARTICLE MOTION PICTURES BACKGROUND ──────────────────────────────────────────
+    (function () {
+      const canvas = document.createElement('canvas');
+      canvas.id = 'login-particles-canvas';
+      canvas.style.position = 'fixed';
+      canvas.style.top = '0';
+      canvas.style.left = '0';
+      canvas.style.width = '100vw';
+      canvas.style.height = '100vh';
+      canvas.style.zIndex = '1';
+      canvas.style.pointerEvents = 'none';
+      // Insert canvas as first element of loginPage
+      const loginPage = document.getElementById('loginPage');
+      if (loginPage) {
+        loginPage.prepend(canvas);
+      }
+
+      const ctx = canvas.getContext('2d');
+      let width = canvas.width = window.innerWidth;
+      let height = canvas.height = window.innerHeight;
+
+      const particles = [];
+      const particleCount = 45;
+      const connectionDistance = 120;
+
+      class Particle {
+        constructor() {
+          this.x = Math.random() * width;
+          this.y = Math.random() * height;
+          this.vx = (Math.random() - 0.5) * 0.4;
+          this.vy = (Math.random() - 0.5) * 0.4;
+          this.radius = Math.random() * 2 + 1.5;
+        }
+        update() {
+          this.x += this.vx;
+          this.y += this.vy;
+          if (this.x < 0 || this.x > width) this.vx *= -1;
+          if (this.y < 0 || this.y > height) this.vy *= -1;
+        }
+        draw() {
+          ctx.beginPath();
+          ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+          ctx.fillStyle = 'rgba(255, 71, 87, 0.45)';
+          ctx.fill();
+        }
+      }
+
+      for (let i = 0; i < particleCount; i++) {
+        particles.push(new Particle());
+      }
+
+      function animate() {
+        ctx.clearRect(0, 0, width, height);
+        for (let i = 0; i < particles.length; i++) {
+          particles[i].update();
+          particles[i].draw();
+          for (let j = i + 1; j < particles.length; j++) {
+            const dx = particles[i].x - particles[j].x;
+            const dy = particles[i].y - particles[j].y;
+            const dist = Math.sqrt(dx * dx + dy * dy);
+            if (dist < connectionDistance) {
+              ctx.beginPath();
+              ctx.moveTo(particles[i].x, particles[i].y);
+              ctx.lineTo(particles[j].x, particles[j].y);
+              const alpha = (1 - dist / connectionDistance) * 0.2;
+              ctx.strokeStyle = `rgba(0, 153, 255, ${alpha})`;
+              ctx.lineWidth = 1;
+              ctx.stroke();
+            }
+          }
+        }
+        requestAnimationFrame(animate);
+      }
+
+      window.addEventListener('resize', () => {
+        width = canvas.width = window.innerWidth;
+        height = canvas.height = window.innerHeight;
+      });
+
+      animate();
+    })();
+
+    let isPointerDown = false;
+    let currentTargetInputId = null;
+    let currentTargetBtn = null;
+
+    function showPassword(inputId, btn) {
+      const input = document.getElementById(inputId);
+      if (input) {
+        input.type = 'text';
+        btn.textContent = '🙈';
+      }
+    }
+
+    function hidePassword(inputId, btn) {
+      const input = document.getElementById(inputId);
+      if (input) {
+        input.type = 'password';
+        btn.textContent = '👁️';
+      }
+    }
+
+    function togglePasswordVisibility(inputId, btn) {
+      if (isPointerDown) {
+        return;
+      }
+      const input = document.getElementById(inputId);
+      if (input) {
+        if (input.type === 'password') {
+          showPassword(inputId, btn);
+        } else {
+          hidePassword(inputId, btn);
+        }
+      }
+    }
+
+    // Pointer-down and Pointer-up event delegation for password toggles
+    document.addEventListener('mousedown', (e) => {
+      const btn = e.target.closest('.password-toggle-btn');
+      if (btn) {
+        const onclickAttr = btn.getAttribute('onclick');
+        if (onclickAttr && onclickAttr.includes('togglePasswordVisibility')) {
+          const match = onclickAttr.match(/'([^']+)'/);
+          if (match && match[1]) {
+            isPointerDown = true;
+            currentTargetInputId = match[1];
+            currentTargetBtn = btn;
+            showPassword(currentTargetInputId, btn);
+          }
+        }
+      }
+    });
+
+    const clearPointerDownState = () => {
+      if (isPointerDown && currentTargetInputId && currentTargetBtn) {
+        hidePassword(currentTargetInputId, currentTargetBtn);
+        setTimeout(() => {
+          isPointerDown = false;
+          currentTargetInputId = null;
+          currentTargetBtn = null;
+        }, 50);
+      }
+    };
+
+    document.addEventListener('mouseup', clearPointerDownState);
+    document.addEventListener('mouseleave', clearPointerDownState);
+
+    document.addEventListener('touchstart', (e) => {
+      const btn = e.target.closest('.password-toggle-btn');
+      if (btn) {
+        const onclickAttr = btn.getAttribute('onclick');
+        if (onclickAttr && onclickAttr.includes('togglePasswordVisibility')) {
+          const match = onclickAttr.match(/'([^']+)'/);
+          if (match && match[1]) {
+            isPointerDown = true;
+            currentTargetInputId = match[1];
+            currentTargetBtn = btn;
+            showPassword(currentTargetInputId, btn);
+            e.preventDefault();
+          }
+        }
+      }
+    }, { passive: false });
+
+    document.addEventListener('touchend', clearPointerDownState);
+    document.addEventListener('touchcancel', clearPointerDownState);
+
+    let tempResetState = {
+      email: '',
+      role: '',
+      code: '',
+      attempts: 0
+    };
+
+    function escapeHTML(str) {
+      if (!str) return '';
+      return str.replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+    }
+
+    function showForgotPasswordModal(role) {
+      tempResetState = { email: '', role: role, code: '', attempts: 0 };
+
+      openModal('Reset Account Password', `
+    <div style="display:flex; flex-direction:column; gap:16px;">
+      <p style="font-size:13px; color:var(--text2); line-height:1.5; margin:0;">
+        Enter your registered email address. We will verify your account and simulate sending a verification code.
+      </p>
+      <div class="form-group" style="margin:0;">
+        <label for="reset_email">Registered Email Address</label>
+        <input type="email" id="reset_email" placeholder="e.g. user@example.com" style="width:100%;" />
+      </div>
+      <div class="modal-actions" style="margin-top:8px;">
+        <button class="btn btn-secondary" onclick="closeModal()">Cancel</button>
+        <button class="btn btn-primary" onclick="sendPasswordResetCode()">Send Verification Code</button>
+      </div>
+    </div>
+  `);
+    }
+
+    function sendPasswordResetCode() {
+      loadStore();
+      const email = document.getElementById('reset_email').value.trim().toLowerCase();
+      if (!email) { showToast('❌ Please enter your email address', 'error'); return; }
+
+      let accountExists = false;
+      const staffUser = store.users.find(u => u.email && u.email.toLowerCase() === email);
+      const patientUser = store.patients.find(p => p.email && p.email.toLowerCase() === email);
+
+      if (staffUser) {
+        accountExists = true;
+        tempResetState.role = 'staff';
+      } else if (patientUser) {
+        accountExists = true;
+        tempResetState.role = 'patient';
+      }
+
+      if (!accountExists) {
+        showToast('❌ Registered email address not found', 'error');
+        return;
+      }
+
+      const code = Math.floor(100000 + Math.random() * 900000).toString();
+      tempResetState.email = email;
+      tempResetState.code = code;
+
+      showToast(`🔑 Reset code simulated! Copy: ${code}`, 'info');
+
+      openModal('Enter Verification Code', `
+    <div style="display:flex; flex-direction:column; gap:16px;">
+      <p style="font-size:13px; color:var(--text2); line-height:1.5; margin:0;">
+        A simulated 6-digit verification code has been generated. Enter it below to verify your identity.
+      </p>
+      <div style="background:rgba(0, 212, 160, 0.05); border:1px dashed var(--accent); border-radius:10px; padding:12px; font-size:13px; text-align:center;">
+        <strong>Simulated Code Sent To:</strong> <code>${email}</code><br/>
+        <strong style="color:var(--accent); font-size:16px; display:block; margin-top:8px;">Code: ${code}</strong>
+      </div>
+      <div class="form-group" style="margin:0;">
+        <label for="reset_code">6-Digit Verification Code</label>
+        <input type="text" id="reset_code" placeholder="Enter 6-digit code" maxlength="6" style="width:100%; text-align:center; letter-spacing:0.3em; font-weight:700; font-size:16px;" />
+      </div>
+      <div class="modal-actions" style="margin-top:8px;">
+        <button class="btn btn-secondary" onclick="showForgotPasswordModal('${tempResetState.role}')">&larr; Back</button>
+        <button class="btn btn-primary" onclick="verifyPasswordResetCode()">Verify Code</button>
+      </div>
+    </div>
+  `);
+    }
+
+    function verifyPasswordResetCode() {
+      const codeInput = document.getElementById('reset_code').value.trim();
+      if (codeInput !== tempResetState.code) {
+        tempResetState.attempts++;
+        if (tempResetState.attempts >= 3) {
+          showToast('❌ Too many failed attempts. Reset restarted.', 'error');
+          closeModal();
+          return;
+        }
+        showToast('❌ Invalid verification code. Try again.', 'error');
+        return;
+      }
+
+      openModal('Set New Password', `
+    <div style="display:flex; flex-direction:column; gap:16px;">
+      <p style="font-size:13px; color:var(--text2); line-height:1.5; margin:0;">
+        Identity verified. Please set a new secure password for your account.
+      </p>
+      <div class="form-group" style="margin:0;">
+        <label for="new_reset_pwd">New Password</label>
+        <div style="position: relative;">
+          <input type="password" id="new_reset_pwd" placeholder="Enter new password" style="width:100%; padding-right:48px;" />
+          <button type="button" class="password-toggle-btn" onclick="togglePasswordVisibility('new_reset_pwd', this)" style="position: absolute; right: 16px; top: 50%; transform: translateY(-50%); background: none; border: none; color: var(--text2); cursor: pointer; font-size: 16px; padding: 4px; display: flex; align-items: center; justify-content: center; outline: none; transition: var(--transition);">👁️</button>
+        </div>
+      </div>
+      <div class="form-group" style="margin:0;">
+        <label for="new_reset_pwd2">Confirm New Password</label>
+        <div style="position: relative;">
+          <input type="password" id="new_reset_pwd2" placeholder="Confirm new password" style="width:100%; padding-right:48px;" />
+          <button type="button" class="password-toggle-btn" onclick="togglePasswordVisibility('new_reset_pwd2', this)" style="position: absolute; right: 16px; top: 50%; transform: translateY(-50%); background: none; border: none; color: var(--text2); cursor: pointer; font-size: 16px; padding: 4px; display: flex; align-items: center; justify-content: center; outline: none; transition: var(--transition);">👁️</button>
+        </div>
+      </div>
+      <div class="modal-actions" style="margin-top:8px;">
+        <button class="btn btn-secondary" onclick="closeModal()">Cancel</button>
+        <button class="btn btn-primary" onclick="resetAccountPassword()">Reset Password</button>
+      </div>
+    </div>
+  `);
+    }
+
+    function resetAccountPassword() {
+      const pwd = document.getElementById('new_reset_pwd').value;
+      const pwd2 = document.getElementById('new_reset_pwd2').value;
+
+      if (!pwd) { showToast('❌ Password cannot be empty', 'error'); return; }
+      if (pwd !== pwd2) { showToast('❌ Passwords do not match', 'error'); return; }
+      if (pwd.length < 6) { showToast('❌ Password must be at least 6 characters', 'error'); return; }
+
+      loadStore();
+      let updated = false;
+
+      if (tempResetState.role === 'staff') {
+        const staffUser = store.users.find(u => u.email && u.email.toLowerCase() === tempResetState.email);
+        if (staffUser) {
+          staffUser.password = pwd;
+          updated = true;
+        }
+      } else if (tempResetState.role === 'patient') {
+        const patientAcc = store.patients.find(p => p.email && p.email.toLowerCase() === tempResetState.email);
+        if (patientAcc) {
+          patientAcc.password = pwd;
+          updated = true;
+        }
+      }
+
+      if (updated) {
+        saveStore(); // Make sure to save the local state
+        fetch('/api/auth/reset-password', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email: tempResetState.email, password: pwd, role: tempResetState.role })
+        })
+          .then(res => {
+            if (!res.ok) throw new Error('Reset failed on server');
+            return res.json();
+          })
+          .then(() => {
+            closeModal();
+            showToast('✅ Password reset successful! You can now log in.', 'success');
+          })
+          .catch(err => {
+            console.error(err);
+            showToast('❌ Password reset failed on server. Try again.', 'error');
+          });
+      } else {
+        showToast('❌ Account not found. Reset failed.', 'error');
+      }
+    }
+  </script>
+</body>
+
+</html>
